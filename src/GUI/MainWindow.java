@@ -10,6 +10,7 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -23,7 +24,10 @@ public class MainWindow extends JFrame {
 	private JButton analyseBt, openBt;
 
 	private JTextArea fileDisplay;
+	private JScrollPane fileScroll;
+	
 	private JTextField fileName, locName, cycloName, atfdName, laaName;
+	private JTextField locText, cycloText, atfdText, laaText;
 
 	public MainWindow() {
 		initComponents();
@@ -36,25 +40,50 @@ public class MainWindow extends JFrame {
 		setMinimumSize(new Dimension(WIDTH - 200, HEIGHT - 200));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
+		mainPanel = new JPanel(new BorderLayout());
 
-		rightPanel = new JPanel();
-		rightPanel.setLayout(new GridLayout(4, 2));
-		
-		leftPanel = new JPanel();
-		bottomPanel = new JPanel();
+		rightPanel = new JPanel(new GridLayout(4, 2));
+
+		leftPanel = new JPanel(new BorderLayout());
+
+		bottomPanel = new JPanel(new BorderLayout());
+		JPanel bottAuxPanel = new JPanel(new GridLayout(1, 2));
+		bottomPanel.add(bottAuxPanel, BorderLayout.WEST);
 
 		fileName = new JTextField("Ficheiro Selecionado");
 		locName = new JTextField("LOC");
 		cycloName = new JTextField("CYCLO");
 		atfdName = new JTextField("ATFD");
 		laaName = new JTextField("LAA");
+
+		locText = new JTextField();
+		cycloText = new JTextField();
+		atfdText = new JTextField();
+		laaText = new JTextField();
+
+		analyseBt = new JButton("Analisar Ficheiro");
+		openBt = new JButton("Abrir Ficheiro");
+
+		fileDisplay = new JTextArea();
+		fileScroll = new JScrollPane(fileDisplay);
 		
 		rightPanel.add(locName);
+		rightPanel.add(locText);
+
 		rightPanel.add(cycloName);
+		rightPanel.add(cycloText);
+
 		rightPanel.add(atfdName);
+		rightPanel.add(atfdText);
+
 		rightPanel.add(laaName);
+		rightPanel.add(laaText);
+
+		leftPanel.add(fileName, BorderLayout.NORTH);
+		leftPanel.add(fileScroll, BorderLayout.CENTER);
+
+		bottAuxPanel.add(analyseBt);
+		bottAuxPanel.add(openBt);
 
 		mainPanel.add(rightPanel, BorderLayout.EAST);
 		mainPanel.add(leftPanel, BorderLayout.CENTER);
@@ -66,11 +95,13 @@ public class MainWindow extends JFrame {
 	private void formatComponents() {
 		mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
-		resizeComps();
+		fileName.setEditable(false);
+		locName.setEditable(false);
+		cycloName.setEditable(false);
+		atfdName.setEditable(false);
+		laaName.setEditable(false);
 
-		rightPanel.setBackground(Color.RED);
-		leftPanel.setBackground(Color.BLUE);
-		bottomPanel.setBackground(Color.GREEN);
+		resizeComps();
 	}
 
 	private void addListeners() {
