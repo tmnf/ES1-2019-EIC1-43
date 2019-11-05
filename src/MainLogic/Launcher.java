@@ -10,10 +10,12 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
+import GUI.MainWindow;
+
 public class Launcher {
 
 	public static void main(String[] args) {
-		testFileReading();
+		new MainWindow().openWindow();
 	}
 
 	// METHOD TO DELETE
@@ -35,7 +37,6 @@ public class Launcher {
 					} else if (currentCell.getCellType() == CellType.NUMERIC) {
 						System.out.print(currentCell.getNumericCellValue() + " : ");
 					}
-
 				}
 				System.out.println("\n=================================");
 
