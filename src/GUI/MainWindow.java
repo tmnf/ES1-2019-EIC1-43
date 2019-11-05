@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -25,7 +27,7 @@ public class MainWindow extends JFrame {
 
 	private JTextArea fileDisplay;
 	private JScrollPane fileScroll;
-	
+
 	private JTextField fileName, locName, cycloName, atfdName, laaName;
 	private JTextField locText, cycloText, atfdText, laaText;
 
@@ -66,7 +68,7 @@ public class MainWindow extends JFrame {
 
 		fileDisplay = new JTextArea();
 		fileScroll = new JScrollPane(fileDisplay);
-		
+
 		rightPanel.add(locName);
 		rightPanel.add(locText);
 
@@ -105,7 +107,31 @@ public class MainWindow extends JFrame {
 	}
 
 	private void addListeners() {
+		analyseBt.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				analyseAction();
+			}
+		});
 
+		openBt.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openFile();
+			}
+		});
+	}
+
+	private void analyseAction() {
+
+	}
+
+	private void openFile() {
+
+	}
+
+	public void displayText(String text) {
+		fileDisplay.setText(text);
 	}
 
 	/* RESPONSIVE HANDLE METHODS */

@@ -15,11 +15,15 @@ import GUI.MainWindow;
 public class Launcher {
 
 	public static void main(String[] args) {
-		new MainWindow().openWindow();
+		MainWindow mw = new MainWindow();
+		mw.openWindow();
+
+		mw.displayText(testFileReading());
 	}
 
 	// METHOD TO DELETE
-	public static void testFileReading() {
+	public static String testFileReading() {
+		String res = "";
 		try {
 			Workbook workbook = WorkbookFactory.create(new File("files/Long-Method.xlsx"));
 			Sheet datatypeSheet = workbook.getSheetAt(0);
@@ -33,18 +37,18 @@ public class Launcher {
 					Cell currentCell = cellIterator.next();
 
 					if (currentCell.getCellType() == CellType.STRING) {
-						System.out.print(currentCell.getStringCellValue() + " : ");
+						res += currentCell.getStringCellValue() + " : ";
 					} else if (currentCell.getCellType() == CellType.NUMERIC) {
-						System.out.print(currentCell.getNumericCellValue() + " : ");
+						res += currentCell.getNumericCellValue() + " : ";
 					}
 				}
-				System.out.println("\n=================================");
+				res += "\n";
 
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		return res;
 	}
 
 }
