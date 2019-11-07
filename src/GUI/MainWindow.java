@@ -123,11 +123,16 @@ public class MainWindow extends JFrame {
 	}
 
 	private void analyseAction() {
+		System.out.println("");
+		System.out.println("=================");
+		System.out.println("Analisar Ficheiro");
 
 	}
 
 	private void openFile() {
-
+		System.out.println("");
+		System.out.println("=================");
+		System.out.println("Abrir ficheiro");
 	}
 
 	public void displayText(String text) {
