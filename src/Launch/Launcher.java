@@ -1,4 +1,4 @@
-package MainLogic;
+package Launch;
 
 import java.io.File;
 import java.util.Iterator;
@@ -10,15 +10,13 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import GUI.MainWindow;
+import MainLogic.DataProcesser;
 
 public class Launcher {
 
 	public static void main(String[] args) {
-		MainWindow mw = new MainWindow();
-		mw.openWindow();
-
-		mw.displayText(testFileReading());
+		DataProcesser dp = DataProcesser.getInstance();
+		dp.initWindow();
 	}
 
 	// METHOD TO DELETE
@@ -36,11 +34,12 @@ public class Launcher {
 				while (cellIterator.hasNext()) {
 					Cell currentCell = cellIterator.next();
 
-					if (currentCell.getCellType() == CellType.STRING) {
+					if (currentCell.getCellType() == CellType.STRING)
 						res += currentCell.getStringCellValue() + " : ";
-					} else if (currentCell.getCellType() == CellType.NUMERIC) {
+					else if (currentCell.getCellType() == CellType.NUMERIC)
 						res += currentCell.getNumericCellValue() + " : ";
-					}
+					else if (currentCell.getCellType() == CellType.BOOLEAN)
+						res += currentCell.getBooleanCellValue() + " : ";
 				}
 				res += "\n";
 
