@@ -107,6 +107,7 @@ public class MainWindow extends JFrame {
 		cycloName.setEditable(false);
 		atfdName.setEditable(false);
 		laaName.setEditable(false);
+		fileDisplay.setEditable(false);
 
 		resizeComps();
 	}
