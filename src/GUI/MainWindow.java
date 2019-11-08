@@ -1,7 +1,6 @@
 package GUI;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -10,15 +9,21 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class MainWindow extends JFrame {
 
+	private static final long serialVersionUID = -1572507198564655896L;
+	
 	private final static String TITLE = "Iscte Code Analyser";
+	
 	private final static int WIDTH = 1000, HEIGHT = 600;
 
 	private JPanel mainPanel, rightPanel, leftPanel, bottomPanel;
@@ -130,9 +135,15 @@ public class MainWindow extends JFrame {
 	}
 
 	private void openFile() {
-		System.out.println("");
-		System.out.println("=================");
-		System.out.println("Abrir ficheiro");
+		JFileChooser fc = new JFileChooser(".");
+		FileFilter filter = new FileNameExtensionFilter("Excel File", "xlsx");
+		fc.setFileFilter(filter);
+
+		fc.showOpenDialog(this);
+
+		if (fc.getSelectedFile() != null) {
+			//DataProcesser.getInstance().setCurrentSheet(FileUtils.readFile(fc.getSelectedFile().getPath()));
+		}
 	}
 
 	public void displayText(String text) {
