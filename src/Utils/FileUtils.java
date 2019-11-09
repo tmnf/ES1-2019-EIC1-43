@@ -18,7 +18,7 @@ public class FileUtils {
 		try {
 
 			workbook = WorkbookFactory.create(new File(path));
-			datatypeSheet = workbook.getSheetAt(0);
+			//datatypeSheet = workbook.getSheetAt(0);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -27,7 +27,7 @@ public class FileUtils {
 	}
 
 //	public static String fileToString(Sheet file) {
-//
+	//datatypeSheet = workbook.getSheetAt(0);
 //	}
 //
 //	public static Cell getCellAt(Row row, int index) {
