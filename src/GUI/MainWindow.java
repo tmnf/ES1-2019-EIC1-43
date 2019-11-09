@@ -25,11 +25,11 @@ import Utils.FileUtils;
 public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = -1572507198564655896L;
-	
+
 	private final static String TITLE = "Iscte Code Analyser";
-	
+
 	private final static int WIDTH = 1000, HEIGHT = 600;
-	
+
 	private JFileChooser fc;
 
 	private JPanel mainPanel, rightPanel, leftPanel, bottomPanel;
@@ -149,8 +149,7 @@ public class MainWindow extends JFrame {
 		fc.showOpenDialog(this);
 
 		if (fc.getSelectedFile() != null) {
-			DataProcesser.getInstance().setCurrentSheet(FileUtils.readFile(fc.getSelectedFile().getAbsolutePath()));			
-			
+			DataProcesser.getInstance().setCurrentSheet(FileUtils.readFile(fc.getSelectedFile().getPath()));
 		}
 	}
 

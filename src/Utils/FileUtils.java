@@ -31,38 +31,36 @@ public class FileUtils {
 	}
 
 	public static String fileToString(Sheet file) {
-			String res = "";
-			try {
+		String res = "";
+		try {
 
-				Iterator<Row> iterator = file.iterator();
+			Iterator<Row> iterator = file.iterator();
 
-				while (iterator.hasNext()) {
-					Row currentRow = iterator.next();
-					Iterator<Cell> cellIterator = currentRow.iterator();
+			while (iterator.hasNext()) {
+				Row currentRow = iterator.next();
+				Iterator<Cell> cellIterator = currentRow.iterator();
 
-					while (cellIterator.hasNext()) {
-						Cell currentCell = cellIterator.next();
+				while (cellIterator.hasNext()) {
+					Cell currentCell = cellIterator.next();
 
-						if (currentCell.getCellType() == CellType.STRING)
-							res += currentCell.getStringCellValue() + " :: ";
-						else if (currentCell.getCellType() == CellType.NUMERIC)
-							res += currentCell.getNumericCellValue() + " :: ";
-						else if (currentCell.getCellType() == CellType.BOOLEAN)
-							res += currentCell.getBooleanCellValue() + " :: ";
-					}
-					res += "\n";
-
+					if (currentCell.getCellType() == CellType.STRING)
+						res += currentCell.getStringCellValue() + " :: ";
+					else if (currentCell.getCellType() == CellType.NUMERIC)
+						res += currentCell.getNumericCellValue() + " :: ";
+					else if (currentCell.getCellType() == CellType.BOOLEAN)
+						res += currentCell.getBooleanCellValue() + " :: ";
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+				res += "\n";
+
 			}
-			return res;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return res;
+	}
 
+	// datatypeSheet = workbook.getSheetAt(0);
 
-		
-		//datatypeSheet = workbook.getSheetAt(0);
-	
 //
 //	public static Cell getCellAt(Row row, int index) {
 //
