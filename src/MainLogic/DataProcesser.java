@@ -12,7 +12,8 @@ public class DataProcesser {
 
 	private Sheet currentSheet;
 
-	private DataProcesser() {}
+	private DataProcesser() {
+	}
 
 	public static DataProcesser getInstance() {
 		if (INSTANCE == null)
@@ -34,4 +35,7 @@ public class DataProcesser {
 		}).start();
 	}
 
+	public MainWindow getGraphicalInterface() {
+		return gui;
+	}
 }
