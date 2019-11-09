@@ -26,7 +26,7 @@ public class DataProcesser {
 	public void setCurrentSheet(Sheet sheet) {
 		this.currentSheet = sheet;
 		
-		gui.displayText(Launcher.testFileReading());
+		gui.displayText(FileUtils.fileToString(currentSheet));
 	}
 
 	public void initWindow() {
