@@ -9,8 +9,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.util.SystemOutLogger;
 
 import MainLogic.DataProcesser;
+import Utils.FileUtils;
 
 public class Launcher {
 
@@ -23,9 +25,11 @@ public class Launcher {
 	public static String testFileReading() {
 		String res = "";
 		try {
-			Workbook workbook = WorkbookFactory.create(new File("files/Long-Method.xlsx"));
-			Sheet datatypeSheet = workbook.getSheetAt(0);
-			Iterator<Row> iterator = datatypeSheet.iterator();
+			//Workbook workbook = FileUtils.workbook;
+			//Sheet datatypeSheet = workbook.getSheetAt(0);
+			
+
+			Iterator<Row> iterator = FileUtils.datatypeSheet.iterator();
 
 			while (iterator.hasNext()) {
 				Row currentRow = iterator.next();

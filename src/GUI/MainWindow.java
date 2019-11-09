@@ -18,6 +18,10 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import Launch.Launcher;
+import MainLogic.DataProcesser;
+import Utils.FileUtils;
+
 public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = -1572507198564655896L;
@@ -25,6 +29,8 @@ public class MainWindow extends JFrame {
 	private final static String TITLE = "Iscte Code Analyser";
 	
 	private final static int WIDTH = 1000, HEIGHT = 600;
+	
+	private JFileChooser fc;
 
 	private JPanel mainPanel, rightPanel, leftPanel, bottomPanel;
 
@@ -136,14 +142,15 @@ public class MainWindow extends JFrame {
 	}
 
 	private void openFile() {
-		JFileChooser fc = new JFileChooser(".");
+		fc = new JFileChooser(".");
 		FileFilter filter = new FileNameExtensionFilter("Excel File", "xlsx");
 		fc.setFileFilter(filter);
 
 		fc.showOpenDialog(this);
 
 		if (fc.getSelectedFile() != null) {
-			//DataProcesser.getInstance().setCurrentSheet(FileUtils.readFile(fc.getSelectedFile().getPath()));
+			DataProcesser.getInstance().setCurrentSheet(FileUtils.readFile(fc.getSelectedFile().getAbsolutePath()));			
+			
 		}
 	}
 
