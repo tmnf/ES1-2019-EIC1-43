@@ -18,12 +18,12 @@ public class FileUtils {
 		try {
 
 			workbook = WorkbookFactory.create(new File(path));
-			//datatypeSheet = workbook.getSheetAt(0);
+			datatypeSheet = workbook.getSheetAt(0);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return datatypeSheet;
 	}
 
 //	public static String fileToString(Sheet file) {
