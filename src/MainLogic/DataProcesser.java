@@ -3,6 +3,7 @@ package MainLogic;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import GUI.MainWindow;
+import Utils.FileUtils;
 
 public class DataProcesser {
 
@@ -23,6 +24,8 @@ public class DataProcesser {
 
 	public void setCurrentSheet(Sheet sheet) {
 		this.currentSheet = sheet;
+		
+		//gui.displayText(FileUtils.fileToString(currentSheet));
 	}
 
 	public void initWindow() {

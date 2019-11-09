@@ -8,7 +8,7 @@ public class FileUtils {
 //		
 //	}
 //
-//	public static String[] readFileRows(Sheet file) {
+//	public static String fileToString(Sheet file) {
 //
 //	}
 //
