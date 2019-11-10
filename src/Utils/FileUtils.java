@@ -99,8 +99,20 @@ public class FileUtils {
 		return false;
 	}
 
-	//
-	// public static Cell getCellAtByText(Row row, String text) {
-	//
-	// }
+	
+	public static Cell getCellAtByText(Row row, String text) {
+		Cell selectedCell = null;
+		int index = -1;
+		datatypeSheet = workbook.getSheetAt(0);
+		for(Cell c: datatypeSheet.getRow(0)) {
+				if(c.getStringCellValue().equals(text))
+					index = c.getColumnIndex();
+		}
+		
+		if(index != -1)
+			selectedCell = row.getCell(index);
+				
+		return selectedCell;
+		
+	}
 }
