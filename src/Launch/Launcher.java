@@ -8,4 +8,8 @@ public class Launcher {
 		DataProcesser dp = DataProcesser.getInstance();
 		dp.initWindow();
 	}
+	
+
+
+
 }
