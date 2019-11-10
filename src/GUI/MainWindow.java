@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -134,9 +135,7 @@ public class MainWindow extends JFrame {
 	}
 
 	private void analyseAction() {
-		System.out.println("");
-		System.out.println("=================");
-		System.out.println("Analisar Ficheiro");
+		System.out.println("Ainda não faz nada");
 
 	}
 
