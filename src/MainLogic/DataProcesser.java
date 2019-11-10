@@ -3,7 +3,6 @@ package MainLogic;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import GUI.MainWindow;
-import Launch.Launcher;
 import Utils.FileUtils;
 
 public class DataProcesser {
@@ -37,6 +36,10 @@ public class DataProcesser {
 				gui.openWindow();
 			}
 		}).start();
+	}
+
+	public Sheet getCurrentSheet() {
+		return currentSheet;
 	}
 
 	public MainWindow getGraphicalInterface() {
