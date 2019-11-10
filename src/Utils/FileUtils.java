@@ -72,48 +72,24 @@ public class FileUtils {
 
 	// datatypeSheet = workbook.getSheetAt(0);
 
-	public static Cell getCellAt(Row row, int index) throws IOException {
-		datatypeSheet = workbook.getSheetAt(0);
-		Cell cell = null;
-		cell = row.getCell(index);
-		Cell aux = null;
-		for (int i = 0; i < datatypeSheet.getLastRowNum(); i++) {
-			if (cell != null) {
-				System.out.println(cell + " - ");
-				aux = row.getCell(i);
-				System.out.print(aux);
-				
-			}
-		}
-		return cell;
+	public static Cell getCellAt(Row row, int index) {
+		return row.getCell(index);
 
 	}
 
-	public boolean CellToCompare(Cell c) {
-		datatypeSheet = workbook.getSheetAt(0);
-		for (Row r : datatypeSheet) {
-			for (int i = 0; i < datatypeSheet.getLastRowNum(); i++) {
-				if (r.getCell(i) != null && r.getCell(i).equals(c))
-					return true;
-			}
-		}
-		return false;
-	}
-
-	
 	public static Cell getCellAtByText(Row row, String text) {
 		Cell selectedCell = null;
 		int index = -1;
 		datatypeSheet = workbook.getSheetAt(0);
-		for(Cell c: datatypeSheet.getRow(0)) {
-				if(c.getStringCellValue().equals(text))
-					index = c.getColumnIndex();
+		for (Cell c : datatypeSheet.getRow(0)) {
+			if (c.getStringCellValue().equals(text))
+				index = c.getColumnIndex();
 		}
-		
-		if(index != -1)
+
+		if (index != -1)
 			selectedCell = row.getCell(index);
-				
+
 		return selectedCell;
-		
+
 	}
 }
