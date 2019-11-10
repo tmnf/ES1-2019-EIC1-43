@@ -25,7 +25,7 @@ public class DataProcesser {
 
 	public void setCurrentSheet(Sheet sheet) {
 		this.currentSheet = sheet;
-		
+
 		gui.displayText(FileUtils.fileToString(currentSheet));
 	}
 
