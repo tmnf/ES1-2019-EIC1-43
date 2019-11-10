@@ -76,10 +76,12 @@ public class FileUtils {
 		datatypeSheet = workbook.getSheetAt(0);
 		Cell cell = null;
 		cell = row.getCell(index);
+		Cell aux = null;
 		for (int i = 0; i < datatypeSheet.getLastRowNum(); i++) {
 			if (cell != null) {
 				System.out.println(cell + " - ");
-				// cell = row.getCell(i);
+				aux = row.getCell(i);
+				System.out.print(aux);
 			}
 		}
 		return cell;
