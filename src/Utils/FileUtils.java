@@ -82,6 +82,7 @@ public class FileUtils {
 				System.out.println(cell + " - ");
 				aux = row.getCell(i);
 				System.out.print(aux);
+				
 			}
 		}
 		return cell;
