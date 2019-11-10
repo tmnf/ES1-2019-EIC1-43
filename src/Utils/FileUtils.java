@@ -1,7 +1,6 @@
 package Utils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -15,6 +14,7 @@ import MainLogic.DataProcesser;
 
 public class FileUtils {
 
+	/* Returns Excel Sheet From File */
 	public static Sheet readFile(String path) {
 		Sheet datatypeSheet = null;
 		try {
@@ -26,10 +26,10 @@ public class FileUtils {
 		return datatypeSheet;
 	}
 
+	/* Converts excel file into a String */
 	public static String fileToString(Sheet file) {
 		String res = "";
 		try {
-
 			Iterator<Row> iterator = file.iterator();
 
 			while (iterator.hasNext()) {
@@ -38,7 +38,7 @@ public class FileUtils {
 
 				while (cellIterator.hasNext()) {
 					Cell currentCell = cellIterator.next();
-					System.out.println(currentCell);
+
 					if (currentCell.getCellType() == CellType.STRING)
 						res += currentCell.getStringCellValue() + " :: ";
 					else if (currentCell.getCellType() == CellType.NUMERIC)
@@ -55,12 +55,19 @@ public class FileUtils {
 		return res;
 	}
 
+	/* Returns a cell from a row */
+	public static Cell getCellAt(Row row, int index) {
+		return row.getCell(index);
+	}
+
+	/* Returns a cell from a row based on desired category */
 	public static Cell getCellAtByText(Row row, String text) {
 		Cell selectedCell = null;
 
 		for (Cell c : DataProcesser.getInstance().getCurrentSheet().getRow(0))
 			if (c.getStringCellValue().equals(text)) {
 				selectedCell = row.getCell(c.getColumnIndex());
+				break;
 			}
 
 		return selectedCell;
