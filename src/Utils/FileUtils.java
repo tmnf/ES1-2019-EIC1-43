@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.util.StringUtil;
 
 import MainLogic.DataProcesser;
 
@@ -40,14 +41,15 @@ public class FileUtils {
 					Cell currentCell = cellIterator.next();
 
 					if (currentCell.getCellType() == CellType.STRING)
-						res += currentCell.getStringCellValue() + " :: ";
+						res += currentCell.getStringCellValue();
 					else if (currentCell.getCellType() == CellType.NUMERIC)
-						res += currentCell.getNumericCellValue() + " :: ";
+						res += currentCell.getNumericCellValue();
 					else if (currentCell.getCellType() == CellType.BOOLEAN)
-						res += currentCell.getBooleanCellValue() + " :: ";
-				}
-				res += "\n";
+						res += currentCell.getBooleanCellValue();
 
+					res += ":";
+				}
+				res += "--\n";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

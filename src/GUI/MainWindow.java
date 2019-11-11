@@ -2,6 +2,7 @@ package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,10 +15,12 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
 import MainLogic.DataProcesser;
 import Utils.FileUtils;
@@ -27,6 +30,7 @@ public class MainWindow extends JFrame {
 	private static final long serialVersionUID = -1572507198564655896L;
 
 	private final static String TITLE = "Iscte Code Analyser";
+	private final static Object[] COLUMNS = { "Col1", "Col1", "Col1", "Col1", "Col1", "Col1", "Col1" };
 
 	private final static int WIDTH = 1000, HEIGHT = 600;
 
@@ -36,7 +40,8 @@ public class MainWindow extends JFrame {
 
 	private JButton analyseBt, openBt;
 
-	private JTextArea fileDisplay;
+	private JTable fileDisplay;
+	private DefaultTableModel tableModel;
 	private JScrollPane fileScroll;
 
 	private JTextField fileName, locName, cycloName, atfdName, laaName;
@@ -77,7 +82,8 @@ public class MainWindow extends JFrame {
 		analyseBt = new JButton("Analisar Ficheiro");
 		openBt = new JButton("Abrir Ficheiro");
 
-		fileDisplay = new JTextArea();
+		tableModel = new DefaultTableModel();
+		fileDisplay = new JTable(tableModel);
 		fileScroll = new JScrollPane(fileDisplay);
 
 		rightPanel.add(locName);
@@ -108,12 +114,13 @@ public class MainWindow extends JFrame {
 	private void formatComponents() {
 		mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
+		fileDisplay.setFont(new Font("Arial", Font.PLAIN, 16));
+
 		fileName.setEditable(false);
 		locName.setEditable(false);
 		cycloName.setEditable(false);
 		atfdName.setEditable(false);
 		laaName.setEditable(false);
-		fileDisplay.setEditable(false);
 
 		resizeComps();
 	}
@@ -152,7 +159,24 @@ public class MainWindow extends JFrame {
 	}
 
 	public void displayText(String text) {
-		fileDisplay.setText(text);
+		String[] info = text.split("--");
+
+		addColumns(info);
+		addData(info);
+	}
+
+	private void addColumns(String[] info) {
+		for (String x : info[0].split(":"))
+			tableModel.addColumn(x);
+	}
+
+	private void addData(String[] info) {
+		for (String x : info)
+			if (!x.equals(info[0])) {
+				String[] row = x.split(":");
+
+				tableModel.addRow(row);
+			}
 	}
 
 	/* RESPONSIVE HANDLE METHODS */

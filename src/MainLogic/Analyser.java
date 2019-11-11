@@ -7,7 +7,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 public class Analyser extends Thread {
 
 	private static final float LOC_MAX = 80, CYCLO_MAX = 10, ATFD_MAX = 4, LAA_MAX = 0.42f;
-	
+
 	private Sheet sheet;
 
 	private int dci, dii, adci, adii;
