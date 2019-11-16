@@ -59,22 +59,35 @@ public class Analyser extends Thread {
 		return res;
 	}
 
-	public ArrayList<Boolean> isLongMethod(){
-		ArrayList <Boolean> b = new ArrayList<Boolean>();
-		for(Row row: sheet) {
-			if((FileUtils.getCellAtByText(row, "LOC").getNumericCellValue())>LOC_MAX &&
-					FileUtils.getCellAtByText(row, "CYCLO").getNumericCellValue()>CYCLO_MAX)
+	public ArrayList<Boolean> isLongMethod() {
+		ArrayList<Boolean> b = new ArrayList<Boolean>();
+		for (Row row : sheet) {
+			if ((FileUtils.getCellAtByText(row, "LOC").getNumericCellValue()) > LOC_MAX
+					&& FileUtils.getCellAtByText(row, "CYCLO").getNumericCellValue() > CYCLO_MAX)
 				b.add(true);
 			else
 				b.add(false);
 		}
 		return b;
 	}
-	
+
+	public ArrayList<Boolean> isFeatureEnvy() {
+		ArrayList<Boolean> b = new ArrayList<Boolean>();
+		for (Row row : sheet) {
+			if (FileUtils.getCellAtByText(row, "ATFD").getNumericCellValue() > ATFD_MAX
+					&& FileUtils.getCellAtByText(row, "LAA").getNumericCellValue() < LAA_MAX) {
+				b.add(true);
+			} else {
+				b.add(false);
+			}
+		}
+		return b;
+	}
+
 	// Compares is_long_method from user with is_long_method, iPlasma and PMD in
 	// every method from file
 	private void compareLongMethod(ArrayList<Boolean> is_long_list) {
-			
+
 	}
 
 	// Compares is_feature_envy from user with is_feature_envy in every method from
