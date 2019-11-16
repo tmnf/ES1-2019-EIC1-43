@@ -42,6 +42,7 @@ public class MainWindow extends JFrame {
 
 	private JTable fileDisplay;
 	private DefaultTableModel tableModel;
+	
 	private JScrollPane fileScroll;
 
 	private JTextField fileName, locName, cycloName, atfdName, laaName;
