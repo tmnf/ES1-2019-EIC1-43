@@ -39,8 +39,14 @@ public class Analyser extends Thread {
 	private void generateQuality(ArrayList<Boolean> is_long_list, ArrayList<Boolean> is_feature_list) {
 		compareLongMethod(is_long_list);
 		compareFeatureEnvy(is_feature_list);
+		
+		showResults();
 	}
 
+	private void showResults() {
+		// Apresentar resultados. Nao implementar por agora
+	}
+	
 	/* ===================== METHODS TO IMPLEMENT ===================== */
 
 	/*
