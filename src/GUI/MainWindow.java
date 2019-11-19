@@ -12,6 +12,7 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -26,10 +27,9 @@ import Utils.FileUtils;
 public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = -1572507198564655896L;
-	
 
 	private final static String TITLE = "Iscte Code Analyser";
-	
+
 	private final static int WIDTH = 1000, HEIGHT = 600;
 
 	private JFileChooser fc;
@@ -40,7 +40,7 @@ public class MainWindow extends JFrame {
 
 	private JTable fileDisplay;
 	private DefaultTableModel tableModel;
-	
+
 	private JScrollPane fileScroll;
 
 	private JTextField fileName, locName, cycloName, atfdName, laaName;
@@ -108,7 +108,7 @@ public class MainWindow extends JFrame {
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
 		add(mainPanel);
-		
+
 	}
 
 	private void formatComponents() {
@@ -129,6 +129,10 @@ public class MainWindow extends JFrame {
 		analyseBt.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (DataProcesser.getInstance().getCurrentSheet() == null) {
+					openErrorPopup("Carregue um ficheiro primeiro...");
+					return;
+				}
 				DataProcesser.getInstance().analyseFile();
 			}
 		});
@@ -140,7 +144,6 @@ public class MainWindow extends JFrame {
 			}
 		});
 	}
-
 
 	private void openFile() {
 		fc = new JFileChooser(".");
@@ -204,6 +207,10 @@ public class MainWindow extends JFrame {
 		}
 
 		return new Dimension((int) (width_ratio * curr_width), (int) (height_ratio * curr_height));
+	}
+
+	private void openErrorPopup(String error) {
+		JOptionPane.showMessageDialog(this, error, "Aviso!", 1);
 	}
 
 	public void openWindow() {
