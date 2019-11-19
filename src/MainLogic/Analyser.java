@@ -11,6 +11,8 @@ public class Analyser extends Thread {
 
 	private static final float LOC_MAX = 80, CYCLO_MAX = 10, ATFD_MAX = 4, LAA_MAX = 0.42f;
 
+	private static final int LONG_METH = 0, FEATURE_METHOD = 1;
+
 	private Sheet sheet;
 
 	private DataProcesser dp;
@@ -48,33 +50,24 @@ public class Analyser extends Thread {
 
 	// Returns is_long_method for all methods in file using user rules and metrics
 	public ArrayList<Boolean> getIsLongList() {
-		ArrayList<Boolean> res = new ArrayList<Boolean>();
-		int i = 0;
-
-		for (Row row : sheet) {
-			if (i != 0) {
-				res.add((FileUtils.getCellAtByText(row, "LOC").getNumericCellValue()) > LOC_MAX
-						&& FileUtils.getCellAtByText(row, "CYCLO").getNumericCellValue() > CYCLO_MAX);
-			} else
-				i++;
-
-		}
-
-		return res;
+		return getResultList(LONG_METH);
 	}
 
 	// Returns is_feature_envy for all methods in file using user rules and metrics
 	public ArrayList<Boolean> getIsFeatureEnvyList() {
-		ArrayList<Boolean> res = new ArrayList<Boolean>();
-		int i = 0;
+		return getResultList(FEATURE_METHOD);
+	}
 
-		for (Row row : sheet) {
-			if (i != 0) {
+	private ArrayList<Boolean> getResultList(int method) {
+		ArrayList<Boolean> res = new ArrayList<Boolean>();
+
+		for (Row row : sheet)
+			if (method == LONG_METH)
 				res.add(FileUtils.getCellAtByText(row, "ATFD").getNumericCellValue() > ATFD_MAX
-						&& Double.parseDouble(FileUtils.getCellAtByText(row, "LAA").toString()) < LAA_MAX);
-			} else
-				i++;
-		}
+						&& FileUtils.getRealValue(FileUtils.getCellAtByText(row, "LAA")) < LAA_MAX);
+			else if (method == FEATURE_METHOD)
+				res.add((FileUtils.getCellAtByText(row, "LOC").getNumericCellValue()) > LOC_MAX
+						&& FileUtils.getCellAtByText(row, "CYCLO").getNumericCellValue() > CYCLO_MAX);
 
 		return res;
 	}
