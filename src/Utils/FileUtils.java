@@ -74,4 +74,16 @@ public class FileUtils {
 
 		return selectedCell;
 	}
+
+	public static double getRealValue(Cell cell) {
+		switch (cell.getCellType()) {
+		case NUMERIC:
+			return cell.getNumericCellValue();
+		case STRING:
+			return Double.parseDouble(cell.getStringCellValue());
+		default:
+			throw new IllegalArgumentException("Célula com valores errados...");
+		}
+	}
+
 }

@@ -2,10 +2,8 @@ package MainLogic;
 
 import java.util.ArrayList;
 
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.util.SystemOutLogger;
 
 import Utils.FileUtils;
 
@@ -14,9 +12,9 @@ public class Analyser extends Thread {
 	private static final float LOC_MAX = 80, CYCLO_MAX = 10, ATFD_MAX = 4, LAA_MAX = 0.42f;
 
 	private Sheet sheet;
-	
+
 	private DataProcesser dp;
-	
+
 	private int dci, dii, adci, adii;
 
 	public Analyser(Sheet sheet) {
@@ -54,16 +52,14 @@ public class Analyser extends Thread {
 		int i = 0;
 
 		for (Row row : sheet) {
-			
-			if(FileUtils.getCellAtByText(row, "LOC").getCellType() == CellType.STRING || FileUtils.getCellAtByText(row, "CYCLO").getCellType() == CellType.STRING) {
-				continue;
-			}
-			i++;
-			res.add((FileUtils.getCellAtByText(row, "LOC").getNumericCellValue()) > LOC_MAX
-					&& FileUtils.getCellAtByText(row, "CYCLO").getNumericCellValue() > CYCLO_MAX);
+			if (i != 0) {
+				res.add((FileUtils.getCellAtByText(row, "LOC").getNumericCellValue()) > LOC_MAX
+						&& FileUtils.getCellAtByText(row, "CYCLO").getNumericCellValue() > CYCLO_MAX);
+			} else
+				i++;
+
 		}
-		System.out.println("Long: "+ i);
-		System.out.println(res);
+
 		return res;
 	}
 
@@ -73,17 +69,13 @@ public class Analyser extends Thread {
 		int i = 0;
 
 		for (Row row : sheet) {
-			
-			if(FileUtils.getCellAtByText(row, "ATFD").getCellType() == CellType.STRING ||
-					(FileUtils.getCellAtByText(row, "LAA").getCellType() == CellType.STRING &&  FileUtils.getCellAtByText(row, "LAA").toString() == "LAA")) {
-				continue;
-			}
-			i++;
-			res.add(FileUtils.getCellAtByText(row, "ATFD").getNumericCellValue() > ATFD_MAX
-					&& Double.parseDouble(FileUtils.getCellAtByText(row, "LAA").toString()) < LAA_MAX);
+			if (i != 0) {
+				res.add(FileUtils.getCellAtByText(row, "ATFD").getNumericCellValue() > ATFD_MAX
+						&& Double.parseDouble(FileUtils.getCellAtByText(row, "LAA").toString()) < LAA_MAX);
+			} else
+				i++;
 		}
-		System.out.println("Feature Heavy: "+i);
-		System.out.println(res);
+
 		return res;
 	}
 
