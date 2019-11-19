@@ -2,6 +2,7 @@ package MainLogic;
 
 import java.util.ArrayList;
 
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -39,14 +40,14 @@ public class Analyser extends Thread {
 	private void generateQuality(ArrayList<Boolean> is_long_list, ArrayList<Boolean> is_feature_list) {
 		compareLongMethod(is_long_list);
 		compareFeatureEnvy(is_feature_list);
-		
+
 		showResults();
 	}
 
 	private void showResults() {
 		// Apresentar resultados. Nao implementar por agora
 	}
-	
+
 	/* ===================== METHODS TO IMPLEMENT ===================== */
 
 	/*
@@ -65,16 +66,25 @@ public class Analyser extends Thread {
 	}
 
 	private ArrayList<Boolean> getResultList(int method) {
+		int i = 0;
 		ArrayList<Boolean> res = new ArrayList<Boolean>();
 
-		for (Row row : sheet)
-			if (method == LONG_METH)
-				res.add(FileUtils.getCellAtByText(row, "ATFD").getNumericCellValue() > ATFD_MAX
-						&& FileUtils.getRealValue(FileUtils.getCellAtByText(row, "LAA")) < LAA_MAX);
-			else if (method == FEATURE_METHOD)
-				res.add((FileUtils.getCellAtByText(row, "LOC").getNumericCellValue()) > LOC_MAX
-						&& FileUtils.getCellAtByText(row, "CYCLO").getNumericCellValue() > CYCLO_MAX);
+		for (Row row : sheet) {
+			if (i != 0) {
+				if (method == FEATURE_METHOD) 
+					res.add(FileUtils.getCellAtByText(row, "ATFD").getNumericCellValue() > ATFD_MAX
+							&& Double.parseDouble(FileUtils.getCellAtByText(row, "LAA").toString()) < LAA_MAX);
+	
+				else if (method == LONG_METH) 
+					res.add((FileUtils.getCellAtByText(row, "LOC").getNumericCellValue()) > LOC_MAX
+							&& FileUtils.getCellAtByText(row, "CYCLO").getNumericCellValue() > CYCLO_MAX);
+				
 
+			} else {
+				i++;
+			}
+		}
+		System.out.println(res);
 		return res;
 	}
 

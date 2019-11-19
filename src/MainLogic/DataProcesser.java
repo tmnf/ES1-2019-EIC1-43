@@ -32,8 +32,12 @@ public class DataProcesser {
 		Analyser analyser = new Analyser(DataProcesser.getInstance().getCurrentSheet());
 		
 		//So para testar
+		System.out.println("Antes do getLongList");
+
 		analyser.getIsLongList();
+		System.out.println("Antes do Feature Envy");
 		analyser.getIsFeatureEnvyList();
+		
 	}
 	
 	public void initWindow() {
