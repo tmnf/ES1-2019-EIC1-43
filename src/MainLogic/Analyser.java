@@ -2,8 +2,10 @@ package MainLogic;
 
 import java.util.ArrayList;
 
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.util.SystemOutLogger;
 
 import Utils.FileUtils;
 
@@ -12,7 +14,9 @@ public class Analyser extends Thread {
 	private static final float LOC_MAX = 80, CYCLO_MAX = 10, ATFD_MAX = 4, LAA_MAX = 0.42f;
 
 	private Sheet sheet;
-
+	
+	private DataProcesser dp;
+	
 	private int dci, dii, adci, adii;
 
 	public Analyser(Sheet sheet) {
@@ -23,7 +27,7 @@ public class Analyser extends Thread {
 		analyseFile();
 	}
 
-	private void analyseFile() {
+	public void analyseFile() {
 		ArrayList<Boolean> is_long_list, is_feature_list;
 
 		is_long_list = getIsLongList();
@@ -45,24 +49,41 @@ public class Analyser extends Thread {
 	 */
 
 	// Returns is_long_method for all methods in file using user rules and metrics
-	private ArrayList<Boolean> getIsLongList() {
+	public ArrayList<Boolean> getIsLongList() {
 		ArrayList<Boolean> res = new ArrayList<Boolean>();
-		
-		for (Row row : sheet)
+		int i = 0;
+
+		for (Row row : sheet) {
+			
+			if(FileUtils.getCellAtByText(row, "LOC").getCellType() == CellType.STRING || FileUtils.getCellAtByText(row, "CYCLO").getCellType() == CellType.STRING) {
+				continue;
+			}
+			i++;
 			res.add((FileUtils.getCellAtByText(row, "LOC").getNumericCellValue()) > LOC_MAX
 					&& FileUtils.getCellAtByText(row, "CYCLO").getNumericCellValue() > CYCLO_MAX);
-
+		}
+		System.out.println("Long: "+ i);
+		System.out.println(res);
 		return res;
 	}
 
 	// Returns is_feature_envy for all methods in file using user rules and metrics
-	private ArrayList<Boolean> getIsFeatureEnvyList() {
+	public ArrayList<Boolean> getIsFeatureEnvyList() {
 		ArrayList<Boolean> res = new ArrayList<Boolean>();
+		int i = 0;
 
-		for (Row row : sheet)
+		for (Row row : sheet) {
+			
+			if(FileUtils.getCellAtByText(row, "ATFD").getCellType() == CellType.STRING ||
+					(FileUtils.getCellAtByText(row, "LAA").getCellType() == CellType.STRING &&  FileUtils.getCellAtByText(row, "LAA").toString() == "LAA")) {
+				continue;
+			}
+			i++;
 			res.add(FileUtils.getCellAtByText(row, "ATFD").getNumericCellValue() > ATFD_MAX
-					&& FileUtils.getCellAtByText(row, "LAA").getNumericCellValue() < LAA_MAX);
-
+					&& Double.parseDouble(FileUtils.getCellAtByText(row, "LAA").toString()) < LAA_MAX);
+		}
+		System.out.println("Feature Heavy: "+i);
+		System.out.println(res);
 		return res;
 	}
 

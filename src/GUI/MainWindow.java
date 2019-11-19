@@ -22,12 +22,14 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
+import MainLogic.Analyser;
 import MainLogic.DataProcesser;
 import Utils.FileUtils;
 
 public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = -1572507198564655896L;
+	
 
 	private final static String TITLE = "Iscte Code Analyser";
 	private final static Object[] COLUMNS = { "Col1", "Col1", "Col1", "Col1", "Col1", "Col1", "Col1" };
@@ -35,6 +37,8 @@ public class MainWindow extends JFrame {
 	private final static int WIDTH = 1000, HEIGHT = 600;
 
 	private JFileChooser fc;
+	
+	private Analyser analyser;
 
 	private JPanel mainPanel, rightPanel, leftPanel, bottomPanel;
 
@@ -110,6 +114,7 @@ public class MainWindow extends JFrame {
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
 		add(mainPanel);
+		
 	}
 
 	private void formatComponents() {
@@ -143,7 +148,9 @@ public class MainWindow extends JFrame {
 	}
 
 	private void analyseAction() {
-		System.out.println("Ainda não faz nada");
+		analyser.getIsLongList();
+		analyser.getIsFeatureEnvyList();
+		
 
 	}
 
@@ -156,6 +163,7 @@ public class MainWindow extends JFrame {
 
 		if (fc.getSelectedFile() != null) {
 			DataProcesser.getInstance().setCurrentSheet(FileUtils.readFile(fc.getSelectedFile().getPath()));
+			analyser = new Analyser(DataProcesser.getInstance().getCurrentSheet());
 		}
 	}
 
