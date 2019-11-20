@@ -5,15 +5,11 @@ import java.util.ArrayList;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
+import Enums.Metric;
+import Enums.Test;
 import Utils.FileUtils;
 
 public class Analyser extends Thread {
-
-	private static final float LOC_MAX = 80, CYCLO_MAX = 10, ATFD_MAX = 4, LAA_MAX = 0.42f;
-
-	private static final int LONG_METH = 0, FEATURE_METHOD = 1;
-
-	private static final int PMD = 0, iPlasma = 1, GET_LONG_LIST = 2;
 
 	private Sheet sheet;
 
@@ -33,18 +29,35 @@ public class Analyser extends Thread {
 		is_long_list = getIsLongList();
 		is_feature_list = getIsFeatureEnvyList();
 
-		generateQuality(is_long_list, PMD, is_feature_list);
+		generateQuality(is_long_list, Test.PMD, is_feature_list); // TESTE PMD SO EM FASE DE TESTES
 	}
 
-	private void generateQuality(ArrayList<Boolean> is_long_list, int methodLong, ArrayList<Boolean> is_feature_list) {
+	private void generateQuality(ArrayList<Boolean> is_long_list, Test methodLong, ArrayList<Boolean> is_feature_list) {
 		compareLongMethod(is_long_list, methodLong);
 		compareFeatureEnvy(is_feature_list);
 
-		showResults();
+//		showResults();
 	}
 
-	private void showResults() {
-		// Apresentar resultados. Nao implementar por agora
+	private void showResults(String test) { // MANTER ESTA IMPLEMENTA«„O EM TESTE
+		int total = dci + dii + adci + adii;
+
+		float dciAux, diiAux, adciAux, adiiAux;
+		dciAux = ((float) dci / total) * 100;
+		diiAux = ((float) dii / total) * 100;
+		adciAux = ((float) adci / total) * 100;
+		adiiAux = ((float) adii / total) * 100;
+
+		System.out.println();
+		System.out.println("==========================");
+		System.out.println("DCI (" + test + "): " + dciAux );
+		System.out.println("DII (" + test + "): " + diiAux );
+		System.out.println("ADCI (" + test + "): " + adciAux);
+		System.out.println("ADII (" + test + "): " + adiiAux);
+		System.out.println("---------------------------");
+
+		System.out.println("Total (" + test + "): " + (total));
+		System.out.println("==========================");
 	}
 
 	/* ===================== METHODS TO IMPLEMENT ===================== */
@@ -56,120 +69,86 @@ public class Analyser extends Thread {
 
 	// Returns is_long_method for all methods in file using user rules and metrics
 	public ArrayList<Boolean> getIsLongList() {
-		return getResultList(LONG_METH);
+		return getResultList(Metric.LOC, Metric.CYCLO);
 	}
 
 	// Returns is_feature_envy for all methods in file using user rules and metrics
 	public ArrayList<Boolean> getIsFeatureEnvyList() {
-		return getResultList(FEATURE_METHOD);
+		return getResultList(Metric.ATFD, Metric.LAA);
 	}
 
-	private ArrayList<Boolean> getResultList(int method) {
+	private ArrayList<Boolean> getResultList(Metric m1, Metric m2) {
 		ArrayList<Boolean> res = new ArrayList<Boolean>();
 
-		int[] metrics = getIndexByMethod(method);
+		int[] metrics = getIndexByMethods(m1, m2);
 
 		for (Row row : sheet) {
 			if (row.getRowNum() == 0)
 				continue;
 
-			if (method == LONG_METH)
-				res.add((FileUtils.getCellAt(row, metrics[0]).getNumericCellValue()) > LOC_MAX
-						&& FileUtils.getCellAt(row, metrics[1]).getNumericCellValue() > CYCLO_MAX);
-			else if (method == FEATURE_METHOD)
-				res.add(FileUtils.getCellAt(row, metrics[0]).getNumericCellValue() > ATFD_MAX
-						&& Double.parseDouble(FileUtils.getCellAt(row, metrics[1]).toString()) < LAA_MAX);
+			boolean ver1, ver2;
+
+			ver1 = FileUtils.getCellAt(row, metrics[0]).getNumericCellValue() > m1.getMax();
+
+			if (m2 == Metric.CYCLO)
+				ver2 = FileUtils.getCellAt(row, metrics[1]).getNumericCellValue() > m2.getMax();
+			else
+				ver2 = Double.parseDouble(FileUtils.getCellAt(row, metrics[1]).toString()) < m2.getMax();
+
+			res.add(ver1 && ver2);
 		}
 
 		return res;
 	}
 
-	private int[] getIndexByMethod(int method) {
+	private int[] getIndexByMethods(Metric m1, Metric m2) {
 		int[] metrics = new int[2];
 
-		if (method == LONG_METH) {
-			metrics[0] = FileUtils.getCellIndexByText("LOC");
-			metrics[1] = FileUtils.getCellIndexByText("CYCLO");
-		} else if (method == FEATURE_METHOD) {
-			metrics[0] = FileUtils.getCellIndexByText("ATFD");
-			metrics[1] = FileUtils.getCellIndexByText("LAA");
-		}
+		metrics[0] = FileUtils.getCellIndexByText(m1.toString());
+		metrics[1] = FileUtils.getCellIndexByText(m2.toString());
 
 		return metrics;
 	}
 
-	private int getLongListIndexByMethod(int method) {
-		int metric = -1;
-
-		if (method == PMD)
-			metric = FileUtils.getCellIndexByText("PMD");
-		else if (method == iPlasma)
-			metric = FileUtils.getCellIndexByText("iPlasma");
-
-		return metric;
-	}
-
 	// Compares is_long_method from user with is_long_method, iPlasma and PMD in
 	// every method from file
-	public void compareLongMethod(ArrayList<Boolean> is_long_list, int method) {
-		boolean booleanListComp = false;
-		int is_long_list_position = 0;
+	public void compareLongMethod(ArrayList<Boolean> is_long_list, Test method) {
+		boolean valueToCompare, isLongValue;
 
-		String namePresented = "";
+		int indexOfValueToCompare = FileUtils.getCellIndexByText(method.getRealName());
 
-		int metric = getLongListIndexByMethod(method);
-
+		int i = 0;
 		for (Row row : sheet) {
 			if (row.getRowNum() == 0)
 				continue;
 
-			boolean booleanExcelLongLists = FileUtils.getCellAtByText(row, "is_long_method").getBooleanCellValue();
+			isLongValue = FileUtils.getCellAtByText(row, "is_long_method").getBooleanCellValue();
 
-			if (method == PMD) {
-				namePresented = "PMD";
-				booleanListComp = FileUtils.getCellAt(row, metric).getBooleanCellValue();
-			} else if (method == iPlasma) {
-				namePresented = "iPlasma";
-				booleanListComp = FileUtils.getCellAt(row, metric).getBooleanCellValue();
-			} else if (method == GET_LONG_LIST) {
-				namePresented = "getLongList()";
-				booleanListComp = is_long_list.get(is_long_list_position);
-			}
+			if (method == Test.LONG_METHOD) {
+				valueToCompare = is_long_list.get(i);
+				i++;
+			} else
+				valueToCompare = FileUtils.getCellAt(row, indexOfValueToCompare).getBooleanCellValue();
 
-			defectsLongList(booleanListComp, booleanExcelLongLists);
-			is_long_list_position++;
+			defectsLongList(valueToCompare, isLongValue);
 		}
-		System.out.println();
-		System.out.println("==========================");
-		System.out.println("DCI (" + namePresented + "): " + dci);
-		System.out.println("DII (" + namePresented + "): " + dii);
-		System.out.println("ADCI (" + namePresented + "): " + adci);
-		System.out.println("ADII (" + namePresented + "): " + adii);
-		System.out.println("==========================");
 
-		System.out.println("");
+		showResults(method.getRealName()); // So para testar
+	}
 
-		System.out.println("--------------------------");
-
-		System.out.println("Para o getIsLongList(): " + (dci + dii + adci + adii));
-		System.out.println("");
-
+	private void defectsLongList(boolean valueToCheck, boolean isLong) {
+		if (valueToCheck && isLong)
+			dci++;
+		else if (valueToCheck && !isLong)
+			dii++;
+		else if (!valueToCheck && !isLong)
+			adci++;
+		else if (!valueToCheck && isLong)
+			adii++;
 	}
 
 	// Compares is_feature_envy from user with is_feature_envy in every method from
 	// file
-
-	private void defectsLongList(boolean booleanToCheck, boolean booleanIsLongExcel) {
-		if (booleanToCheck == true && booleanIsLongExcel == true)
-			dci++;
-		if (booleanToCheck == true && booleanIsLongExcel == false)
-			dii++;
-		if (booleanToCheck == false && booleanIsLongExcel == false)
-			adci++;
-		if (booleanToCheck == false && booleanIsLongExcel == true)
-			adii++;
-	}
-
 	private void compareFeatureEnvy(ArrayList<Boolean> is_feature_list) {
 
 	}
