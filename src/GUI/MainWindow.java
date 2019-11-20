@@ -33,26 +33,20 @@ public class MainWindow extends JFrame {
 
 	private final static String TITLE = "Iscte Code Analyser";
 
-	private Test[] tests = { Test.PMD, Test.IPLASMA, Test.LONG_METHOD };
-
 	private final static int WIDTH = 1000, HEIGHT = 600;
 
 	private JFileChooser fc;
 
-	private JPanel mainPanel, rightPanel, rightBottomPanel, rightCenterPanel, leftPanel, bottomPanel;
+	private JPanel mainPanel, rightPanel, leftPanel, bottomPanel;
 
-	private JButton analyseBt, openBt;
-	private JRadioButton and, or;
-
-	private JComboBox<Test> testList;
+	private JButton analyseBt, openBt, longAddBt, featureAddBt;
 
 	private JTable fileDisplay;
 	private DefaultTableModel tableModel;
 
 	private JScrollPane fileScroll;
 
-	private JTextField fileName, locName, cycloName, atfdName, laaName;
-	private JTextField locText, cycloText, atfdText, laaText;
+	private JTextField fileName;
 
 	public MainWindow() {
 		initComponents();
@@ -66,24 +60,7 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		mainPanel = new JPanel(new BorderLayout());
-
-		rightPanel = new JPanel(new BorderLayout());
-		rightCenterPanel = new JPanel(new GridLayout(4, 2));
-		rightBottomPanel = new JPanel(new GridLayout(2, 1));
-
-		testList = new JComboBox<>(tests);
-
-		JPanel rightBottomPanelAux = new JPanel(new GridLayout(1, 2));
-
-		and = new JRadioButton("And");
-		or = new JRadioButton("Or");
-
-		rightBottomPanelAux.add(and);
-		rightBottomPanelAux.add(or);
-
-		rightBottomPanel.add(testList);
-		rightBottomPanel.add(rightBottomPanelAux);
-
+		rightPanel = new JPanel(new GridLayout(10, 1));
 		leftPanel = new JPanel(new BorderLayout());
 
 		bottomPanel = new JPanel(new BorderLayout());
@@ -91,39 +68,19 @@ public class MainWindow extends JFrame {
 		bottomPanel.add(bottAuxPanel, BorderLayout.WEST);
 
 		fileName = new JTextField("Ficheiro Selecionado");
-		locName = new JTextField("LOC");
-		cycloName = new JTextField("CYCLO");
-		atfdName = new JTextField("ATFD");
-		laaName = new JTextField("LAA");
 
-		locText = new JTextField();
-		cycloText = new JTextField();
-		atfdText = new JTextField();
-		laaText = new JTextField();
-
-		analyseBt = new JButton("Analisar Ficheiro");
+		analyseBt = new JButton("Escolher");
 		openBt = new JButton("Abrir Ficheiro");
+
+		longAddBt = new JButton("Adicionar Regra Is_Long_Method");
+		featureAddBt = new JButton("Adicionar Regra Is_Feature_Envy");
 
 		tableModel = new DefaultTableModel();
 		fileDisplay = new JTable(tableModel);
 		fileScroll = new JScrollPane(fileDisplay);
-
-		rightCenterPanel.add(locName);
-		rightCenterPanel.add(locText);
-
-		rightCenterPanel.add(cycloName);
-		rightCenterPanel.add(cycloText);
-
-		rightCenterPanel.add(atfdName);
-		rightCenterPanel.add(atfdText);
-
-		rightCenterPanel.add(laaName);
-		rightCenterPanel.add(laaText);
-
-		rightPanel.add(rightCenterPanel, BorderLayout.CENTER);
-		rightPanel.add(rightBottomPanel, BorderLayout.SOUTH);
-
-		rightBottomPanel.setPreferredSize(new Dimension(100, 100));
+		
+		rightPanel.add(longAddBt);
+		rightPanel.add(featureAddBt);
 
 		leftPanel.add(fileName, BorderLayout.NORTH);
 		leftPanel.add(fileScroll, BorderLayout.CENTER);
@@ -145,10 +102,6 @@ public class MainWindow extends JFrame {
 		fileDisplay.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		fileName.setEditable(false);
-		locName.setEditable(false);
-		cycloName.setEditable(false);
-		atfdName.setEditable(false);
-		laaName.setEditable(false);
 
 		resizeComps();
 	}
@@ -157,11 +110,7 @@ public class MainWindow extends JFrame {
 		analyseBt.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (DataProcesser.getInstance().getCurrentSheet() == null) {
-					openErrorPopup("Carregue um ficheiro primeiro...");
-					return;
-				}
-				DataProcesser.getInstance().analyseFile((Test) testList.getSelectedItem());
+				tryToPopup(Popup.TEST_CHOOSER);
 			}
 		});
 
@@ -171,6 +120,28 @@ public class MainWindow extends JFrame {
 				openFile();
 			}
 		});
+		
+		longAddBt.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tryToPopup(Popup.LONG_RULE_ADD);
+			}
+		});
+		
+		featureAddBt.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tryToPopup(Popup.FEATURE_RULE_ADD);
+			}
+		});
+	}
+	
+	private void tryToPopup(int type) {
+		if (DataProcesser.getInstance().getCurrentSheet() == null) {
+			openErrorPopup("Carregue um ficheiro primeiro...");
+			return;
+		}
+		new Popup(type);
 	}
 
 	private void openFile() {

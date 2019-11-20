@@ -12,31 +12,41 @@ import Utils.FileUtils;
 public class Analyser extends Thread {
 
 	private Sheet sheet;
+	private Test test;
 
 	private int dci, dii, adci, adii;
 
-	public Analyser(Sheet sheet) {
+	public Analyser(Sheet sheet, Test test) {
 		this.sheet = sheet;
+		this.test = test;
 	}
 
 	public void run() {
-		analyseFile();
+		try {
+			analyseFile();
+			finalize();
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void analyseFile() {
-		ArrayList<Boolean> is_long_list, is_feature_list;
-
-		is_long_list = getIsLongList();
-		is_feature_list = getIsFeatureEnvyList();
-
-		generateQuality(is_long_list, Test.PMD, is_feature_list); // TESTE PMD SO EM FASE DE TESTES
-	}
-
-	private void generateQuality(ArrayList<Boolean> is_long_list, Test methodLong, ArrayList<Boolean> is_feature_list) {
-		compareLongMethod(is_long_list, methodLong);
-		compareFeatureEnvy(is_feature_list);
-
-//		showResults();
+		switch (test) {
+		case IPLASMA:
+			compareLongMethod();
+			break;
+		case PMD:
+			compareLongMethod();
+			break;
+		case LONG_METHOD:
+			compareLongMethod();
+			break;
+		case IS_FEATURE_ENVY:
+//			compareFeatureEnvy();
+			break;
+		default:
+			break;
+		}
 	}
 
 	private void showResults(String test) { // MANTER ESTA IMPLEMENTA«„O EM TESTE
@@ -109,28 +119,52 @@ public class Analyser extends Thread {
 
 	// Compares is_long_method from user with is_long_method, iPlasma and PMD in
 	// every method from file
-	public void compareLongMethod(ArrayList<Boolean> is_long_list, Test method) {
+	public void compareLongMethod() {
+		int indexOfValueToCompare, longMethodIndex;
+
+		indexOfValueToCompare = FileUtils.getCellIndexByText(test.getRealName());
+		longMethodIndex = FileUtils.getCellIndexByText(Test.LONG_METHOD.getRealName());
+
+		if (test == Test.LONG_METHOD) {
+			compareLongWithLong(longMethodIndex);
+		} else {
+			compareLongWithNormalTest(indexOfValueToCompare, longMethodIndex);
+		}
+
+		showResults(test.getRealName());
+	}
+
+	private void compareLongWithNormalTest(int indexOfValueToCompare, int longMethodIndex) {
 		boolean valueToCompare, isLongValue;
 
-		int indexOfValueToCompare = FileUtils.getCellIndexByText(method.getRealName());
+		for (Row row : sheet) {
+			if (row.getRowNum() == 0)
+				continue;
+
+			isLongValue = FileUtils.getCellAt(row, longMethodIndex).getBooleanCellValue();
+			valueToCompare = FileUtils.getCellAt(row, indexOfValueToCompare).getBooleanCellValue();
+
+			defectsLongList(valueToCompare, isLongValue);
+		}
+	}
+
+	private void compareLongWithLong(int longIndex) {
+		boolean valueToCompare, isLongValue;
+
+		ArrayList<Boolean> is_long_ist = getIsLongList();
 
 		int i = 0;
 		for (Row row : sheet) {
 			if (row.getRowNum() == 0)
 				continue;
 
-			isLongValue = FileUtils.getCellAtByText(row, "is_long_method").getBooleanCellValue();
+			isLongValue = FileUtils.getCellAt(row, longIndex).getBooleanCellValue();
 
-			if (method == Test.LONG_METHOD) {
-				valueToCompare = is_long_list.get(i);
-				i++;
-			} else
-				valueToCompare = FileUtils.getCellAt(row, indexOfValueToCompare).getBooleanCellValue();
+			valueToCompare = is_long_ist.get(i);
+			i++;
 
 			defectsLongList(valueToCompare, isLongValue);
 		}
-
-		showResults(method.getRealName()); // So para testar
 	}
 
 	private void defectsLongList(boolean valueToCheck, boolean isLong) {

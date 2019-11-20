@@ -30,13 +30,7 @@ public class DataProcesser {
 	}
 
 	public void analyseFile(Test methodToCompare) {
-		Analyser analyser = new Analyser(DataProcesser.getInstance().getCurrentSheet());
-
-		// So para testar
-		analyser.getIsLongList();
-		analyser.getIsFeatureEnvyList();
-
-		analyser.compareLongMethod(analyser.getIsLongList(), methodToCompare);
+		new Analyser(DataProcesser.getInstance().getCurrentSheet(), methodToCompare).start();
 	}
 
 	public void initWindow() {
