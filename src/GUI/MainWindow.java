@@ -48,8 +48,6 @@ public class MainWindow extends JFrame {
 
 	private JTextField fileName;
 
-	private int i = 0;
-	
 	public MainWindow() {
 		initComponents();
 		formatComponents();
@@ -80,7 +78,7 @@ public class MainWindow extends JFrame {
 		tableModel = new DefaultTableModel();
 		fileDisplay = new JTable(tableModel);
 		fileScroll = new JScrollPane(fileDisplay);
-		
+
 		rightPanel.add(longAddBt);
 		rightPanel.add(featureAddBt);
 
@@ -119,22 +117,24 @@ public class MainWindow extends JFrame {
 		openBt.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(i != 0){
-					openErrorPopup("Já carregou um ficheiro");
-					return;
+				if (DataProcesser.getInstance().getCurrentSheet() != null) {
+					int option = openConfirmPopup(
+							"Se carregar outro ficheiro irá perder as regras adicionadas e os resultados. Deseja continuar?");
+					if (option == 1 || option == 2)
+						return;
 				}
+
 				openFile();
-				i++;
 			}
 		});
-		
+
 		longAddBt.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				tryToPopup(Popup.LONG_RULE_ADD);
 			}
 		});
-		
+
 		featureAddBt.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -142,7 +142,7 @@ public class MainWindow extends JFrame {
 			}
 		});
 	}
-	
+
 	private void tryToPopup(int type) {
 		if (DataProcesser.getInstance().getCurrentSheet() == null) {
 			openErrorPopup("Carregue um ficheiro primeiro...");
@@ -160,11 +160,15 @@ public class MainWindow extends JFrame {
 
 		if (fc.getSelectedFile() != null) {
 			DataProcesser.getInstance().setCurrentSheet(FileUtils.readFile(fc.getSelectedFile().getPath()));
+			fileName.setText(fc.getSelectedFile().getName());
 		}
 	}
 
 	public void displayText(String text) {
 		String[] info = text.split("--");
+
+		tableModel.setRowCount(0);
+		tableModel.setColumnCount(0);
 
 		addColumns(info);
 		addData(info);
@@ -217,6 +221,10 @@ public class MainWindow extends JFrame {
 
 	private void openErrorPopup(String error) {
 		JOptionPane.showMessageDialog(this, error, "Aviso!", 1);
+	}
+
+	private int openConfirmPopup(String warning) {
+		return JOptionPane.showConfirmDialog(this, warning, "Atenção!", 1);
 	}
 
 	public void openWindow() {
