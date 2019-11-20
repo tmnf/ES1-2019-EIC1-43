@@ -10,10 +10,12 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -21,6 +23,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
+import Enums.Test;
 import MainLogic.DataProcesser;
 import Utils.FileUtils;
 
@@ -30,13 +33,18 @@ public class MainWindow extends JFrame {
 
 	private final static String TITLE = "Iscte Code Analyser";
 
+	private Test[] tests = { Test.PMD, Test.IPLASMA, Test.LONG_METHOD };
+
 	private final static int WIDTH = 1000, HEIGHT = 600;
 
 	private JFileChooser fc;
 
-	private JPanel mainPanel, rightPanel, leftPanel, bottomPanel;
+	private JPanel mainPanel, rightPanel, rightBottomPanel, rightCenterPanel, leftPanel, bottomPanel;
 
 	private JButton analyseBt, openBt;
+	private JRadioButton and, or;
+
+	private JComboBox<Test> testList;
 
 	private JTable fileDisplay;
 	private DefaultTableModel tableModel;
@@ -59,7 +67,22 @@ public class MainWindow extends JFrame {
 
 		mainPanel = new JPanel(new BorderLayout());
 
-		rightPanel = new JPanel(new GridLayout(4, 2));
+		rightPanel = new JPanel(new BorderLayout());
+		rightCenterPanel = new JPanel(new GridLayout(4, 2));
+		rightBottomPanel = new JPanel(new GridLayout(2, 1));
+
+		testList = new JComboBox<>(tests);
+
+		JPanel rightBottomPanelAux = new JPanel(new GridLayout(1, 2));
+
+		and = new JRadioButton("And");
+		or = new JRadioButton("Or");
+
+		rightBottomPanelAux.add(and);
+		rightBottomPanelAux.add(or);
+
+		rightBottomPanel.add(testList);
+		rightBottomPanel.add(rightBottomPanelAux);
 
 		leftPanel = new JPanel(new BorderLayout());
 
@@ -85,17 +108,22 @@ public class MainWindow extends JFrame {
 		fileDisplay = new JTable(tableModel);
 		fileScroll = new JScrollPane(fileDisplay);
 
-		rightPanel.add(locName);
-		rightPanel.add(locText);
+		rightCenterPanel.add(locName);
+		rightCenterPanel.add(locText);
 
-		rightPanel.add(cycloName);
-		rightPanel.add(cycloText);
+		rightCenterPanel.add(cycloName);
+		rightCenterPanel.add(cycloText);
 
-		rightPanel.add(atfdName);
-		rightPanel.add(atfdText);
+		rightCenterPanel.add(atfdName);
+		rightCenterPanel.add(atfdText);
 
-		rightPanel.add(laaName);
-		rightPanel.add(laaText);
+		rightCenterPanel.add(laaName);
+		rightCenterPanel.add(laaText);
+
+		rightPanel.add(rightCenterPanel, BorderLayout.CENTER);
+		rightPanel.add(rightBottomPanel, BorderLayout.SOUTH);
+
+		rightBottomPanel.setPreferredSize(new Dimension(100, 100));
 
 		leftPanel.add(fileName, BorderLayout.NORTH);
 		leftPanel.add(fileScroll, BorderLayout.CENTER);
@@ -133,7 +161,7 @@ public class MainWindow extends JFrame {
 					openErrorPopup("Carregue um ficheiro primeiro...");
 					return;
 				}
-				DataProcesser.getInstance().analyseFile();
+				DataProcesser.getInstance().analyseFile((Test) testList.getSelectedItem());
 			}
 		});
 
