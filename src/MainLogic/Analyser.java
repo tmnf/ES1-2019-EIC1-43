@@ -71,14 +71,13 @@ public class Analyser extends Thread {
 
 		for (Row row : sheet) {
 			if (i != 0) {
-				if (method == FEATURE_METHOD) 
+				if (method == FEATURE_METHOD)
 					res.add(FileUtils.getCellAtByText(row, "ATFD").getNumericCellValue() > ATFD_MAX
 							&& Double.parseDouble(FileUtils.getCellAtByText(row, "LAA").toString()) < LAA_MAX);
-	
-				else if (method == LONG_METH) 
+
+				else if (method == LONG_METH)
 					res.add((FileUtils.getCellAtByText(row, "LOC").getNumericCellValue()) > LOC_MAX
 							&& FileUtils.getCellAtByText(row, "CYCLO").getNumericCellValue() > CYCLO_MAX);
-				
 
 			} else {
 				i++;
@@ -90,8 +89,8 @@ public class Analyser extends Thread {
 
 	// Compares is_long_method from user with is_long_method, iPlasma and PMD in
 	// every method from file
-	private void compareLongMethod(ArrayList<Boolean> is_long_list) {
-
+	public void compareLongMethod(ArrayList<Boolean> is_long_list) {
+		
 	}
 
 	// Compares is_feature_envy from user with is_feature_envy in every method from

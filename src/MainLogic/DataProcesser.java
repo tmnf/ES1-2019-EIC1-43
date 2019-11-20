@@ -1,5 +1,7 @@
 package MainLogic;
 
+import java.util.ArrayList;
+
 import org.apache.poi.ss.usermodel.Sheet;
 
 import GUI.MainWindow;
@@ -30,13 +32,16 @@ public class DataProcesser {
 
 	public void analyseFile() {
 		Analyser analyser = new Analyser(DataProcesser.getInstance().getCurrentSheet());
+		ArrayList<Boolean> list;
 		
 		//So para testar
 		System.out.println("Antes do getLongList");
 
-		analyser.getIsLongList();
+		list = analyser.getIsLongList();
+		analyser.compareLongMethod(list);
 		System.out.println("Antes do Feature Envy");
 		analyser.getIsFeatureEnvyList();
+		
 		
 	}
 	
