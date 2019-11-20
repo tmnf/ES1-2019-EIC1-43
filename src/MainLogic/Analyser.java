@@ -36,7 +36,7 @@ public class Analyser extends Thread {
 		generateQuality(is_long_list, PMD, is_feature_list);
 	}
 
-	private void generateQuality(ArrayList<Boolean> is_long_list,int methodLong, ArrayList<Boolean> is_feature_list) {
+	private void generateQuality(ArrayList<Boolean> is_long_list, int methodLong, ArrayList<Boolean> is_feature_list) {
 		compareLongMethod(is_long_list, methodLong);
 		compareFeatureEnvy(is_feature_list);
 
@@ -67,8 +67,8 @@ public class Analyser extends Thread {
 	private ArrayList<Boolean> getResultList(int method) {
 		ArrayList<Boolean> res = new ArrayList<Boolean>();
 
-		int[] metrics = getIndexByMethod(method); // Indice do LOC e CYCLO ou ATFD e LAA, evitar percorrer ficheiro
-													// varias vezes.
+		int[] metrics = getIndexByMethod(method);
+
 		for (Row row : sheet) {
 			if (row.getRowNum() == 0)
 				continue;
@@ -80,7 +80,7 @@ public class Analyser extends Thread {
 				res.add(FileUtils.getCellAt(row, metrics[0]).getNumericCellValue() > ATFD_MAX
 						&& Double.parseDouble(FileUtils.getCellAt(row, metrics[1]).toString()) < LAA_MAX);
 		}
-		// System.out.println(res); // Apagar depois. So para teste
+
 		return res;
 	}
 
@@ -98,16 +98,15 @@ public class Analyser extends Thread {
 		return metrics;
 	}
 
-	private int[] getLongListIndexByMethod(int method) {
-		int[] metrics = new int[1];
+	private int getLongListIndexByMethod(int method) {
+		int metric = -1;
 
-		if (method == PMD) {
-			metrics[0] = FileUtils.getCellIndexByText("PMD");
-		} else if (method == iPlasma) {
-			metrics[0] = FileUtils.getCellIndexByText("iPlasma");
-		}
+		if (method == PMD)
+			metric = FileUtils.getCellIndexByText("PMD");
+		else if (method == iPlasma)
+			metric = FileUtils.getCellIndexByText("iPlasma");
 
-		return metrics;
+		return metric;
 	}
 
 	// Compares is_long_method from user with is_long_method, iPlasma and PMD in
@@ -118,7 +117,7 @@ public class Analyser extends Thread {
 
 		String namePresented = "";
 
-		int[] metrics = getLongListIndexByMethod(method);
+		int metric = getLongListIndexByMethod(method);
 
 		for (Row row : sheet) {
 			if (row.getRowNum() == 0)
@@ -128,21 +127,17 @@ public class Analyser extends Thread {
 
 			if (method == PMD) {
 				namePresented = "PMD";
-				booleanListComp = FileUtils.getCellAt(row, metrics[0]).getBooleanCellValue();
-
+				booleanListComp = FileUtils.getCellAt(row, metric).getBooleanCellValue();
 			} else if (method == iPlasma) {
 				namePresented = "iPlasma";
-				booleanListComp = FileUtils.getCellAt(row, metrics[0]).getBooleanCellValue();
-
+				booleanListComp = FileUtils.getCellAt(row, metric).getBooleanCellValue();
 			} else if (method == GET_LONG_LIST) {
 				namePresented = "getLongList()";
 				booleanListComp = is_long_list.get(is_long_list_position);
-
 			}
 
 			defectsLongList(booleanListComp, booleanExcelLongLists);
 			is_long_list_position++;
-
 		}
 		System.out.println();
 		System.out.println("==========================");
@@ -165,19 +160,14 @@ public class Analyser extends Thread {
 	// file
 
 	private void defectsLongList(boolean booleanToCheck, boolean booleanIsLongExcel) {
-
 		if (booleanToCheck == true && booleanIsLongExcel == true)
 			dci++;
-
 		if (booleanToCheck == true && booleanIsLongExcel == false)
 			dii++;
-
 		if (booleanToCheck == false && booleanIsLongExcel == false)
 			adci++;
-
 		if (booleanToCheck == false && booleanIsLongExcel == true)
 			adii++;
-
 	}
 
 	private void compareFeatureEnvy(ArrayList<Boolean> is_feature_list) {
