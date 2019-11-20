@@ -13,6 +13,8 @@ public class Analyser extends Thread {
 
 	private static final int LONG_METH = 0, FEATURE_METHOD = 1;
 
+	private static final int PMD = 0, iPlasma = 1, GET_LONG_LIST = 2;
+
 	private Sheet sheet;
 
 	private int dci, dii, adci, adii;
@@ -31,11 +33,11 @@ public class Analyser extends Thread {
 		is_long_list = getIsLongList();
 		is_feature_list = getIsFeatureEnvyList();
 
-		generateQuality(is_long_list, is_feature_list);
+		generateQuality(is_long_list, PMD, is_feature_list);
 	}
 
-	private void generateQuality(ArrayList<Boolean> is_long_list, ArrayList<Boolean> is_feature_list) {
-		compareLongMethod(is_long_list);
+	private void generateQuality(ArrayList<Boolean> is_long_list,int methodLong, ArrayList<Boolean> is_feature_list) {
+		compareLongMethod(is_long_list, methodLong);
 		compareFeatureEnvy(is_feature_list);
 
 		showResults();
@@ -78,7 +80,7 @@ public class Analyser extends Thread {
 				res.add(FileUtils.getCellAt(row, metrics[0]).getNumericCellValue() > ATFD_MAX
 						&& Double.parseDouble(FileUtils.getCellAt(row, metrics[1]).toString()) < LAA_MAX);
 		}
-		System.out.println(res); // Apagar depois. So para teste
+		// System.out.println(res); // Apagar depois. So para teste
 		return res;
 	}
 
@@ -96,14 +98,88 @@ public class Analyser extends Thread {
 		return metrics;
 	}
 
+	private int[] getLongListIndexByMethod(int method) {
+		int[] metrics = new int[1];
+
+		if (method == PMD) {
+			metrics[0] = FileUtils.getCellIndexByText("PMD");
+		} else if (method == iPlasma) {
+			metrics[0] = FileUtils.getCellIndexByText("iPlasma");
+		}
+
+		return metrics;
+	}
+
 	// Compares is_long_method from user with is_long_method, iPlasma and PMD in
 	// every method from file
-	private void compareLongMethod(ArrayList<Boolean> is_long_list) {
+	public void compareLongMethod(ArrayList<Boolean> is_long_list, int method) {
+		boolean booleanListComp = false;
+		int is_long_list_position = 0;
+
+		String namePresented = "";
+
+		int[] metrics = getLongListIndexByMethod(method);
+
+		for (Row row : sheet) {
+			if (row.getRowNum() == 0)
+				continue;
+
+			boolean booleanExcelLongLists = FileUtils.getCellAtByText(row, "is_long_method").getBooleanCellValue();
+
+			if (method == PMD) {
+				namePresented = "PMD";
+				booleanListComp = FileUtils.getCellAt(row, metrics[0]).getBooleanCellValue();
+
+			} else if (method == iPlasma) {
+				namePresented = "iPlasma";
+				booleanListComp = FileUtils.getCellAt(row, metrics[0]).getBooleanCellValue();
+
+			} else if (method == GET_LONG_LIST) {
+				namePresented = "getLongList()";
+				booleanListComp = is_long_list.get(is_long_list_position);
+
+			}
+
+			defectsLongList(booleanListComp, booleanExcelLongLists);
+			is_long_list_position++;
+
+		}
+		System.out.println();
+		System.out.println("==========================");
+		System.out.println("DCI (" + namePresented + "): " + dci);
+		System.out.println("DII (" + namePresented + "): " + dii);
+		System.out.println("ADCI (" + namePresented + "): " + adci);
+		System.out.println("ADII (" + namePresented + "): " + adii);
+		System.out.println("==========================");
+
+		System.out.println("");
+
+		System.out.println("--------------------------");
+
+		System.out.println("Para o getIsLongList(): " + (dci + dii + adci + adii));
+		System.out.println("");
 
 	}
 
 	// Compares is_feature_envy from user with is_feature_envy in every method from
 	// file
+
+	private void defectsLongList(boolean booleanToCheck, boolean booleanIsLongExcel) {
+
+		if (booleanToCheck == true && booleanIsLongExcel == true)
+			dci++;
+
+		if (booleanToCheck == true && booleanIsLongExcel == false)
+			dii++;
+
+		if (booleanToCheck == false && booleanIsLongExcel == false)
+			adci++;
+
+		if (booleanToCheck == false && booleanIsLongExcel == true)
+			adii++;
+
+	}
+
 	private void compareFeatureEnvy(ArrayList<Boolean> is_feature_list) {
 
 	}
