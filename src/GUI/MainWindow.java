@@ -48,6 +48,8 @@ public class MainWindow extends JFrame {
 
 	private JTextField fileName;
 
+	private int i = 0;
+	
 	public MainWindow() {
 		initComponents();
 		formatComponents();
@@ -117,7 +119,12 @@ public class MainWindow extends JFrame {
 		openBt.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(i != 0){
+					openErrorPopup("Já carregou um ficheiro");
+					return;
+				}
 				openFile();
+				i++;
 			}
 		});
 		
