@@ -34,7 +34,7 @@ public class DataProcesser {
 		analyser.getIsLongList();
 		analyser.getIsFeatureEnvyList();
 		
-		analyser.compareLongMethod(analyser.getIsLongList(),2);
+		analyser.compareLongMethod(analyser.getIsLongList(),0);
 
 	}
 
