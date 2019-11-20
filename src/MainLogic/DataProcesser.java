@@ -13,8 +13,7 @@ public class DataProcesser {
 
 	private Sheet currentSheet;
 
-	private DataProcesser() {
-	}
+	private DataProcesser() {}
 
 	public static DataProcesser getInstance() {
 		if (INSTANCE == null)
@@ -30,16 +29,15 @@ public class DataProcesser {
 
 	public void analyseFile() {
 		Analyser analyser = new Analyser(DataProcesser.getInstance().getCurrentSheet());
-		
-		//So para testar
-		System.out.println("Antes do getLongList");
 
+		// So para testar
+		System.out.println("Antes do getLongList");
 		analyser.getIsLongList();
 		System.out.println("Antes do Feature Envy");
 		analyser.getIsFeatureEnvyList();
-		
+
 	}
-	
+
 	public void initWindow() {
 		new Thread(new Runnable() {
 			@Override

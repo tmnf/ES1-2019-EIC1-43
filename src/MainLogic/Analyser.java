@@ -2,7 +2,6 @@ package MainLogic;
 
 import java.util.ArrayList;
 
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -15,8 +14,6 @@ public class Analyser extends Thread {
 	private static final int LONG_METH = 0, FEATURE_METHOD = 1;
 
 	private Sheet sheet;
-
-	private DataProcesser dp;
 
 	private int dci, dii, adci, adii;
 
@@ -66,26 +63,37 @@ public class Analyser extends Thread {
 	}
 
 	private ArrayList<Boolean> getResultList(int method) {
-		int i = 0;
 		ArrayList<Boolean> res = new ArrayList<Boolean>();
 
+		int[] metrics = getIndexByMethod(method); // Indice do LOC e CYCLO ou ATFD e LAA, evitar percorrer ficheiro
+													// varias vezes.
 		for (Row row : sheet) {
-			if (i != 0) {
-				if (method == FEATURE_METHOD) 
-					res.add(FileUtils.getCellAtByText(row, "ATFD").getNumericCellValue() > ATFD_MAX
-							&& Double.parseDouble(FileUtils.getCellAtByText(row, "LAA").toString()) < LAA_MAX);
-	
-				else if (method == LONG_METH) 
-					res.add((FileUtils.getCellAtByText(row, "LOC").getNumericCellValue()) > LOC_MAX
-							&& FileUtils.getCellAtByText(row, "CYCLO").getNumericCellValue() > CYCLO_MAX);
-				
+			if (row.getRowNum() == 0)
+				continue;
 
-			} else {
-				i++;
-			}
+			if (method == LONG_METH)
+				res.add((FileUtils.getCellAt(row, metrics[0]).getNumericCellValue()) > LOC_MAX
+						&& FileUtils.getCellAt(row, metrics[1]).getNumericCellValue() > CYCLO_MAX);
+			else if (method == FEATURE_METHOD)
+				res.add(FileUtils.getCellAt(row, metrics[0]).getNumericCellValue() > ATFD_MAX
+						&& Double.parseDouble(FileUtils.getCellAt(row, metrics[1]).toString()) < LAA_MAX);
 		}
-		System.out.println(res);
+		System.out.println(res); // Apagar depois. So para teste
 		return res;
+	}
+
+	private int[] getIndexByMethod(int method) {
+		int[] metrics = new int[2];
+
+		if (method == LONG_METH) {
+			metrics[0] = FileUtils.getCellIndexByText("LOC");
+			metrics[1] = FileUtils.getCellIndexByText("CYCLO");
+		} else if (method == FEATURE_METHOD) {
+			metrics[0] = FileUtils.getCellIndexByText("ATFD");
+			metrics[1] = FileUtils.getCellIndexByText("LAA");
+		}
+
+		return metrics;
 	}
 
 	// Compares is_long_method from user with is_long_method, iPlasma and PMD in
