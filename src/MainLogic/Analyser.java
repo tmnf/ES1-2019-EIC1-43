@@ -60,8 +60,8 @@ public class Analyser extends Thread {
 
 		System.out.println();
 		System.out.println("==========================");
-		System.out.println("DCI (" + test + "): " + dciAux );
-		System.out.println("DII (" + test + "): " + diiAux );
+		System.out.println("DCI (" + test + "): " + dciAux);
+		System.out.println("DII (" + test + "): " + diiAux);
 		System.out.println("ADCI (" + test + "): " + adciAux);
 		System.out.println("ADII (" + test + "): " + adiiAux);
 		System.out.println("---------------------------");
