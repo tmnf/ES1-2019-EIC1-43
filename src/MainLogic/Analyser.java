@@ -183,32 +183,14 @@ public class Analyser extends Thread {
 
 	// Compares is_feature_envy from user with is_feature_envy in every method from
 	// file
-	private void compareIsFeatureEnvy(ArrayList<Boolean> is_feature_list) {
+	private void compareFeatureEnvy(ArrayList<Boolean> is_feature_list) {
 		int i = 0;
 		for (Row row : sheet) {
-			if (i != 0) {
-
-				/*Usa isto para saltar a primeira linha
-				 * if (row.getRowNum() == 0) continue;
-				 * 
-				 * Apaga o if (i != 0) e usa o i normal para ir buscar à lista.
-				 * Usa o metodo defectsLongList() para comparar os dois booleans.
-				 */
-
-				if (FileUtils.getCellAtByText(row, "is_feature_envy").getBooleanCellValue() == true
-						&& is_feature_list.get(i - 1) == true)
-					dci++;
-				else if (FileUtils.getCellAtByText(row, "is_feature_envy").getBooleanCellValue() == true
-						&& is_feature_list.get(i - 1) == false)
-					dii++;
-				else if (FileUtils.getCellAtByText(row, "is_feature_envy").getBooleanCellValue() == false
-						&& is_feature_list.get(i - 1) == false)
-					adci++;
-				else
-					adii++;
-
-			}
+			if (row.getRowNum() == 0) continue;
+			
+			defectsLongList(FileUtils.getCellAtByText(row, "is_feature_envy").getBooleanCellValue(),is_feature_list.get(i));
 			i++;
+				
 		}
 
 	}
