@@ -183,7 +183,7 @@ public class Analyser extends Thread {
 
 	// Compares is_feature_envy from user with is_feature_envy in every method from
 	// file
-	private void compareFeatureEnvy(ArrayList<Boolean> is_feature_list) {
+	private void compareIsFeatureEnvy(ArrayList<Boolean> is_feature_list) {
 		int i = 0;
 		for(Row row: sheet) {
 			if (i != 0) {
