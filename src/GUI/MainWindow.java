@@ -10,9 +10,12 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -20,31 +23,30 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
+import Enums.Test;
 import MainLogic.DataProcesser;
 import Utils.FileUtils;
 
 public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = -1572507198564655896L;
-	
 
 	private final static String TITLE = "Iscte Code Analyser";
-	
+
 	private final static int WIDTH = 1000, HEIGHT = 600;
 
 	private JFileChooser fc;
 
 	private JPanel mainPanel, rightPanel, leftPanel, bottomPanel;
 
-	private JButton analyseBt, openBt;
+	private JButton analyseBt, openBt, longAddBt, featureAddBt;
 
 	private JTable fileDisplay;
 	private DefaultTableModel tableModel;
-	
+
 	private JScrollPane fileScroll;
 
-	private JTextField fileName, locName, cycloName, atfdName, laaName;
-	private JTextField locText, cycloText, atfdText, laaText;
+	private JTextField fileName;
 
 	public MainWindow() {
 		initComponents();
@@ -58,9 +60,7 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		mainPanel = new JPanel(new BorderLayout());
-
-		rightPanel = new JPanel(new GridLayout(4, 2));
-
+		rightPanel = new JPanel(new GridLayout(10, 1));
 		leftPanel = new JPanel(new BorderLayout());
 
 		bottomPanel = new JPanel(new BorderLayout());
@@ -68,34 +68,19 @@ public class MainWindow extends JFrame {
 		bottomPanel.add(bottAuxPanel, BorderLayout.WEST);
 
 		fileName = new JTextField("Ficheiro Selecionado");
-		locName = new JTextField("LOC");
-		cycloName = new JTextField("CYCLO");
-		atfdName = new JTextField("ATFD");
-		laaName = new JTextField("LAA");
 
-		locText = new JTextField();
-		cycloText = new JTextField();
-		atfdText = new JTextField();
-		laaText = new JTextField();
-
-		analyseBt = new JButton("Analisar Ficheiro");
+		analyseBt = new JButton("Escolher");
 		openBt = new JButton("Abrir Ficheiro");
+
+		longAddBt = new JButton("Adicionar Regra Is_Long_Method");
+		featureAddBt = new JButton("Adicionar Regra Is_Feature_Envy");
 
 		tableModel = new DefaultTableModel();
 		fileDisplay = new JTable(tableModel);
 		fileScroll = new JScrollPane(fileDisplay);
 
-		rightPanel.add(locName);
-		rightPanel.add(locText);
-
-		rightPanel.add(cycloName);
-		rightPanel.add(cycloText);
-
-		rightPanel.add(atfdName);
-		rightPanel.add(atfdText);
-
-		rightPanel.add(laaName);
-		rightPanel.add(laaText);
+		rightPanel.add(longAddBt);
+		rightPanel.add(featureAddBt);
 
 		leftPanel.add(fileName, BorderLayout.NORTH);
 		leftPanel.add(fileScroll, BorderLayout.CENTER);
@@ -108,7 +93,7 @@ public class MainWindow extends JFrame {
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
 		add(mainPanel);
-		
+
 	}
 
 	private void formatComponents() {
@@ -117,10 +102,6 @@ public class MainWindow extends JFrame {
 		fileDisplay.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		fileName.setEditable(false);
-		locName.setEditable(false);
-		cycloName.setEditable(false);
-		atfdName.setEditable(false);
-		laaName.setEditable(false);
 
 		resizeComps();
 	}
@@ -129,18 +110,46 @@ public class MainWindow extends JFrame {
 		analyseBt.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				DataProcesser.getInstance().analyseFile();
+				tryToPopup(Popup.TEST_CHOOSER);
 			}
 		});
 
 		openBt.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (DataProcesser.getInstance().getCurrentSheet() != null) {
+					int option = openConfirmPopup(
+							"Se carregar outro ficheiro irá perder as regras adicionadas e os resultados. Deseja continuar?");
+					if (option == 1 || option == 2)
+						return;
+				}
+
 				openFile();
+			}
+		});
+
+		longAddBt.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tryToPopup(Popup.LONG_RULE_ADD);
+			}
+		});
+
+		featureAddBt.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tryToPopup(Popup.FEATURE_RULE_ADD);
 			}
 		});
 	}
 
+	private void tryToPopup(int type) {
+		if (DataProcesser.getInstance().getCurrentSheet() == null) {
+			openErrorPopup("Carregue um ficheiro primeiro...");
+			return;
+		}
+		new Popup(type);
+	}
 
 	private void openFile() {
 		fc = new JFileChooser(".");
@@ -151,11 +160,15 @@ public class MainWindow extends JFrame {
 
 		if (fc.getSelectedFile() != null) {
 			DataProcesser.getInstance().setCurrentSheet(FileUtils.readFile(fc.getSelectedFile().getPath()));
+			fileName.setText(fc.getSelectedFile().getName());
 		}
 	}
 
 	public void displayText(String text) {
 		String[] info = text.split("--");
+
+		tableModel.setRowCount(0);
+		tableModel.setColumnCount(0);
 
 		addColumns(info);
 		addData(info);
@@ -204,6 +217,14 @@ public class MainWindow extends JFrame {
 		}
 
 		return new Dimension((int) (width_ratio * curr_width), (int) (height_ratio * curr_height));
+	}
+
+	private void openErrorPopup(String error) {
+		JOptionPane.showMessageDialog(this, error, "Aviso!", 1);
+	}
+
+	private int openConfirmPopup(String warning) {
+		return JOptionPane.showConfirmDialog(this, warning, "Atenção!", 1);
 	}
 
 	public void openWindow() {

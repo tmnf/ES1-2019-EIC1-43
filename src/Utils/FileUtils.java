@@ -9,7 +9,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.util.StringUtil;
 
 import MainLogic.DataProcesser;
 
@@ -75,15 +74,17 @@ public class FileUtils {
 		return selectedCell;
 	}
 
-	public static double getRealValue(Cell cell) {
-		switch (cell.getCellType()) {
-		case NUMERIC:
-			return cell.getNumericCellValue();
-		case STRING:
-			return Double.parseDouble(cell.getStringCellValue());
-		default:
-			throw new IllegalArgumentException("Célula com valores errados...");
-		}
+	// Returns cell index
+	public static int getCellIndexByText(String text) {
+		int cellIndex = -1;
+
+		for (Cell c : DataProcesser.getInstance().getCurrentSheet().getRow(0))
+			if (c.getStringCellValue().equals(text)) {
+				cellIndex = c.getColumnIndex();
+				break;
+			}
+
+		return cellIndex;
 	}
 
 }

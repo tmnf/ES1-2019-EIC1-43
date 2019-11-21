@@ -2,6 +2,7 @@ package MainLogic;
 
 import org.apache.poi.ss.usermodel.Sheet;
 
+import Enums.Test;
 import GUI.MainWindow;
 import Utils.FileUtils;
 
@@ -28,14 +29,10 @@ public class DataProcesser {
 		gui.displayText(FileUtils.fileToString(currentSheet));
 	}
 
-	public void analyseFile() {
-		Analyser analyser = new Analyser(DataProcesser.getInstance().getCurrentSheet());
-		
-		//So para testar
-		analyser.getIsLongList();
-		analyser.getIsFeatureEnvyList();
+	public void analyseFile(Test methodToCompare) {
+		new Analyser(DataProcesser.getInstance().getCurrentSheet(), methodToCompare).start();
 	}
-	
+
 	public void initWindow() {
 		new Thread(new Runnable() {
 			@Override
