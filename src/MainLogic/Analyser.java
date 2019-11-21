@@ -88,6 +88,23 @@ public class Analyser extends Thread {
 	// Compares is_feature_envy from user with is_feature_envy in every method from
 	// file
 	private void compareFeatureEnvy(ArrayList<Boolean> is_feature_list) {
+		int i = 0;
+		for(Row row: sheet) {
+			if (i != 0) {
+				if(FileUtils.getCellAtByText(row, "is_feature_envy").getBooleanCellValue() == true && is_feature_list.get(i-1) == true)
+					dci++;
+				else if (FileUtils.getCellAtByText(row, "is_feature_envy").getBooleanCellValue() == true && is_feature_list.get(i-1) == false)
+					dii++;
+				else if (FileUtils.getCellAtByText(row, "is_feature_envy").getBooleanCellValue() == false && is_feature_list.get(i-1) == false)
+					adci++;
+				else
+					adii++;
+			
+			}	
+			i++;
+		}
+		
+		
 
 	}
 
