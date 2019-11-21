@@ -185,12 +185,14 @@ public class Analyser extends Thread {
 	// file
 	private void compareFeatureEnvy(ArrayList<Boolean> is_feature_list) {
 		int i = 0;
+		int featureEnvyIndex = FileUtils.getCellIndexByText(Test.IS_FEATURE_ENVY.getRealName());
+
 		for (Row row : sheet) {
-			if (row.getRowNum() == 0) continue;
-			
-			defectsLongList(FileUtils.getCellAtByText(row, "is_feature_envy").getBooleanCellValue(),is_feature_list.get(i));
+			if (row.getRowNum() == 0)
+				continue;
+
+			defectsLongList(FileUtils.getCellAt(row, featureEnvyIndex).getBooleanCellValue(), is_feature_list.get(i));
 			i++;
-				
 		}
 
 	}
