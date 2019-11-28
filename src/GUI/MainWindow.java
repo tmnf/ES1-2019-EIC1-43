@@ -21,6 +21,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -42,7 +43,7 @@ public class MainWindow extends JFrame {
 
 	private JPanel mainPanel, rightPanel, leftPanel, bottomPanel, bottAuxPanel;
 
-	private JButton analyseBt, openBt, longAddBt, featureAddBt;
+	private Button analyseBt, openBt, longAddBt, featureAddBt;
 
 	private JTable fileDisplay;
 	private DefaultTableModel tableModel;
@@ -72,11 +73,11 @@ public class MainWindow extends JFrame {
 
 		fileName = new JTextField("Ficheiro Selecionado");
 
-		analyseBt = new JButton("Escolher");
-		openBt = new JButton("Abrir Ficheiro");
+		analyseBt = new Button("Escolher", 40);
+		openBt = new Button("Abrir Ficheiro", 20);
 
-		longAddBt = new JButton("Adicionar Regra Is_Long_Method");
-		featureAddBt = new JButton("Adicionar Regra Is_Feature_Envy");
+		longAddBt = new Button("Adicionar Regra Is_Long_Method", 20);
+		featureAddBt = new Button("Adicionar Regra Is_Feature_Envy", 20);
 
 		tableModel = new DefaultTableModel();
 		fileDisplay = new JTable(tableModel);
@@ -102,10 +103,10 @@ public class MainWindow extends JFrame {
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
 		add(mainPanel);
-
 	}
 
 	private void formatComponents() {
+
 		mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		mainPanel.setBackground(Color.DARK_GRAY);
 
