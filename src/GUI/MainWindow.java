@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -9,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -19,6 +21,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -37,7 +40,7 @@ public class MainWindow extends JFrame {
 
 	private JFileChooser fc;
 
-	private JPanel mainPanel, rightPanel, leftPanel, bottomPanel;
+	private JPanel mainPanel, rightPanel, leftPanel, bottomPanel, bottAuxPanel;
 
 	private JButton analyseBt, openBt, longAddBt, featureAddBt;
 
@@ -60,11 +63,11 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		mainPanel = new JPanel(new BorderLayout());
-		rightPanel = new JPanel(new GridLayout(10, 1));
+		rightPanel = new JPanel(new GridLayout(10, 1, 0, 5));
 		leftPanel = new JPanel(new BorderLayout());
 
 		bottomPanel = new JPanel(new BorderLayout());
-		JPanel bottAuxPanel = new JPanel(new GridLayout(1, 2));
+		bottAuxPanel = new JPanel(new GridLayout(1, 2, 10, 0));
 		bottomPanel.add(bottAuxPanel, BorderLayout.WEST);
 
 		fileName = new JTextField("Ficheiro Selecionado");
@@ -88,7 +91,13 @@ public class MainWindow extends JFrame {
 		bottAuxPanel.add(analyseBt);
 		bottAuxPanel.add(openBt);
 
+		JPanel emptyPanel = new JPanel();
+		emptyPanel.setBorder(null);
+		emptyPanel.setOpaque(false);
+		emptyPanel.setPreferredSize(new Dimension(10, 20));
+
 		mainPanel.add(rightPanel, BorderLayout.EAST);
+		mainPanel.add(emptyPanel, BorderLayout.WEST);
 		mainPanel.add(leftPanel, BorderLayout.CENTER);
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
@@ -98,10 +107,28 @@ public class MainWindow extends JFrame {
 
 	private void formatComponents() {
 		mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		mainPanel.setBackground(Color.DARK_GRAY);
+
+		rightPanel.setBorder(new EmptyBorder(15, 5, 5, 5));
+		bottomPanel.setBorder(new EmptyBorder(5, 10, 5, 5));
 
 		fileDisplay.setFont(new Font("Arial", Font.PLAIN, 16));
+		fileName.setFont(new Font("Arial", Font.PLAIN, 16));
+		fileName.setForeground(Color.WHITE);
+
+		fileDisplay.setOpaque(false);
+		fileScroll.getViewport().setBackground(Color.LIGHT_GRAY);
+		fileScroll.getViewport().setBorder(null);
+		fileScroll.setBorder(null);
+
+		bottomPanel.setOpaque(false);
+		bottAuxPanel.setOpaque(false);
+		rightPanel.setOpaque(false);
+		leftPanel.setOpaque(false);
 
 		fileName.setEditable(false);
+		fileName.setBorder(null);
+		fileName.setOpaque(false);
 
 		resizeComps();
 	}
