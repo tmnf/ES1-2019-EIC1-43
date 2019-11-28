@@ -43,7 +43,7 @@ public class MainWindow extends JFrame {
 
 	private JPanel mainPanel, rightPanel, leftPanel, bottomPanel, bottAuxPanel;
 
-	private Button analyseBt, openBt, longAddBt, featureAddBt;
+	private JButton analyseBt, openBt, longAddBt, featureAddBt;
 
 	private JTable fileDisplay;
 	private DefaultTableModel tableModel;
@@ -73,11 +73,11 @@ public class MainWindow extends JFrame {
 
 		fileName = new JTextField("Ficheiro Selecionado");
 
-		analyseBt = new Button("Escolher", 40);
-		openBt = new Button("Abrir Ficheiro", 20);
+		analyseBt = new JButton("Escolher");
+		openBt = new JButton("Abrir Ficheiro");
 
-		longAddBt = new Button("Adicionar Regra Is_Long_Method", 20);
-		featureAddBt = new Button("Adicionar Regra Is_Feature_Envy", 20);
+		longAddBt = new JButton("Adicionar Regra Is_Long_Method");
+		featureAddBt = new JButton("Adicionar Regra Is_Feature_Envy");
 
 		tableModel = new DefaultTableModel();
 		fileDisplay = new JTable(tableModel);
@@ -106,7 +106,7 @@ public class MainWindow extends JFrame {
 	}
 
 	private void formatComponents() {
-
+		
 		mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		mainPanel.setBackground(Color.DARK_GRAY);
 
@@ -121,6 +121,7 @@ public class MainWindow extends JFrame {
 		fileScroll.getViewport().setBackground(Color.LIGHT_GRAY);
 		fileScroll.getViewport().setBorder(null);
 		fileScroll.setBorder(null);
+		
 
 		bottomPanel.setOpaque(false);
 		bottAuxPanel.setOpaque(false);
