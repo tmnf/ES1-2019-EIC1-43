@@ -10,18 +10,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.AbstractBorder;
+
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -41,9 +38,11 @@ public class MainWindow extends JFrame {
 
 	private JFileChooser fc;
 
-	private JPanel mainPanel, rightPanel, leftPanel, bottomPanel, bottAuxPanel;
+	private MainPanel mainPanel;
 
-	private JButton analyseBt, openBt, longAddBt, featureAddBt;
+	private JPanel rightPanel, leftPanel, bottomPanel, bottAuxPanel;
+
+	private Button analyseBt, openBt, longAddBt, featureAddBt;
 
 	private JTable fileDisplay;
 	private DefaultTableModel tableModel;
@@ -63,7 +62,7 @@ public class MainWindow extends JFrame {
 		setMinimumSize(new Dimension(WIDTH - 200, HEIGHT - 200));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		mainPanel = new JPanel(new BorderLayout());
+		mainPanel = new MainPanel(new BorderLayout());
 		rightPanel = new JPanel(new GridLayout(10, 1, 0, 5));
 		leftPanel = new JPanel(new BorderLayout());
 
@@ -73,11 +72,11 @@ public class MainWindow extends JFrame {
 
 		fileName = new JTextField("Ficheiro Selecionado");
 
-		analyseBt = new JButton("Escolher");
-		openBt = new JButton("Abrir Ficheiro");
+		analyseBt = new Button("Escolher");
+		openBt = new Button("Abrir Ficheiro");
 
-		longAddBt = new JButton("Adicionar Regra Is_Long_Method");
-		featureAddBt = new JButton("Adicionar Regra Is_Feature_Envy");
+		longAddBt = new Button("Adicionar Regra Long");
+		featureAddBt = new Button("Adicionar Regra Feature");
 
 		tableModel = new DefaultTableModel();
 		fileDisplay = new JTable(tableModel);
@@ -102,11 +101,10 @@ public class MainWindow extends JFrame {
 		mainPanel.add(leftPanel, BorderLayout.CENTER);
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-		add(mainPanel);
+		setContentPane(mainPanel);
 	}
 
 	private void formatComponents() {
-		
 		mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		mainPanel.setBackground(Color.DARK_GRAY);
 
@@ -121,7 +119,6 @@ public class MainWindow extends JFrame {
 		fileScroll.getViewport().setBackground(Color.LIGHT_GRAY);
 		fileScroll.getViewport().setBorder(null);
 		fileScroll.setBorder(null);
-		
 
 		bottomPanel.setOpaque(false);
 		bottAuxPanel.setOpaque(false);
@@ -223,9 +220,8 @@ public class MainWindow extends JFrame {
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				super.componentResized(e);
-
 				MainWindow.this.resizeComps(); // Responsive GUI
+				super.componentResized(e);
 			}
 		});
 	}
@@ -233,12 +229,12 @@ public class MainWindow extends JFrame {
 	private void resizeComps() {
 		rightPanel.setPreferredSize(getRelativeSize(0.2, 0.8));
 		leftPanel.setPreferredSize(getRelativeSize(0.8, 0.8));
-		bottomPanel.setPreferredSize(getRelativeSize(1, 0.15));
+		bottomPanel.setPreferredSize(getRelativeSize(1, 0.1));
 	}
 
 	private Dimension getRelativeSize(double width_ratio, double height_ratio) {
-		int curr_width = getWidth();
-		int curr_height = getHeight();
+		int curr_width = mainPanel.getWidth();
+		int curr_height = mainPanel.getHeight();
 
 		if (curr_width == 0) {
 			curr_width = WIDTH;
