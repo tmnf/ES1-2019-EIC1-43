@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -60,7 +59,6 @@ public class Popup extends JFrame {
 	}
 
 	private void getRuleAddCommons(String title, Metric m1, Metric m2) {
-
 		setTitle(title);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -116,15 +114,14 @@ public class Popup extends JFrame {
 		});
 		showPopup();
 	}
-	
-	
+
 	private void addNewRule(Metric firstMetric, Metric secondMetric) {
 		givenRuleName = name.getText();
 		firstMetric.setMax(Float.parseFloat(metric1.getText()));
 		secondMetric.setMax(Float.parseFloat(metric2.getText()));
 
 		createdRule = new Rule(givenRuleName, firstMetric.getMax(), secondMetric.getMax(), andOr);
-		
+
 		createdRule.toString();
 
 		DataProcesser.getInstance().getRulesList().add(createdRule);
@@ -151,37 +148,60 @@ public class Popup extends JFrame {
 	private void openFeatureRuleAdd() {
 		getRuleAddCommons("Adicionar Regra de is_feature_envy", Metric.ATFD, Metric.LAA);
 	}
-	
+
+	private void ruleList() {
+		rulesList = DataProcesser.getInstance().getRulesList();
+		array = new Object[rulesList.size() + fixedTestListLength];
+
+		for (int i = 0; i < array.length; i++) {
+			if (i < fixedTestListLength) {
+				array[i] = fixedTests[i];
+			} else
+				array[i] = rulesList.get(i - fixedTestListLength);
+		}
+	}
+
+	private void presentResultsTemp() {
+		int testListSelectedIndex = testList.getSelectedIndex();
+		if (testListSelectedIndex < fixedTestListLength) {
+			DataProcesser.getInstance().analyseFile((Test) testList.getSelectedItem());
+		} else {
+			System.out.println(((Rule) testList.getSelectedItem()).getNomeDaRegra());
+		}
+	}
 
 	private void openPickATest() {
 		setTitle("Escolher um teste");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+		fixedTestListLength = fixedTests.length;
+
 		mainPanel = new JPanel(new BorderLayout());
 
 		JPanel bottomPanel = new JPanel(new BorderLayout());
 
-		// JComboBox<Test> testList = new JComboBox<>(tests);
-		// testList.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		ruleList();
+		System.out.println(array);
+
+		testList = new JComboBox<>(array);
+		testList.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
 		JButton analise = new JButton("Avaliar");
 		analise.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// DataProcesser.getInstance().analyseFile((Test) testList.getSelectedItem());
+				presentResultsTemp();
 			}
 		});
 
-		// bottomPanel.add(analise, BorderLayout.EAST);
+		bottomPanel.add(analise, BorderLayout.EAST);
 
-		// mainPanel.add(testList, BorderLayout.CENTER);
-		// mainPanel.add(bottomPanel, BorderLayout.SOUTH);
+		mainPanel.add(testList, BorderLayout.CENTER);
+		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
 		showPopup();
 	}
-
-	
 
 	private void ruleCreated(String aviso) {
 		JOptionPane.showMessageDialog(this, aviso, "Sucesso!", 1);
@@ -193,7 +213,6 @@ public class Popup extends JFrame {
 
 	private void showPopup() {
 		add(mainPanel);
-
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
