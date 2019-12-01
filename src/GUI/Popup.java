@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -24,30 +25,19 @@ import Models.Rule;
 public class Popup extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-
 	public static final int TEST_CHOOSER = 0, LONG_RULE_ADD = 1, FEATURE_RULE_ADD = 2;
-
 	private static final int WIDTH = 400, HEIGHT = 30;
-
 	private Test[] fixedTests = { Test.PMD, Test.IPLASMA };
-
 	private JComboBox<Object> testList;
-
 	private Object[] array;
-
 	private ArrayList<Rule> rulesList;
-
 	private Boolean andOr;
-
 	private JPanel mainPanel;
-
 	private JRadioButton or, and;
-
 	private JTextField metric1, metric2, name;
-
 	private String givenRuleName;
-
-	private Rule createdRule;
+	private int fixedTestListLength;
+	public static Rule createdRule;
 
 	public Popup(int type) {
 		choosePopup(type);
@@ -104,9 +94,9 @@ public class Popup extends JFrame {
 
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
-		
+
 		andOrChanger();
-		
+
 		add.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -126,13 +116,17 @@ public class Popup extends JFrame {
 		});
 		showPopup();
 	}
-
+	
+	
 	private void addNewRule(Metric firstMetric, Metric secondMetric) {
 		givenRuleName = name.getText();
 		firstMetric.setMax(Float.parseFloat(metric1.getText()));
 		secondMetric.setMax(Float.parseFloat(metric2.getText()));
 
 		createdRule = new Rule(givenRuleName, firstMetric.getMax(), secondMetric.getMax(), andOr);
+		
+		createdRule.toString();
+
 		DataProcesser.getInstance().getRulesList().add(createdRule);
 		ruleCreated("Regra criada com sucesso!");
 	}
@@ -157,6 +151,7 @@ public class Popup extends JFrame {
 	private void openFeatureRuleAdd() {
 		getRuleAddCommons("Adicionar Regra de is_feature_envy", Metric.ATFD, Metric.LAA);
 	}
+	
 
 	private void openPickATest() {
 		setTitle("Escolher um teste");
@@ -186,10 +181,12 @@ public class Popup extends JFrame {
 		showPopup();
 	}
 
+	
+
 	private void ruleCreated(String aviso) {
 		JOptionPane.showMessageDialog(this, aviso, "Sucesso!", 1);
 	}
-	
+
 	private void buttonNotSelected(String aviso) {
 		JOptionPane.showMessageDialog(this, aviso, "ERRO", 1);
 	}

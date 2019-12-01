@@ -1,11 +1,12 @@
 package Models;
 
+import GUI.Popup;
+
 public class Rule {
 
 	private boolean AND;
 	private String nomeDaRegra;
 	private float metric1, metric2;
-	public Object setName;
 
 	public Rule(String nomeDaRegra, float metric1, float metric2, boolean AND) {
 		this.AND = AND;
@@ -28,6 +29,12 @@ public class Rule {
 
 	public float getMetric2() {
 		return metric2;
+	}
+	
+	@Override
+	public String toString() {
+		String ex = getNomeDaRegra();
+		return ex;
 	}
 
 }
