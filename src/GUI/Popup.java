@@ -104,32 +104,22 @@ public class Popup extends JFrame {
 
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
-
 		
+		andOrChanger();
 		
-		and.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				andOr = true;
-			}
-		});
-
-		or.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				andOr = false;
-			}
-		});
 		add.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if (group.getSelection() != null) {
 						addNewRule(m1, m2);
+						dispose();
 
 					} else {
-						System.out.println("");
+						buttonNotSelected("Botão não selecionado: Por favor selecione And ou Or");
 					}
 				} catch (NumberFormatException e1) {
-					System.out.println("");
+					buttonNotSelected("Verfique que inseriu um número nos campos das métricas");
 
 				}
 			}
@@ -144,10 +134,21 @@ public class Popup extends JFrame {
 
 		createdRule = new Rule(givenRuleName, firstMetric.getMax(), secondMetric.getMax(), andOr);
 		DataProcesser.getInstance().getRulesList().add(createdRule);
-		JOptionPane.showMessageDialog(this, "Regra criada", "Sucesso!", 1);
+		ruleCreated("Regra criada com sucesso!");
 	}
 
-	
+	private void andOrChanger() {
+		and.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				andOr = true;
+			}
+		});
+		or.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				andOr = false;
+			}
+		});
+	}
 
 	private void openLongRuleAdd() {
 		getRuleAddCommons("Adicionar Regra de is_long_method", Metric.LOC, Metric.CYCLO);
@@ -166,23 +167,31 @@ public class Popup extends JFrame {
 
 		JPanel bottomPanel = new JPanel(new BorderLayout());
 
-		//JComboBox<Test> testList = new JComboBox<>(tests);
-		//testList.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		// JComboBox<Test> testList = new JComboBox<>(tests);
+		// testList.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
 		JButton analise = new JButton("Avaliar");
 		analise.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			//	DataProcesser.getInstance().analyseFile((Test) testList.getSelectedItem());
+				// DataProcesser.getInstance().analyseFile((Test) testList.getSelectedItem());
 			}
 		});
 
-		//bottomPanel.add(analise, BorderLayout.EAST);
+		// bottomPanel.add(analise, BorderLayout.EAST);
 
-		//mainPanel.add(testList, BorderLayout.CENTER);
-		//mainPanel.add(bottomPanel, BorderLayout.SOUTH);
+		// mainPanel.add(testList, BorderLayout.CENTER);
+		// mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
 		showPopup();
+	}
+
+	private void ruleCreated(String aviso) {
+		JOptionPane.showMessageDialog(this, aviso, "Sucesso!", 1);
+	}
+	
+	private void buttonNotSelected(String aviso) {
+		JOptionPane.showMessageDialog(this, aviso, "ERRO", 1);
 	}
 
 	private void showPopup() {
