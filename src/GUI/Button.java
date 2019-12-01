@@ -32,7 +32,7 @@ public class Button extends JButton {
 		} else if (getModel().isRollover()) {
 			g.setColor(new Color(40, 40, 40, 220));
 		} else
-			g.setColor(new Color(60, 60, 60, 220));
+			g.setColor(new Color(50, 50, 50, 220));
 
 		g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
 
