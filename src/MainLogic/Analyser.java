@@ -51,19 +51,17 @@ public class Analyser extends Thread {
 
 	private void showResults(String test) { // MANTER ESTA IMPLEMENTA«„O EM TESTE
 		int total = dci + dii + adci + adii;
-
-		float dciAux, diiAux, adciAux, adiiAux;
-		dciAux = ((float) dci / total) * 100;
-		diiAux = ((float) dii / total) * 100;
-		adciAux = ((float) adci / total) * 100;
-		adiiAux = ((float) adii / total) * 100;
-
+		/*
+		 * float dciAux, diiAux, adciAux, adiiAux; dciAux = ((float) dci / total) * 100;
+		 * diiAux = ((float) dii / total) * 100; adciAux = ((float) adci / total) * 100;
+		 * adiiAux = ((float) adii / total) * 100;
+		 */
 		System.out.println();
 		System.out.println("==========================");
-		System.out.println("DCI (" + test + "): " + dciAux);
-		System.out.println("DII (" + test + "): " + diiAux);
-		System.out.println("ADCI (" + test + "): " + adciAux);
-		System.out.println("ADII (" + test + "): " + adiiAux);
+		System.out.println("DCI (" + test + "): " + dci);
+		System.out.println("DII (" + test + "): " + dii);
+		System.out.println("ADCI (" + test + "): " + adci);
+		System.out.println("ADII (" + test + "): " + adii);
 		System.out.println("---------------------------");
 
 		System.out.println("Total (" + test + "): " + (total));

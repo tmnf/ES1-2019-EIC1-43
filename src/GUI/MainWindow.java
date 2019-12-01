@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -29,12 +30,13 @@ import javax.swing.table.DefaultTableModel;
 
 import Enums.Test;
 import MainLogic.DataProcesser;
+import Models.Rule;
 import Utils.FileUtils;
 
 public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = -1572507198564655896L;
-
+	
 	private final static String TITLE = "Iscte Code Analyser";
 
 	private final static int WIDTH = 1000, HEIGHT = 600;
@@ -261,5 +263,4 @@ public class MainWindow extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-
 }

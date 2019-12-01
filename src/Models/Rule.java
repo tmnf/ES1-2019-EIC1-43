@@ -4,13 +4,14 @@ public class Rule {
 
 	private boolean AND;
 	private String nomeDaRegra;
-	private int metric1, metric2;
+	private float metric1, metric2;
+	public Object setName;
 
-	public Rule(String nomeDaRegra, int metric1, int metric2, boolean AND) {
-		this.nomeDaRegra = nomeDaRegra;
+	public Rule(String nomeDaRegra, float metric1, float metric2, boolean AND) {
+		this.AND = AND;
 		this.metric1 = metric1;
 		this.metric2 = metric2;
-		this.AND = AND;
+		this.nomeDaRegra = nomeDaRegra;
 	}
 
 	public boolean getAnd() {
@@ -21,11 +22,11 @@ public class Rule {
 		return nomeDaRegra;
 	}
 
-	public int getMetric1() {
+	public float getMetric1() {
 		return metric1;
 	}
 
-	public int getMetric2() {
+	public float getMetric2() {
 		return metric2;
 	}
 

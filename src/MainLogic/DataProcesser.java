@@ -1,9 +1,12 @@
 package MainLogic;
 
+import java.util.ArrayList;
+
 import org.apache.poi.ss.usermodel.Sheet;
 
 import Enums.Test;
 import GUI.MainWindow;
+import Models.Rule;
 import Utils.FileUtils;
 
 public class DataProcesser {
@@ -11,8 +14,11 @@ public class DataProcesser {
 	private static DataProcesser INSTANCE;
 
 	private MainWindow gui;
+	public Rule rule;
 
 	private Sheet currentSheet;
+
+	public ArrayList<Rule> tests;
 
 	private DataProcesser() {
 	}
@@ -37,6 +43,7 @@ public class DataProcesser {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+				tests = new ArrayList<Rule>();
 				gui = new MainWindow();
 				gui.openWindow();
 			}
@@ -50,4 +57,9 @@ public class DataProcesser {
 	public MainWindow getGraphicalInterface() {
 		return gui;
 	}
+	
+	public ArrayList<Rule> getRulesList(){
+		return tests;
+	}
+
 }

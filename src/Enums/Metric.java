@@ -13,5 +13,10 @@ public enum Metric {
 	public float getMax() {
 		return max;
 	}
+	
+	public void setMax(float max1) {
+		this.max = max1;
+		
+	}
 
 }
