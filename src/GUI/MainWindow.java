@@ -178,7 +178,7 @@ public class MainWindow extends JFrame {
 			openErrorPopup("Carregue um ficheiro primeiro...");
 			return;
 		}
-		new Popup(type);
+		new Popup(type, this);
 	}
 
 	private void openFile() {

@@ -4,9 +4,8 @@ import javax.swing.DefaultComboBoxModel;
 
 import org.apache.poi.ss.usermodel.Sheet;
 
+import Enums.Test;
 import GUI.MainWindow;
-import Models.EmptyRule;
-import Models.NormalRule;
 import Models.DefaultRule;
 import Utils.FileUtils;
 
@@ -22,6 +21,13 @@ public class DataProcesser {
 	private DefaultComboBoxModel<DefaultRule> tests;
 
 	private DataProcesser() {
+		initTestList();
+	}
+
+	private void initTestList() {
+		tests = new DefaultComboBoxModel<>();
+		addToRuleList(new DefaultRule(Test.IPLASMA));
+		addToRuleList(new DefaultRule(Test.PMD));
 	}
 
 	public static DataProcesser getInstance() {
@@ -37,10 +43,7 @@ public class DataProcesser {
 	}
 
 	public void analyseFile(DefaultRule rule) {
-		if (DefaultRule instanceof EmptyRule)
-			new Analyser(currentSheet, ((EmptyRule) rule).getTest()).start();
-		else if (DefaultRule instanceof NormalRule)
-			System.out.println("Implementar isto...");
+		new Analyser(rule).start();
 	}
 
 	public void initWindow() {

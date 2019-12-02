@@ -1,14 +1,16 @@
 package Models;
 
-import GUI.Popup;
+import Enums.Test;
 
-public class NormalRule implements DefaultRule {
+public class NormalRule extends DefaultRule {
 
 	private boolean AND;
 	private String nomeDaRegra;
 	private float metric1, metric2;
 
-	public NormalRule(String nomeDaRegra, float metric1, float metric2, boolean AND) {
+	public NormalRule(String nomeDaRegra, float metric1, float metric2, boolean AND, Test test) {
+		super(test);
+
 		this.AND = AND;
 		this.metric1 = metric1;
 		this.metric2 = metric2;
@@ -33,8 +35,7 @@ public class NormalRule implements DefaultRule {
 
 	@Override
 	public String toString() {
-		String ex = getNomeDaRegra();
-		return ex;
+		return nomeDaRegra + " (" + test + ")";
 	}
 
 }

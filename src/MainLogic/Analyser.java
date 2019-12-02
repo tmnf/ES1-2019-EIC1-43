@@ -7,18 +7,20 @@ import org.apache.poi.ss.usermodel.Sheet;
 
 import Enums.Metric;
 import Enums.Test;
+import Models.DefaultRule;
+import Models.NormalRule;
 import Utils.FileUtils;
 
 public class Analyser extends Thread {
 
 	private Sheet sheet;
-	private Test test;
+	private DefaultRule rule;
 
 	private int dci, dii, adci, adii;
 
-	public Analyser(Sheet sheet, Test test) {
-		this.sheet = sheet;
-		this.test = test;
+	public Analyser(DefaultRule rule) {
+		this.sheet = DataProcesser.getInstance().getCurrentSheet();
+		this.rule = rule;
 	}
 
 	public void run() {
@@ -31,7 +33,7 @@ public class Analyser extends Thread {
 	}
 
 	public void analyseFile() {
-		switch (test) {
+		switch (rule.getTest()) {
 		case IPLASMA:
 			compareLongMethod();
 			break;
@@ -42,15 +44,16 @@ public class Analyser extends Thread {
 			compareLongMethod();
 			break;
 		case IS_FEATURE_ENVY:
-//			compareFeatureEnvy();
+			compareFeatureEnvy();
 			break;
 		default:
 			break;
 		}
 	}
 
-	private void showResults(String test) { // MANTER ESTA IMPLEMENTA«„O EM TESTE
+	private void showResults() { // MANTER ESTA IMPLEMENTA«„O EM TESTE
 		int total = dci + dii + adci + adii;
+		String test = rule.toString();
 		/*
 		 * float dciAux, diiAux, adciAux, adiiAux; dciAux = ((float) dci / total) * 100;
 		 * diiAux = ((float) dii / total) * 100; adciAux = ((float) adci / total) * 100;
@@ -88,6 +91,8 @@ public class Analyser extends Thread {
 	private ArrayList<Boolean> getResultList(Metric m1, Metric m2) {
 		ArrayList<Boolean> res = new ArrayList<Boolean>();
 
+		NormalRule ruleAux = (NormalRule) rule;
+
 		int[] metrics = getIndexByMethods(m1, m2);
 
 		for (Row row : sheet) {
@@ -96,14 +101,17 @@ public class Analyser extends Thread {
 
 			boolean ver1, ver2;
 
-			ver1 = FileUtils.getCellAt(row, metrics[0]).getNumericCellValue() > m1.getMax();
+			ver1 = FileUtils.getCellAt(row, metrics[0]).getNumericCellValue() > ruleAux.getMetric1();
 
-			if (m2 == Metric.CYCLO)
-				ver2 = FileUtils.getCellAt(row, metrics[1]).getNumericCellValue() > m2.getMax();
+			if (rule.getTest() == Test.LONG_METHOD)
+				ver2 = FileUtils.getCellAt(row, metrics[1]).getNumericCellValue() > ruleAux.getMetric2();
 			else
-				ver2 = Double.parseDouble(FileUtils.getCellAt(row, metrics[1]).toString()) < m2.getMax();
-
-			res.add(ver1 && ver2);
+				ver2 = Double.parseDouble(FileUtils.getCellAt(row, metrics[1]).toString()) < ruleAux.getMetric2();
+			
+			if (ruleAux.getAnd())
+				res.add(ver1 && ver2);
+			else
+				res.add(ver1 || ver2);
 		}
 
 		return res;
@@ -123,16 +131,16 @@ public class Analyser extends Thread {
 	public void compareLongMethod() {
 		int indexOfValueToCompare, longMethodIndex;
 
-		indexOfValueToCompare = FileUtils.getCellIndexByText(test.getRealName());
 		longMethodIndex = FileUtils.getCellIndexByText(Test.LONG_METHOD.getRealName());
 
-		if (test == Test.LONG_METHOD) {
+		if (rule.getTest() == Test.LONG_METHOD) {
 			compareLongWithLong(longMethodIndex);
 		} else {
+			indexOfValueToCompare = FileUtils.getCellIndexByText(rule.toString());
 			compareLongWithNormalTest(indexOfValueToCompare, longMethodIndex);
 		}
 
-		showResults(test.getRealName());
+		showResults();
 	}
 
 	private void compareLongWithNormalTest(int indexOfValueToCompare, int longMethodIndex) {
@@ -181,7 +189,9 @@ public class Analyser extends Thread {
 
 	// Compares is_feature_envy from user with is_feature_envy in every method from
 	// file
-	private void compareFeatureEnvy(ArrayList<Boolean> is_feature_list) {
+	private void compareFeatureEnvy() {
+		ArrayList<Boolean> is_feature_list = getIsFeatureEnvyList();
+		
 		int i = 0;
 		int featureEnvyIndex = FileUtils.getCellIndexByText(Test.IS_FEATURE_ENVY.getRealName());
 
@@ -193,6 +203,7 @@ public class Analyser extends Thread {
 			i++;
 		}
 
+		showResults();
 	}
 
 }
