@@ -2,13 +2,13 @@ package Models;
 
 import GUI.Popup;
 
-public class Rule {
+public class NormalRule implements DefaultRule {
 
 	private boolean AND;
 	private String nomeDaRegra;
 	private float metric1, metric2;
 
-	public Rule(String nomeDaRegra, float metric1, float metric2, boolean AND) {
+	public NormalRule(String nomeDaRegra, float metric1, float metric2, boolean AND) {
 		this.AND = AND;
 		this.metric1 = metric1;
 		this.metric2 = metric2;
@@ -30,7 +30,7 @@ public class Rule {
 	public float getMetric2() {
 		return metric2;
 	}
-	
+
 	@Override
 	public String toString() {
 		String ex = getNomeDaRegra();

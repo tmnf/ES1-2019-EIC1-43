@@ -1,12 +1,13 @@
 package MainLogic;
 
-import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 
 import org.apache.poi.ss.usermodel.Sheet;
 
-import Enums.Test;
 import GUI.MainWindow;
-import Models.Rule;
+import Models.EmptyRule;
+import Models.NormalRule;
+import Models.DefaultRule;
 import Utils.FileUtils;
 
 public class DataProcesser {
@@ -14,11 +15,11 @@ public class DataProcesser {
 	private static DataProcesser INSTANCE;
 
 	private MainWindow gui;
-	public Rule rule;
+	public DefaultRule DefaultRule;
 
 	private Sheet currentSheet;
 
-	public ArrayList<Rule> tests;
+	private DefaultComboBoxModel<DefaultRule> tests;
 
 	private DataProcesser() {
 	}
@@ -35,15 +36,17 @@ public class DataProcesser {
 		gui.displayText(FileUtils.fileToString(currentSheet));
 	}
 
-	public void analyseFile(Test methodToCompare) {
-		new Analyser(DataProcesser.getInstance().getCurrentSheet(), methodToCompare).start();
+	public void analyseFile(DefaultRule rule) {
+		if (DefaultRule instanceof EmptyRule)
+			new Analyser(currentSheet, ((EmptyRule) rule).getTest()).start();
+		else if (DefaultRule instanceof NormalRule)
+			System.out.println("Implementar isto...");
 	}
 
 	public void initWindow() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				tests = new ArrayList<Rule>();
 				gui = new MainWindow();
 				gui.openWindow();
 			}
@@ -57,8 +60,12 @@ public class DataProcesser {
 	public MainWindow getGraphicalInterface() {
 		return gui;
 	}
-	
-	public ArrayList<Rule> getRulesList(){
+
+	public void addToRuleList(DefaultRule DefaultRule) {
+		tests.addElement(DefaultRule);
+	}
+
+	public DefaultComboBoxModel<DefaultRule> getRulesList() {
 		return tests;
 	}
 

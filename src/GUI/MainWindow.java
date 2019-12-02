@@ -30,13 +30,13 @@ import javax.swing.table.DefaultTableModel;
 
 import Enums.Test;
 import MainLogic.DataProcesser;
-import Models.Rule;
+import Models.NormalRule;
 import Utils.FileUtils;
 
 public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = -1572507198564655896L;
-	
+
 	private final static String TITLE = "Iscte Code Analyser";
 
 	private final static int WIDTH = 1000, HEIGHT = 600;
@@ -108,7 +108,7 @@ public class MainWindow extends JFrame {
 	}
 
 	private void formatComponents() {
-		
+
 		mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		mainPanel.setBackground(Color.DARK_GRAY);
 
@@ -123,7 +123,6 @@ public class MainWindow extends JFrame {
 		fileScroll.getViewport().setBackground(Color.LIGHT_GRAY);
 		fileScroll.getViewport().setBorder(null);
 		fileScroll.setBorder(null);
-		
 
 		bottomPanel.setOpaque(false);
 		bottAuxPanel.setOpaque(false);
@@ -250,12 +249,16 @@ public class MainWindow extends JFrame {
 		return new Dimension((int) (width_ratio * curr_width), (int) (height_ratio * curr_height));
 	}
 
-	private void openErrorPopup(String error) {
-		JOptionPane.showMessageDialog(this, error, "Aviso!", 1);
+	public void openErrorPopup(String error) {
+		JOptionPane.showMessageDialog(this, error, "Aviso!", JOptionPane.ERROR_MESSAGE);
+	}
+
+	public void openWarningPopup(String error) {
+		JOptionPane.showMessageDialog(this, error, "Aviso!", JOptionPane.WARNING_MESSAGE);
 	}
 
 	private int openConfirmPopup(String warning) {
-		return JOptionPane.showConfirmDialog(this, warning, "Atenção!", 1);
+		return JOptionPane.showConfirmDialog(this, warning, "Atenção!", JOptionPane.WARNING_MESSAGE);
 	}
 
 	public void openWindow() {
