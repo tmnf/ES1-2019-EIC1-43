@@ -47,21 +47,28 @@ public class ResultsPopup extends JFrame {
 		
 		Font f = new Font("Arial", Font.PLAIN, 16);
 
-		JPanel mainPanel = new JPanel(new BorderLayout());
+		MainPanel mainPanel = new MainPanel(new BorderLayout());
 		mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
 		JPanel topPanel, botPanel;
 
 		topPanel = new JPanel(new BorderLayout());
 		botPanel = new JPanel(new BorderLayout());
+		
+		topPanel.setOpaque(false);
+		botPanel.setOpaque(false);
 
 		JTextArea qualityDisplay = new JTextArea();
 		qualityDisplay.setEditable(false);
+		
+		// Exemplos
 		qualityDisplay.setBorder(new EmptyBorder(5,5,5,5));
-		qualityDisplay.setOpaque(false);
+		qualityDisplay.setBackground(new Color(60, 100,40, 100));
+		qualityDisplay.setForeground(Color.WHITE);
+		/*==============*/
+		
 		qualityDisplay.setFont(f);
 		
-		topPanel.setBackground(Color.RED);
 
 		int total = dci + dii + adci + adii;
 		String quality = "DCI: " + dci + " || DII: " + dii + " || ADCI: " + adci + " || ADII: " + adii + "\n\nTotal: "
