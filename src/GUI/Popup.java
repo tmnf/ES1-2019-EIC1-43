@@ -24,7 +24,7 @@ public class Popup extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final int TEST_CHOOSER = 0, LONG_RULE_ADD = 1, FEATURE_RULE_ADD = 2;
+	public static final int TEST_CHOOSER = 0, LONG_RULE_ADD = 1, FEATURE_RULE_ADD = 2, RESULTS = 3;
 	
 	private static final int WIDTH = 400, HEIGHT = 30;
 
@@ -128,16 +128,8 @@ public class Popup extends JFrame {
 	}
 
 	private void radioListener(JRadioButton and, JRadioButton or) {
-		and.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				or.setSelected(false);
-			}
-		});
-		or.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				and.setSelected(false);
-			}
-		});
+		and.addActionListener((e) -> or.setSelected(false));
+		or.addActionListener((e) -> and.setSelected(false));
 	}
 
 	
