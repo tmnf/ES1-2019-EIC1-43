@@ -1,30 +1,47 @@
 package GUI;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.JButton;
 
-import com.sun.prism.paint.Color;
-
 public class Button extends JButton {
 
-	private int corners;
+	private static final int RADIUS_DEFAULT = 40;
 
-	public Button(String text, int corners) {
+	private int radius;
+
+	public Button(String text) {
 		super(text);
+		this.radius = RADIUS_DEFAULT;
 
-		this.corners = corners;
+		applyFormat();
+	}
+
+	private void applyFormat() {
+		setContentAreaFilled(false);
+		setForeground(Color.WHITE);
+		setFont(new Font("Arial", Font.PLAIN, 14));
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
+		if (getModel().isArmed()) {
+			g.setColor(new Color(20, 20, 20, 220));
+		} else if (getModel().isRollover()) {
+			g.setColor(new Color(40, 40, 40, 220));
+		} else
+			g.setColor(new Color(50, 50, 50, 220));
+
+		g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
+
 		super.paintComponent(g);
 	}
 
 	@Override
 	protected void paintBorder(Graphics g) {
-		super.paintBorder(g);
-		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, corners, corners);
+		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
 	}
 
 }
