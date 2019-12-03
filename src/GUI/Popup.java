@@ -1,18 +1,17 @@
 package GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import Enums.Metric;
 import Enums.Test;
@@ -20,17 +19,20 @@ import MainLogic.DataProcesser;
 import Models.DefaultRule;
 import Models.NormalRule;
 
-public class Popup extends JFrame {
+public class Popup extends MainFrame {
 
 	private static final long serialVersionUID = 1L;
 
 	public static final int TEST_CHOOSER = 0, LONG_RULE_ADD = 1, FEATURE_RULE_ADD = 2, RESULTS = 3;
 
-	private static final int WIDTH = 400, HEIGHT = 30;
+	private static final int WIDTH = 600;
+
+	public static final Font ARIAL_BOLD = new Font("Arial", Font.BOLD, 16),
+			ARIAL_PLAIN = new Font("Arial", Font.PLAIN, 16);
 
 	private MainWindow mw;
 
-	private JPanel mainPanel;
+	private MainPanel mainPanel;
 
 	public Popup(int type, MainWindow mw) {
 		this.mw = mw;
@@ -61,26 +63,74 @@ public class Popup extends JFrame {
 	private void getRuleAddCommons(String title, Metric m1, Metric m2, Test test) {
 		setTitle(title);
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(MainFrame.DISPOSE_ON_CLOSE);
 
-		mainPanel = new JPanel(new BorderLayout());
+		mainPanel = new MainPanel(new BorderLayout());
 
-		JPanel centerPanel = new JPanel(new GridLayout(1, 3));
+		JPanel centerPanel = new JPanel(new GridLayout(2, 3, 5, 2));
 		JPanel bottomPanel = new JPanel(new GridLayout(1, 3));
+
+		centerPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		bottomPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+		JTextField nameText, metric1Text, metric2Text;
+		nameText = new JTextField("Nome da Regra");
+		metric1Text = new JTextField(m1.toString());
+		metric2Text = new JTextField(m2.toString());
+
+		nameText.setForeground(Color.white);
+		metric1Text.setForeground(Color.white);
+		metric2Text.setForeground(Color.white);
+
+		nameText.setOpaque(false);
+		metric1Text.setOpaque(false);
+		metric2Text.setOpaque(false);
+
+		nameText.setHorizontalAlignment(JTextField.CENTER);
+		metric1Text.setHorizontalAlignment(JTextField.CENTER);
+		metric2Text.setHorizontalAlignment(JTextField.CENTER);
+
+		nameText.setFont(ARIAL_BOLD);
+		metric1Text.setFont(ARIAL_BOLD);
+		metric2Text.setFont(ARIAL_BOLD);
+
+		nameText.setBorder(null);
+		metric1Text.setBorder(null);
+		metric2Text.setBorder(null);
+
+		centerPanel.add(nameText);
+		centerPanel.add(metric1Text);
+		centerPanel.add(metric2Text);
 
 		JTextField name, metric1, metric2;
 
 		name = new JTextField();
-		name.setText("Nome da Regra");
-		metric1 = new JTextField(m1.toString());
-		metric2 = new JTextField(m2.toString());
+		metric1 = new JTextField();
+		metric2 = new JTextField();
 
-		JButton add = new JButton("Adicionar");
+		name.setFont(ARIAL_PLAIN);
+		metric1.setFont(ARIAL_PLAIN);
+		metric2.setFont(ARIAL_PLAIN);
+
+		centerPanel.setOpaque(false);
+		bottomPanel.setOpaque(false);
+
+		Button add = new Button("Adicionar");
+		add.setPreferredSize(new Dimension(100, 40));
 
 		JRadioButton and, or;
 
 		and = new JRadioButton("AND");
 		or = new JRadioButton("OR");
+
+		and.setOpaque(false);
+		or.setOpaque(false);
+
+		and.setFont(ARIAL_PLAIN);
+		or.setFont(ARIAL_PLAIN);
+
+		and.setForeground(Color.white);
+		or.setForeground(Color.white);
 
 		radioListener(and, or);
 
@@ -97,17 +147,17 @@ public class Popup extends JFrame {
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-		add.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
+		add.addActionListener((e) -> {
+			try {
+				if (!DataProcesser.getInstance().alreadyExists(name.getText())) {
 					if (and.isEnabled() || or.isEnabled()) {
 						addNewRule(metric1.getText(), metric2.getText(), name.getText(), and.isSelected(), test);
 						dispose();
 					}
-				} catch (NumberFormatException e1) {
-					mw.openErrorPopup("Verfique que inseriu um número nos campos das métricas");
-				}
+				} else
+					mw.openErrorPopup("Já existe uma regra com esse nome!");
+			} catch (NumberFormatException e1) {
+				mw.openErrorPopup("Verfique que inseriu um número nos campos das métricas");
 			}
 		});
 
@@ -143,27 +193,32 @@ public class Popup extends JFrame {
 	private void openPickATest() {
 		setTitle("Escolher um teste");
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(MainFrame.DISPOSE_ON_CLOSE);
 
-		mainPanel = new JPanel(new BorderLayout());
+		mainPanel = new MainPanel(new BorderLayout());
 
 		JPanel bottomPanel = new JPanel(new BorderLayout());
 
 		DefaultComboBoxModel<DefaultRule> tests = DataProcesser.getInstance().getRulesList();
 
 		JComboBox<DefaultRule> testList = new JComboBox<>(tests);
-		testList.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		testList.setPreferredSize(new Dimension(WIDTH - 200, 40));
 
-		JButton analise = new JButton("Avaliar");
-		analise.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				DataProcesser.getInstance().analyseFile((DefaultRule) tests.getSelectedItem());
-				dispose();
-			}
+		Button analise = new Button("Avaliar");
+		analise.addActionListener((e) -> {
+			DataProcesser.getInstance().analyseFile((DefaultRule) tests.getSelectedItem());
+			dispose();
 		});
 
 		bottomPanel.add(analise, BorderLayout.EAST);
+
+		analise.setPreferredSize(new Dimension(100, 40));
+
+		testList.setFont(ARIAL_BOLD);
+
+		bottomPanel.setOpaque(false);
+
+		bottomPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		mainPanel.add(testList, BorderLayout.CENTER);
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);

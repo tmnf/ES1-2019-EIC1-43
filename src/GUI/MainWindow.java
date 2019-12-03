@@ -3,16 +3,11 @@ package GUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -25,12 +20,10 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
-import Enums.Test;
 import MainLogic.DataProcesser;
-import Models.NormalRule;
 import Utils.FileUtils;
 
-public class MainWindow extends JFrame {
+public class MainWindow extends MainFrame {
 
 	private static final long serialVersionUID = -1572507198564655896L;
 
@@ -62,7 +55,7 @@ public class MainWindow extends JFrame {
 	private void initComponents() {
 		setTitle(TITLE);
 		setMinimumSize(new Dimension(WIDTH - 200, HEIGHT - 200));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
 
 		mainPanel = new MainPanel(new BorderLayout());
 		rightPanel = new JPanel(new GridLayout(10, 1, 0, 5));
@@ -113,8 +106,8 @@ public class MainWindow extends JFrame {
 		rightPanel.setBorder(new EmptyBorder(15, 5, 5, 5));
 		bottomPanel.setBorder(new EmptyBorder(5, 10, 5, 5));
 
-		fileDisplay.setFont(new Font("Arial", Font.PLAIN, 16));
-		fileName.setFont(new Font("Arial", Font.PLAIN, 16));
+		fileDisplay.setFont(Popup.ARIAL_PLAIN);
+		fileName.setFont(Popup.ARIAL_PLAIN);
 		fileName.setForeground(Color.WHITE);
 
 		fileDisplay.setOpaque(false);
@@ -135,40 +128,20 @@ public class MainWindow extends JFrame {
 	}
 
 	private void addListeners() {
-		analyseBt.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tryToPopup(Popup.TEST_CHOOSER);
+		openBt.addActionListener((e) -> {
+			if (DataProcesser.getInstance().getCurrentSheet() != null) {
+				int option = openConfirmPopup(
+						"Se carregar outro ficheiro irá perder as regras adicionadas e os resultados. Deseja continuar?");
+				if (option != 0)
+					return;
 			}
+
+			openFile();
 		});
 
-		openBt.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (DataProcesser.getInstance().getCurrentSheet() != null) {
-					int option = openConfirmPopup(
-							"Se carregar outro ficheiro irá perder as regras adicionadas e os resultados. Deseja continuar?");
-					if (option == 1 || option == 2)
-						return;
-				}
-
-				openFile();
-			}
-		});
-
-		longAddBt.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tryToPopup(Popup.LONG_RULE_ADD);
-			}
-		});
-
-		featureAddBt.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tryToPopup(Popup.FEATURE_RULE_ADD);
-			}
-		});
+		analyseBt.addActionListener((e) -> tryToPopup(Popup.TEST_CHOOSER));
+		longAddBt.addActionListener((e) -> tryToPopup(Popup.LONG_RULE_ADD));
+		featureAddBt.addActionListener((e) -> tryToPopup(Popup.FEATURE_RULE_ADD));
 	}
 
 	private void tryToPopup(int type) {
@@ -184,9 +157,7 @@ public class MainWindow extends JFrame {
 		FileFilter filter = new FileNameExtensionFilter("Excel File", "xlsx");
 		fc.setFileFilter(filter);
 
-		fc.showOpenDialog(this);
-
-		if (fc.getSelectedFile() != null) {
+		if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			DataProcesser.getInstance().setCurrentSheet(FileUtils.readFile(fc.getSelectedFile().getPath()));
 			fileName.setText(fc.getSelectedFile().getName());
 		}

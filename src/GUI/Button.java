@@ -8,6 +8,8 @@ import javax.swing.JButton;
 
 public class Button extends JButton {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final int RADIUS_DEFAULT = 40;
 
 	private int radius;
@@ -16,6 +18,7 @@ public class Button extends JButton {
 		super(text);
 		this.radius = RADIUS_DEFAULT;
 
+		setFont(Popup.ARIAL_PLAIN);
 		applyFormat();
 	}
 

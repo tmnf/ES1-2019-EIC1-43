@@ -2,12 +2,12 @@ package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,7 +17,7 @@ import javax.swing.border.EmptyBorder;
 import MainLogic.DataProcesser;
 import Utils.FileUtils;
 
-public class ResultsPopup extends JFrame {
+public class ResultsPopup extends MainFrame {
 
 	private static final long serialVersionUID = 1L;
 
@@ -46,8 +46,6 @@ public class ResultsPopup extends JFrame {
 		setTitle("Resultados (" + rule + ")");
 		setResizable(false);
 
-		Font f = new Font("Arial", Font.PLAIN, 16);
-
 		MainPanel mainPanel = new MainPanel(new BorderLayout());
 		mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
@@ -67,7 +65,7 @@ public class ResultsPopup extends JFrame {
 		qualityDisplay.setForeground(Color.WHITE);
 		/* ============== */
 
-		qualityDisplay.setFont(f);
+		qualityDisplay.setFont(Popup.ARIAL_BOLD);
 
 		int total = dci + dii + adci + adii;
 		String quality = "DCI: " + dci + " || DII: " + dii + " || ADCI: " + adci + " || ADII: " + adii + "\nTotal: "
@@ -79,7 +77,6 @@ public class ResultsPopup extends JFrame {
 			showMethods.setPreferredSize(new Dimension(200, 40));
 
 			showMethods.addActionListener((e) -> showDefects());
-			showMethods.setFont(f);
 
 			botPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
@@ -112,7 +109,7 @@ public class ResultsPopup extends JFrame {
 	}
 
 	private void showDefects() {
-		JFrame frame = new JFrame();
+		MainFrame frame = new MainFrame();
 		frame.setTitle("Métodos Detectados - (" + rule + ")");
 		frame.setResizable(false);
 
@@ -121,9 +118,15 @@ public class ResultsPopup extends JFrame {
 
 		DefaultListModel<String> res = new DefaultListModel<>();
 		JList<String> results = new JList<>(res);
+
+		results.setOpaque(false);
+		results.setForeground(Color.WHITE);
+
+		results.setCellRenderer(new ListRenderer());
+
 		JScrollPane scroll = new JScrollPane(results);
 
-		results.setFont(new Font("Arial", Font.PLAIN, 16));
+		results.setFont(Popup.ARIAL_PLAIN);
 		int indexOfMethods = FileUtils.getCellIndexByText("method");
 
 		for (int x : methods) {
@@ -133,12 +136,30 @@ public class ResultsPopup extends JFrame {
 			res.addElement("ID: " + x + " - " + method + "(...)");
 		}
 
+		scroll.setOpaque(false);
+		scroll.getViewport().setOpaque(false);
+
 		mainPanel.add(scroll);
 
 		frame.setContentPane(mainPanel);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+	}
+
+	public class ListRenderer extends DefaultListCellRenderer {
+
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+				boolean cellHasFocus) {
+			super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+			setBackground(Color.DARK_GRAY);
+			setOpaque(isSelected);
+			return this;
+		}
 	}
 
 }

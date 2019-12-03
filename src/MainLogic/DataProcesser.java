@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import Enums.Test;
 import GUI.MainWindow;
 import Models.DefaultRule;
+import Models.NormalRule;
 import Utils.FileUtils;
 
 public class DataProcesser {
@@ -14,7 +15,6 @@ public class DataProcesser {
 	private static DataProcesser INSTANCE;
 
 	private MainWindow gui;
-	public DefaultRule DefaultRule;
 
 	private Sheet currentSheet;
 
@@ -47,12 +47,9 @@ public class DataProcesser {
 	}
 
 	public void initWindow() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				gui = new MainWindow();
-				gui.openWindow();
-			}
+		new Thread(() -> {
+			gui = new MainWindow();
+			gui.openWindow();
 		}).start();
 	}
 
@@ -66,6 +63,20 @@ public class DataProcesser {
 
 	public void addToRuleList(DefaultRule DefaultRule) {
 		tests.addElement(DefaultRule);
+	}
+
+	public boolean alreadyExists(String name) {
+		int i = 0;
+		while (i != tests.getSize()) {
+			DefaultRule rule = tests.getElementAt(i);
+			if (rule instanceof NormalRule)
+				if (((NormalRule) rule).getNomeDaRegra().equals(name))
+					return true;
+			i++;
+		}
+
+		return false;
+
 	}
 
 	public DefaultComboBoxModel<DefaultRule> getRulesList() {
