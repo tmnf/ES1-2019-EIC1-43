@@ -63,7 +63,6 @@ public class ResultsPopup extends MainFrame {
 
 		qualityDisplay.setBorder(new EmptyBorder(10, 10, 10, 10));
 		qualityDisplay.setForeground(Color.WHITE);
-		/* ============== */
 
 		qualityDisplay.setFont(Popup.ARIAL_BOLD);
 
@@ -110,7 +109,7 @@ public class ResultsPopup extends MainFrame {
 
 	private void showDefects() {
 		MainFrame frame = new MainFrame();
-		frame.setTitle("Métodos Detectados - (" + rule + ")");
+		frame.setTitle("Métodos Detectados: " + methods.size() + " - (" + rule + ")");
 		frame.setResizable(false);
 
 		MainPanel mainPanel = new MainPanel(new BorderLayout());
