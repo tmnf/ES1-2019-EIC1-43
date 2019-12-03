@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 
 import Enums.Metric;
 import Enums.Test;
+import GUI.ResultsPopup;
 import Models.DefaultRule;
 import Models.NormalRule;
 import Utils.FileUtils;
@@ -51,24 +52,15 @@ public class Analyser extends Thread {
 		}
 	}
 
-	private void showResults() { // MANTER ESTA IMPLEMENTAÇãO EM TESTE
-		int total = dci + dii + adci + adii;
+	private void showResults() {
 		String test = rule.toString();
-		/*
-		 * float dciAux, diiAux, adciAux, adiiAux; dciAux = ((float) dci / total) * 100;
-		 * diiAux = ((float) dii / total) * 100; adciAux = ((float) adci / total) * 100;
-		 * adiiAux = ((float) adii / total) * 100;
-		 */
-		System.out.println();
-		System.out.println("==========================");
-		System.out.println("DCI (" + test + "): " + dci);
-		System.out.println("DII (" + test + "): " + dii);
-		System.out.println("ADCI (" + test + "): " + adci);
-		System.out.println("ADII (" + test + "): " + adii);
-		System.out.println("---------------------------");
 
-		System.out.println("Total (" + test + "): " + (total));
-		System.out.println("==========================");
+		if (rule.getTest() == Test.LONG_METHOD)
+			new ResultsPopup(test, dci, dii, adci, adii, getIsLongList());
+		else if (rule.getTest() == Test.IS_FEATURE_ENVY)
+			new ResultsPopup(test, dci, dii, adci, adii, getIsFeatureEnvyList());
+		else
+			new ResultsPopup(test, dci, dii, adci, adii, null);
 	}
 
 	/* ===================== METHODS TO IMPLEMENT ===================== */
@@ -107,7 +99,7 @@ public class Analyser extends Thread {
 				ver2 = FileUtils.getCellAt(row, metrics[1]).getNumericCellValue() > ruleAux.getMetric2();
 			else
 				ver2 = Double.parseDouble(FileUtils.getCellAt(row, metrics[1]).toString()) < ruleAux.getMetric2();
-			
+
 			if (ruleAux.getAnd())
 				res.add(ver1 && ver2);
 			else
@@ -191,7 +183,7 @@ public class Analyser extends Thread {
 	// file
 	private void compareFeatureEnvy() {
 		ArrayList<Boolean> is_feature_list = getIsFeatureEnvyList();
-		
+
 		int i = 0;
 		int featureEnvyIndex = FileUtils.getCellIndexByText(Test.IS_FEATURE_ENVY.getRealName());
 

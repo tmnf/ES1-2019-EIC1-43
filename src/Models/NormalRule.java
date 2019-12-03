@@ -35,7 +35,7 @@ public class NormalRule extends DefaultRule {
 
 	@Override
 	public String toString() {
-		return nomeDaRegra + " (" + test + ")";
+		return nomeDaRegra;
 	}
 
 }

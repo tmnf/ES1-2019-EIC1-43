@@ -25,7 +25,7 @@ public class Popup extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	public static final int TEST_CHOOSER = 0, LONG_RULE_ADD = 1, FEATURE_RULE_ADD = 2, RESULTS = 3;
-	
+
 	private static final int WIDTH = 400, HEIGHT = 30;
 
 	private MainWindow mw;
@@ -53,8 +53,11 @@ public class Popup extends JFrame {
 		}
 	}
 
-	/* ================================== ADD RULE SECTION ================================== */
-	
+	/*
+	 * ================================== ADD RULE SECTION
+	 * ==================================
+	 */
+
 	private void getRuleAddCommons(String title, Metric m1, Metric m2, Test test) {
 		setTitle(title);
 		setResizable(false);
@@ -132,9 +135,11 @@ public class Popup extends JFrame {
 		or.addActionListener((e) -> and.setSelected(false));
 	}
 
-	
-	/* ================================== CHOOSE A TEST ==================================*/
-	
+	/*
+	 * ================================== CHOOSE A TEST
+	 * ==================================
+	 */
+
 	private void openPickATest() {
 		setTitle("Escolher um teste");
 		setResizable(false);
@@ -154,6 +159,7 @@ public class Popup extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				DataProcesser.getInstance().analyseFile((DefaultRule) tests.getSelectedItem());
+				dispose();
 			}
 		});
 
@@ -166,7 +172,7 @@ public class Popup extends JFrame {
 	}
 
 	/* General */
-	
+
 	private void showPopup() {
 		add(mainPanel);
 		pack();

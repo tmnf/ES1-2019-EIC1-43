@@ -4,18 +4,24 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
+import MainLogic.DataProcesser;
+import Utils.FileUtils;
+
 public class ResultsPopup extends JFrame {
 
-	private final int WIDTH = 300, HEIGHT = 105;
+	private static final long serialVersionUID = 1L;
+
+	private final int WIDTH = 500, HEIGHT = 105;
 
 	private String rule;
 
@@ -30,21 +36,16 @@ public class ResultsPopup extends JFrame {
 		this.adci = adci;
 		this.adii = adii;
 
-		methods = getMethods(results);
+		if (results != null)
+			methods = getMethods(results);
 
-		initWindow();
-	}
-
-	// Para apagar
-	public ResultsPopup() {
-		rule = "Teste";
 		initWindow();
 	}
 
 	private void initWindow() {
 		setTitle("Resultados (" + rule + ")");
 		setResizable(false);
-		
+
 		Font f = new Font("Arial", Font.PLAIN, 16);
 
 		MainPanel mainPanel = new MainPanel(new BorderLayout());
@@ -54,35 +55,41 @@ public class ResultsPopup extends JFrame {
 
 		topPanel = new JPanel(new BorderLayout());
 		botPanel = new JPanel(new BorderLayout());
-		
+
 		topPanel.setOpaque(false);
 		botPanel.setOpaque(false);
 
 		JTextArea qualityDisplay = new JTextArea();
 		qualityDisplay.setEditable(false);
-		
-		// Exemplos
-		qualityDisplay.setBorder(new EmptyBorder(5,5,5,5));
-		qualityDisplay.setBackground(new Color(60, 100,40, 100));
+		qualityDisplay.setOpaque(false);
+
+		qualityDisplay.setBorder(new EmptyBorder(10, 10, 10, 10));
 		qualityDisplay.setForeground(Color.WHITE);
-		/*==============*/
-		
+		/* ============== */
+
 		qualityDisplay.setFont(f);
-		
 
 		int total = dci + dii + adci + adii;
-		String quality = "DCI: " + dci + " || DII: " + dii + " || ADCI: " + adci + " || ADII: " + adii + "\n\nTotal: "
+		String quality = "DCI: " + dci + " || DII: " + dii + " || ADCI: " + adci + " || ADII: " + adii + "\nTotal: "
 				+ total;
 		qualityDisplay.setText(quality);
 
-		Button showMethods = new Button("Deteção de Defeitos");
-		showMethods.setPreferredSize(new Dimension(150, 40));
+		if (methods != null) {
+			Button showMethods = new Button("Deteção de Defeitos");
+			showMethods.setPreferredSize(new Dimension(200, 40));
+
+			showMethods.addActionListener((e) -> showDefects());
+			showMethods.setFont(f);
+
+			botPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+			botPanel.add(showMethods, BorderLayout.EAST);
+			mainPanel.add(botPanel, BorderLayout.SOUTH);
+		}
 
 		topPanel.add(qualityDisplay, BorderLayout.CENTER);
-		botPanel.add(showMethods, BorderLayout.EAST);
 
 		mainPanel.add(topPanel, BorderLayout.CENTER);
-		mainPanel.add(botPanel, BorderLayout.SOUTH);
 
 		setContentPane(mainPanel);
 		pack();
@@ -91,11 +98,47 @@ public class ResultsPopup extends JFrame {
 	}
 
 	private ArrayList<Integer> getMethods(ArrayList<Boolean> results) {
-		return null;
+		ArrayList<Integer> methodIds = new ArrayList<>();
+
+		int i = 0;
+		while (i != results.size()) {
+			if (results.get(i))
+				methodIds.add(i + 1);
+
+			i++;
+		}
+
+		return methodIds;
 	}
 
 	private void showDefects() {
+		JFrame frame = new JFrame();
+		frame.setTitle("Métodos Detectados - (" + rule + ")");
+		frame.setResizable(false);
 
+		MainPanel mainPanel = new MainPanel(new BorderLayout());
+		mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT + 100));
+
+		DefaultListModel<String> res = new DefaultListModel<>();
+		JList<String> results = new JList<>(res);
+		JScrollPane scroll = new JScrollPane(results);
+
+		results.setFont(new Font("Arial", Font.PLAIN, 16));
+		int indexOfMethods = FileUtils.getCellIndexByText("method");
+
+		for (int x : methods) {
+			String method = DataProcesser.getInstance().getCurrentSheet().getRow(x).getCell(indexOfMethods)
+					.getStringCellValue().split("\\(")[0];
+
+			res.addElement("ID: " + x + " - " + method + "(...)");
+		}
+
+		mainPanel.add(scroll);
+
+		frame.setContentPane(mainPanel);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 	}
 
 }
