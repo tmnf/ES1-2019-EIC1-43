@@ -1,8 +1,10 @@
 package Models;
 
+import java.io.Serializable;
+
 import Enums.Test;
 
-public class DefaultRule {
+public class DefaultRule implements Serializable{
 
 	protected Test test;
 
