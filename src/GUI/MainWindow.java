@@ -6,15 +6,18 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -96,7 +99,55 @@ public class MainWindow extends MainFrame {
 		mainPanel.add(leftPanel, BorderLayout.CENTER);
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
+		getMenu();
+
 		setContentPane(mainPanel);
+	}
+
+	private void getMenu() {
+		JPopupMenu menu = new JPopupMenu("Tools");
+
+		JMenuItem load, save;
+		load = new JMenuItem("Carregar Regras");
+		save = new JMenuItem("Guardar Regras");
+
+		JFileChooser jf = new JFileChooser(".");
+		FileFilter filter = new FileNameExtensionFilter("Rules File (.rl)", "rl");
+		jf.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		jf.setFileFilter(filter);
+
+		load.addActionListener((e) -> {
+			if (DataProcesser.getInstance().getCurrentSheet() == null)
+				openErrorPopup("Carregue um ficheiro primeiro!");
+			else if (jf.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+				DataProcesser.getInstance().loadRules(jf.getSelectedFile().getPath());
+		});
+
+		save.addActionListener((e) -> {
+
+			if (DataProcesser.getInstance().getCurrentSheet() == null)
+				openErrorPopup("Carregue um ficheiro primeiro!");
+			else if (jf.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+				DataProcesser.getInstance().saveRules(jf.getSelectedFile().getPath());
+		});
+
+		save.setFont(Popup.ARIAL_PLAIN_SMALL);
+		load.setFont(Popup.ARIAL_PLAIN_SMALL);
+
+		this.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (SwingUtilities.isRightMouseButton(e))
+					menu.show(MainWindow.this, e.getX(), e.getY());
+				else
+					super.mouseClicked(e);
+			}
+		});
+
+		menu.add(save);
+		menu.add(load);
+
+		this.add(menu, BorderLayout.NORTH);
 	}
 
 	private void formatComponents() {

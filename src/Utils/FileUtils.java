@@ -95,16 +95,21 @@ public class FileUtils {
 		return cellIndex;
 	}
 
-	public static void saveFile(String path, ArrayList<DefaultRule> tests) {
+	public static void saveFile(String path, DefaultComboBoxModel<DefaultRule> tests) {
+		ArrayList<DefaultRule> aux = getRulesFromModel(tests);
 		try {
+
+			if (!path.contains(".rl"))
+				path += ".rl";
+
 			File f = new File(path);
-			
-			if(f.exists())
+
+			if (f.exists())
 				f.delete();
-			
-			FileOutputStream fos = new FileOutputStream(path);
+
+			FileOutputStream fos = new FileOutputStream(f);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(tests);
+			oos.writeObject(aux);
 			oos.close();
 		} catch (Exception e) {
 			e.printStackTrace();

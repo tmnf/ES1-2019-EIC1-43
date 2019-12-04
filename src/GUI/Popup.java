@@ -28,7 +28,7 @@ public class Popup extends MainFrame {
 	private static final int WIDTH = 600;
 
 	public static final Font ARIAL_BOLD = new Font("Arial", Font.BOLD, 16),
-			ARIAL_PLAIN = new Font("Arial", Font.PLAIN, 16);
+			ARIAL_PLAIN = new Font("Arial", Font.PLAIN, 16), ARIAL_PLAIN_SMALL = new Font("Arial", Font.PLAIN, 14);
 
 	private MainWindow mw;
 

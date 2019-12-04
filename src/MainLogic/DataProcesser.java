@@ -1,5 +1,7 @@
 package MainLogic;
 
+import java.util.ArrayList;
+
 import javax.swing.DefaultComboBoxModel;
 
 import org.apache.poi.ss.usermodel.Sheet;
@@ -82,6 +84,18 @@ public class DataProcesser {
 
 		return false;
 
+	}
+
+	public void saveRules(String path) {
+		FileUtils.saveFile(path, tests);
+		gui.openWarningPopup("Regras Guardadas Com Sucesso");
+	}
+
+	public void loadRules(String path) {
+		tests.removeAllElements();
+		ArrayList<DefaultRule> rulesLoaded = FileUtils.loadRules(path);
+		FileUtils.addRulesToListFromArray(rulesLoaded, tests);
+		gui.openWarningPopup("Regras Carregadas Com Sucesso");
 	}
 
 	public DefaultComboBoxModel<DefaultRule> getRulesList() {
