@@ -85,7 +85,7 @@ public class Popup extends MainFrame {
 		nameText.setOpaque(false);
 		metric1Text.setOpaque(false);
 		metric2Text.setOpaque(false);
-		
+
 		nameText.setEditable(false);
 		metric1Text.setEditable(false);
 		metric2Text.setEditable(false);
@@ -152,21 +152,28 @@ public class Popup extends MainFrame {
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
 		add.addActionListener((e) -> {
+			String error = "";
+
+			if (DataProcesser.getInstance().alreadyExists(name.getText()))
+				error = "Já existe uma regra com esse nome!";
+			else if (name.getText().trim().isEmpty())
+				error = "Deve inserir um nome para a regra criada";
+
+			if (!error.isEmpty()) {
+				mw.openErrorPopup(error);
+				return;
+			}
+
 			try {
-				if (!DataProcesser.getInstance().alreadyExists(name.getText())) {
-					if ((and.isEnabled() || or.isEnabled() )  && !name.getText().trim().isEmpty()) {
-						addNewRule(metric1.getText(), metric2.getText(), name.getText(), and.isSelected(), test);
-						dispose();
-					}else
-						mw.openErrorPopup("Deu um nome à regra");
-				} else
-					mw.openErrorPopup("Já existe uma regra com esse nome!");
+				addNewRule(metric1.getText(), metric2.getText(), name.getText(), and.isSelected(), test);
+				dispose();
 			} catch (NumberFormatException e1) {
 				mw.openErrorPopup("Verfique que inseriu um número nos campos das métricas");
 			}
 		});
 
 		showPopup();
+
 	}
 
 	private void addNewRule(String metric1, String metric2, String ruleName, boolean and, Test test) {

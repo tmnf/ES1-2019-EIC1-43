@@ -98,7 +98,7 @@ public class ResultsPopup extends MainFrame {
 
 		int i = 0;
 		while (i != results.size()) {
-			if (!results.get(i))
+			if (results.get(i))
 				methodIds.add(i + 1);
 
 			i++;
@@ -108,8 +108,8 @@ public class ResultsPopup extends MainFrame {
 
 	private void showDefects() {
 		MainFrame frame = new MainFrame();
-		frame.setTitle("Métodos Com Defeitos Detectados: " + methods.size() + " - (" + rule + ")");
-		frame.setResizable(false);
+		frame.setTitle("Métodos Com Defeitos: " + methods.size() + " - (" + rule + ")");
+		frame.setMinimumSize(new Dimension(WIDTH, HEIGHT + 100));
 
 		MainPanel mainPanel = new MainPanel(new BorderLayout());
 		mainPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT + 100));
@@ -124,7 +124,7 @@ public class ResultsPopup extends MainFrame {
 
 		JScrollPane scroll = new JScrollPane(results);
 
-		results.setFont(Popup.ARIAL_PLAIN);
+		results.setFont(Popup.ARIAL_BOLD);
 		int indexOfMethods = FileUtils.getCellIndexByText("method");
 
 		for (int x : methods) {
