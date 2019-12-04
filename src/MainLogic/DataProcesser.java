@@ -68,8 +68,6 @@ public class DataProcesser {
 
 	public void addToRuleList(DefaultRule rule) {
 		tests.addElement(rule);
-		for(DefaultRule x : FileUtils.loadRules("./images/rules.rule"))
-			System.out.println(x);
 	}
 
 	public boolean alreadyExists(String name) {
