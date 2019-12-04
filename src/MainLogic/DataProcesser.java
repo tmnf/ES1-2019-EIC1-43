@@ -26,8 +26,6 @@ public class DataProcesser {
 
 	private void initTestList() {
 		tests = new DefaultComboBoxModel<>();
-		addToRuleList(new DefaultRule(Test.IPLASMA));
-		addToRuleList(new DefaultRule(Test.PMD));
 	}
 
 	public static DataProcesser getInstance() {
@@ -36,8 +34,15 @@ public class DataProcesser {
 		return INSTANCE;
 	}
 
-	public void setCurrentSheet(Sheet sheet) {
+	public void setCurrentSheet(Sheet sheet, boolean keepRules) {
 		this.currentSheet = sheet;
+
+		if (!keepRules) {
+			tests.removeAllElements();
+
+			addToRuleList(new DefaultRule(Test.IPLASMA));
+			addToRuleList(new DefaultRule(Test.PMD));
+		}
 
 		gui.displayText(FileUtils.fileToString(currentSheet));
 	}

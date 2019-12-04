@@ -129,14 +129,18 @@ public class MainWindow extends MainFrame {
 
 	private void addListeners() {
 		openBt.addActionListener((e) -> {
+			boolean keepRules = false;
 			if (DataProcesser.getInstance().getCurrentSheet() != null) {
 				int option = openConfirmPopup(
-						"Se carregar outro ficheiro irá perder as regras adicionadas e os resultados. Deseja continuar?");
-				if (option != 0)
+						"Está a tentar carregar outro ficheiro. Deseja manter as regras criadas até agora?");
+
+				if (option == 1)
+					keepRules = true;
+				else if (option != 1 && option != 0)
 					return;
 			}
 
-			openFile();
+			openFile(keepRules);
 		});
 
 		analyseBt.addActionListener((e) -> tryToPopup(Popup.TEST_CHOOSER));
@@ -152,13 +156,13 @@ public class MainWindow extends MainFrame {
 		new Popup(type, this);
 	}
 
-	private void openFile() {
+	private void openFile(boolean keepRules) {
 		fc = new JFileChooser(".");
 		FileFilter filter = new FileNameExtensionFilter("Excel File", "xlsx");
 		fc.setFileFilter(filter);
 
 		if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-			DataProcesser.getInstance().setCurrentSheet(FileUtils.readFile(fc.getSelectedFile().getPath()));
+			DataProcesser.getInstance().setCurrentSheet(FileUtils.readFile(fc.getSelectedFile().getPath()), keepRules);
 			fileName.setText(fc.getSelectedFile().getName());
 		}
 	}
@@ -226,7 +230,9 @@ public class MainWindow extends MainFrame {
 	}
 
 	private int openConfirmPopup(String warning) {
-		return JOptionPane.showConfirmDialog(this, warning, "Atenção!", JOptionPane.WARNING_MESSAGE);
+		String[] options = { "Novas Regras", "Manter Regras", "Cancelar" };
+		return JOptionPane.showOptionDialog(this, warning, "Atenção!", JOptionPane.DEFAULT_OPTION,
+				JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 	}
 
 	public void openWindow() {
