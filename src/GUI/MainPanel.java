@@ -3,20 +3,23 @@ package GUI;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.LayoutManager;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class MainPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+
 	private Image background;
 
 	public MainPanel(LayoutManager layout) {
 		super(layout);
 		try {
-			background = ImageIO.read(new File("images/back.jpg"));
+			URL url = MainPanel.class.getResource("/back.jpg");
+			background = ImageIO.read(url);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
