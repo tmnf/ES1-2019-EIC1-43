@@ -85,6 +85,10 @@ public class Popup extends MainFrame {
 		nameText.setOpaque(false);
 		metric1Text.setOpaque(false);
 		metric2Text.setOpaque(false);
+		
+		nameText.setEditable(false);
+		metric1Text.setEditable(false);
+		metric2Text.setEditable(false);
 
 		nameText.setHorizontalAlignment(JTextField.CENTER);
 		metric1Text.setHorizontalAlignment(JTextField.CENTER);
@@ -150,10 +154,11 @@ public class Popup extends MainFrame {
 		add.addActionListener((e) -> {
 			try {
 				if (!DataProcesser.getInstance().alreadyExists(name.getText())) {
-					if (and.isEnabled() || or.isEnabled()) {
+					if ((and.isEnabled() || or.isEnabled() )  && !name.getText().trim().isEmpty()) {
 						addNewRule(metric1.getText(), metric2.getText(), name.getText(), and.isSelected(), test);
 						dispose();
-					}
+					}else
+						mw.openErrorPopup("Deu um nome à regra");
 				} else
 					mw.openErrorPopup("Já existe uma regra com esse nome!");
 			} catch (NumberFormatException e1) {

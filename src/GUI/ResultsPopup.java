@@ -98,18 +98,17 @@ public class ResultsPopup extends MainFrame {
 
 		int i = 0;
 		while (i != results.size()) {
-			if (results.get(i))
+			if (!results.get(i))
 				methodIds.add(i + 1);
 
 			i++;
 		}
-
 		return methodIds;
 	}
 
 	private void showDefects() {
 		MainFrame frame = new MainFrame();
-		frame.setTitle("Métodos Detectados: " + methods.size() + " - (" + rule + ")");
+		frame.setTitle("Métodos Com Defeitos Detectados: " + methods.size() + " - (" + rule + ")");
 		frame.setResizable(false);
 
 		MainPanel mainPanel = new MainPanel(new BorderLayout());
