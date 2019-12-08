@@ -17,5 +17,4 @@ public enum Test {
 	public String toString() {
 		return realName;
 	}
-
 }

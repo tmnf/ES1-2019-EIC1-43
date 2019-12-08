@@ -4,25 +4,27 @@ import Enums.Test;
 
 public class NormalRule extends DefaultRule {
 
-	private boolean AND;
-	private String nomeDaRegra;
+	private static final long serialVersionUID = -5690832323754691580L;
+
+	private boolean and;
+	private String ruleName;
 	private float metric1, metric2;
 
-	public NormalRule(String nomeDaRegra, float metric1, float metric2, boolean AND, Test test) {
+	public NormalRule(String ruleName, float metric1, float metric2, boolean and, Test test) {
 		super(test);
 
-		this.AND = AND;
+		this.and = and;
 		this.metric1 = metric1;
 		this.metric2 = metric2;
-		this.nomeDaRegra = nomeDaRegra;
+		this.ruleName = ruleName;
 	}
 
 	public boolean getAnd() {
-		return AND;
+		return and;
 	}
 
-	public String getNomeDaRegra() {
-		return nomeDaRegra;
+	public String getRuleName() {
+		return ruleName;
 	}
 
 	public float getMetric1() {
@@ -35,7 +37,7 @@ public class NormalRule extends DefaultRule {
 
 	@Override
 	public String toString() {
-		return nomeDaRegra;
+		return ruleName;
 	}
 
 }

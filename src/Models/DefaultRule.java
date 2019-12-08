@@ -4,7 +4,9 @@ import java.io.Serializable;
 
 import Enums.Test;
 
-public class DefaultRule implements Serializable{
+public class DefaultRule implements Serializable {
+
+	private static final long serialVersionUID = 4807672119585434880L;
 
 	protected Test test;
 

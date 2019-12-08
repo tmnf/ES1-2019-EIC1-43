@@ -19,30 +19,24 @@ import Utils.FileUtils;
 
 public class ResultsPopup extends MainFrame {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1722546932035724292L;
 
 	private final int WIDTH = 500, HEIGHT = 105;
 
 	private String rule;
 
-	private int dci, dii, adci, adii;
-
 	private ArrayList<Integer> methods;
 
 	public ResultsPopup(String rule, int dci, int dii, int adci, int adii, ArrayList<Boolean> results) {
 		this.rule = rule;
-		this.dci = dci;
-		this.dii = dii;
-		this.adci = adci;
-		this.adii = adii;
 
 		if (results != null)
 			methods = getMethods(results);
 
-		initWindow();
+		initWindow(dci, dii, adci, adii);
 	}
 
-	private void initWindow() {
+	private void initWindow(int dci, int dii, int adci, int adii) {
 		setTitle("Resultados (" + rule + ")");
 		setResizable(false);
 
@@ -103,6 +97,7 @@ public class ResultsPopup extends MainFrame {
 
 			i++;
 		}
+
 		return methodIds;
 	}
 
@@ -125,8 +120,8 @@ public class ResultsPopup extends MainFrame {
 		JScrollPane scroll = new JScrollPane(results);
 
 		results.setFont(Popup.ARIAL_BOLD);
-		int indexOfMethods = FileUtils.getCellIndexByText("method");
 
+		int indexOfMethods = FileUtils.getCellIndexByText("method");
 		for (int x : methods) {
 			String method = DataProcesser.getInstance().getCurrentSheet().getRow(x).getCell(indexOfMethods)
 					.getStringCellValue().split("\\(")[0];
@@ -147,7 +142,7 @@ public class ResultsPopup extends MainFrame {
 
 	public class ListRenderer extends DefaultListCellRenderer {
 
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 3232806649180145627L;
 
 		@Override
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,

@@ -63,13 +63,6 @@ public class Analyser extends Thread {
 			new ResultsPopup(test, dci, dii, adci, adii, null);
 	}
 
-	/* ===================== METHODS TO IMPLEMENT ===================== */
-
-	/*
-	 * Para primeira versão usar como métricas as constantes definidas no inicio da
-	 * classe
-	 */
-
 	// Returns is_long_method for all methods in file using user rules and metrics
 	public ArrayList<Boolean> getIsLongList() {
 		return getResultList(Metric.LOC, Metric.CYCLO);
@@ -93,12 +86,12 @@ public class Analyser extends Thread {
 
 			boolean ver1, ver2;
 
-			ver1 = FileUtils.getCellAt(row, metrics[0]).getNumericCellValue() > ruleAux.getMetric1();
+			ver1 = row.getCell(metrics[0]).getNumericCellValue() > ruleAux.getMetric1();
 
 			if (rule.getTest() == Test.LONG_METHOD)
-				ver2 = FileUtils.getCellAt(row, metrics[1]).getNumericCellValue() > ruleAux.getMetric2();
+				ver2 = row.getCell(metrics[1]).getNumericCellValue() > ruleAux.getMetric2();
 			else
-				ver2 = Double.parseDouble(FileUtils.getCellAt(row, metrics[1]).toString()) < ruleAux.getMetric2();
+				ver2 = Double.parseDouble(row.getCell(metrics[1]).toString()) < ruleAux.getMetric2();
 
 			if (ruleAux.getAnd())
 				res.add(ver1 && ver2);
@@ -121,14 +114,12 @@ public class Analyser extends Thread {
 	// Compares is_long_method from user with is_long_method, iPlasma and PMD in
 	// every method from file
 	public void compareLongMethod() {
-		int indexOfValueToCompare, longMethodIndex;
-
-		longMethodIndex = FileUtils.getCellIndexByText(Test.LONG_METHOD.getRealName());
+		int longMethodIndex = FileUtils.getCellIndexByText(Test.LONG_METHOD.getRealName());
 
 		if (rule.getTest() == Test.LONG_METHOD) {
 			compareLongWithLong(longMethodIndex);
 		} else {
-			indexOfValueToCompare = FileUtils.getCellIndexByText(rule.toString());
+			int indexOfValueToCompare = FileUtils.getCellIndexByText(rule.toString());
 			compareLongWithNormalTest(indexOfValueToCompare, longMethodIndex);
 		}
 
@@ -142,8 +133,8 @@ public class Analyser extends Thread {
 			if (row.getRowNum() == 0)
 				continue;
 
-			isLongValue = FileUtils.getCellAt(row, longMethodIndex).getBooleanCellValue();
-			valueToCompare = FileUtils.getCellAt(row, indexOfValueToCompare).getBooleanCellValue();
+			isLongValue = row.getCell(longMethodIndex).getBooleanCellValue();
+			valueToCompare = row.getCell(indexOfValueToCompare).getBooleanCellValue();
 
 			defectsLongList(valueToCompare, isLongValue);
 		}
@@ -159,9 +150,9 @@ public class Analyser extends Thread {
 			if (row.getRowNum() == 0)
 				continue;
 
-			isLongValue = FileUtils.getCellAt(row, longIndex).getBooleanCellValue();
-
+			isLongValue = row.getCell(longIndex).getBooleanCellValue();
 			valueToCompare = is_long_ist.get(i);
+
 			i++;
 
 			defectsLongList(valueToCompare, isLongValue);
@@ -191,11 +182,10 @@ public class Analyser extends Thread {
 			if (row.getRowNum() == 0)
 				continue;
 
-			defectsLongList(FileUtils.getCellAt(row, featureEnvyIndex).getBooleanCellValue(), is_feature_list.get(i));
+			defectsLongList(row.getCell(featureEnvyIndex).getBooleanCellValue(), is_feature_list.get(i));
 			i++;
 		}
 
 		showResults();
 	}
-
 }

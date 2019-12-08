@@ -1,14 +1,13 @@
 package GUI;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.JButton;
 
 public class Button extends JButton {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1269050536627782589L;
 
 	private static final int RADIUS_DEFAULT = 40;
 
@@ -18,14 +17,20 @@ public class Button extends JButton {
 		super(text);
 		this.radius = RADIUS_DEFAULT;
 
-		setFont(Popup.ARIAL_PLAIN);
-		applyFormat();
+		applyCommons();
 	}
 
-	private void applyFormat() {
+	public Button(String text, int radius) {
+		super(text);
+		this.radius = radius;
+
+		applyCommons();
+	}
+
+	private void applyCommons() {
+		setFont(Popup.ARIAL_PLAIN_SMALL);
 		setContentAreaFilled(false);
 		setForeground(Color.WHITE);
-		setFont(new Font("Arial", Font.PLAIN, 14));
 	}
 
 	@Override
@@ -46,5 +51,4 @@ public class Button extends JButton {
 	protected void paintBorder(Graphics g) {
 		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
 	}
-
 }

@@ -21,7 +21,7 @@ import Models.NormalRule;
 
 public class Popup extends MainFrame {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2419830468873315990L;
 
 	public static final int TEST_CHOOSER = 0, LONG_RULE_ADD = 1, FEATURE_RULE_ADD = 2, RESULTS = 3;
 
@@ -31,7 +31,6 @@ public class Popup extends MainFrame {
 			ARIAL_PLAIN = new Font("Arial", Font.PLAIN, 16), ARIAL_PLAIN_SMALL = new Font("Arial", Font.PLAIN, 14);
 
 	private MainWindow mw;
-
 	private MainPanel mainPanel;
 
 	public Popup(int type, MainWindow mw) {
@@ -54,11 +53,6 @@ public class Popup extends MainFrame {
 			break;
 		}
 	}
-
-	/*
-	 * ================================== ADD RULE SECTION
-	 * ==================================
-	 */
 
 	private void getRuleAddCommons(String title, Metric m1, Metric m2, Test test) {
 		setTitle(title);
@@ -173,7 +167,6 @@ public class Popup extends MainFrame {
 		});
 
 		showPopup();
-
 	}
 
 	private void addNewRule(String metric1, String metric2, String ruleName, boolean and, Test test) {
@@ -196,11 +189,6 @@ public class Popup extends MainFrame {
 		and.addActionListener((e) -> or.setSelected(false));
 		or.addActionListener((e) -> and.setSelected(false));
 	}
-
-	/*
-	 * ================================== CHOOSE A TEST
-	 * ==================================
-	 */
 
 	private void openPickATest() {
 		setTitle("Escolher um teste");
@@ -229,7 +217,6 @@ public class Popup extends MainFrame {
 		testList.setFont(ARIAL_BOLD);
 
 		bottomPanel.setOpaque(false);
-
 		bottomPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		mainPanel.add(testList, BorderLayout.CENTER);

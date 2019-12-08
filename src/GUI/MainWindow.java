@@ -99,12 +99,12 @@ public class MainWindow extends MainFrame {
 		mainPanel.add(leftPanel, BorderLayout.CENTER);
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-		getMenu();
+		generatePopupMenu();
 
 		setContentPane(mainPanel);
 	}
 
-	private void getMenu() {
+	private void generatePopupMenu() {
 		JPopupMenu menu = new JPopupMenu("Tools");
 
 		JMenuItem load, save;
@@ -124,7 +124,6 @@ public class MainWindow extends MainFrame {
 		});
 
 		save.addActionListener((e) -> {
-
 			if (DataProcesser.getInstance().getCurrentSheet() == null)
 				openErrorPopup("Carregue um ficheiro primeiro!");
 			else if (jf.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
@@ -147,7 +146,7 @@ public class MainWindow extends MainFrame {
 		menu.add(save);
 		menu.add(load);
 
-		this.add(menu, BorderLayout.NORTH);
+		add(menu, BorderLayout.NORTH);
 	}
 
 	private void formatComponents() {
@@ -176,6 +175,7 @@ public class MainWindow extends MainFrame {
 		fileName.setOpaque(false);
 
 		resizeComps();
+		setFrameResponsive();
 	}
 
 	private void addListeners() {
@@ -209,7 +209,7 @@ public class MainWindow extends MainFrame {
 
 	private void openFile(boolean keepRules) {
 		fc = new JFileChooser(".");
-		FileFilter filter = new FileNameExtensionFilter("Excel File", "xlsx");
+		FileFilter filter = new FileNameExtensionFilter("Excel File (.xlsx)", "xlsx");
 		fc.setFileFilter(filter);
 
 		if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -237,18 +237,17 @@ public class MainWindow extends MainFrame {
 		for (String x : info)
 			if (!x.equals(info[0])) {
 				String[] row = x.split(":");
-
 				tableModel.addRow(row);
 			}
 	}
 
 	/* RESPONSIVE HANDLE METHODS */
 
-	public void setFrameResponsive() {
+	private void setFrameResponsive() {
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				MainWindow.this.resizeComps(); // Responsive GUI
+				MainWindow.this.resizeComps();
 				super.componentResized(e);
 			}
 		});

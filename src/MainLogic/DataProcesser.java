@@ -23,10 +23,6 @@ public class DataProcesser {
 	private DefaultComboBoxModel<DefaultRule> tests;
 
 	private DataProcesser() {
-		initTestList();
-	}
-
-	private void initTestList() {
 		tests = new DefaultComboBoxModel<>();
 	}
 
@@ -54,18 +50,12 @@ public class DataProcesser {
 	}
 
 	public void initWindow() {
-		new Thread(() -> {
-			gui = new MainWindow();
-			gui.openWindow();
-		}).start();
+		gui = new MainWindow();
+		gui.openWindow();
 	}
 
 	public Sheet getCurrentSheet() {
 		return currentSheet;
-	}
-
-	public MainWindow getGraphicalInterface() {
-		return gui;
 	}
 
 	public void addToRuleList(DefaultRule rule) {
@@ -77,13 +67,12 @@ public class DataProcesser {
 		while (i != tests.getSize()) {
 			DefaultRule rule = tests.getElementAt(i);
 			if (rule instanceof NormalRule)
-				if (((NormalRule) rule).getNomeDaRegra().equals(name))
+				if (((NormalRule) rule).getRuleName().equals(name))
 					return true;
 			i++;
 		}
 
 		return false;
-
 	}
 
 	public void saveRules(String path) {
@@ -101,5 +90,4 @@ public class DataProcesser {
 	public DefaultComboBoxModel<DefaultRule> getRulesList() {
 		return tests;
 	}
-
 }

@@ -11,14 +11,14 @@ import javax.swing.JPanel;
 
 public class MainPanel extends JPanel {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -8160458471287768735L;
 
 	private Image background;
 
 	public MainPanel(LayoutManager layout) {
 		super(layout);
 		try {
-			URL url = MainPanel.class.getResource("/back.jpg");
+			URL url = MainPanel.class.getResource("/background.jpg");
 			background = ImageIO.read(url);
 		} catch (IOException e) {
 			e.printStackTrace();

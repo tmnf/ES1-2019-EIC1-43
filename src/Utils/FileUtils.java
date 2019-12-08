@@ -25,12 +25,14 @@ public class FileUtils {
 	/* Returns Excel Sheet From File */
 	public static Sheet readFile(String path) {
 		Sheet datatypeSheet = null;
+
 		try {
 			Workbook workbook = WorkbookFactory.create(new File(path));
 			datatypeSheet = workbook.getSheetAt(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return datatypeSheet;
 	}
 
@@ -62,11 +64,6 @@ public class FileUtils {
 			e.printStackTrace();
 		}
 		return res;
-	}
-
-	/* Returns a cell from a row */
-	public static Cell getCellAt(Row row, int index) {
-		return row.getCell(index);
 	}
 
 	/* Returns a cell from a row based on desired category */
@@ -116,12 +113,14 @@ public class FileUtils {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static ArrayList<DefaultRule> loadRules(String path) {
 		try {
 			FileInputStream fis = new FileInputStream(path);
 			ObjectInputStream ois = new ObjectInputStream(fis);
-			@SuppressWarnings("unchecked")
+
 			ArrayList<DefaultRule> ruleList = (ArrayList<DefaultRule>) ois.readObject();
+
 			ois.close();
 			return ruleList;
 		} catch (Exception e) {
@@ -130,13 +129,12 @@ public class FileUtils {
 		return null;
 	}
 
-	public static void addRulesToListFromArray(ArrayList<DefaultRule> rules,
-			DefaultComboBoxModel<DefaultRule> ruleList) {
+	public static void addRulesToListFromArray(ArrayList<DefaultRule> rules, DefaultComboBoxModel<DefaultRule> ruleList) {
 		for (DefaultRule x : rules)
 			ruleList.addElement(x);
 	}
 
-	public static ArrayList<DefaultRule> getRulesFromModel(DefaultComboBoxModel<DefaultRule> ruleList) {
+	private static ArrayList<DefaultRule> getRulesFromModel(DefaultComboBoxModel<DefaultRule> ruleList) {
 		ArrayList<DefaultRule> rules = new ArrayList<>();
 		for (int i = 0; i != ruleList.getSize(); i++)
 			rules.add(ruleList.getElementAt(i));
