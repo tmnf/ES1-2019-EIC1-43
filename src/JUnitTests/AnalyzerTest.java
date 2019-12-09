@@ -5,11 +5,17 @@ package JUnitTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.apache.poi.sl.usermodel.Sheet;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import Enums.Metric;
+import MainLogic.Analyzer;
+import Models.DefaultRule;
+import Models.NormalRule;
 
 /**
  * @author Filipe
@@ -17,11 +23,29 @@ import org.junit.jupiter.api.Test;
  */
 class AnalyzerTest {
 
+	static Analyzer analyzer;
+	static Analyzer analyzer2;
+	static Enums.Test test = null;
+	static Metric m1;
+	static Metric m2;
+	static Metric m3;
+	static DefaultRule rule;
+	static DefaultRule rule2;
+	static NormalRule normalRule;
+	static NormalRule normalRule2;
+	static int dci, dii, adci, adii;
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
+		test = test.IPLASMA;
+		rule = new DefaultRule(test);
+		m1 = m1.ATFD;
+		m2 = m2.CYCLO;
+		m3 = m3.LAA;
+		analyzer = new Analyzer(rule);
 	}
 
 	/**

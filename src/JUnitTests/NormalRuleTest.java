@@ -79,6 +79,8 @@ class NormalRuleTest {
 	void testGetAnd() {
 		assertNotEquals(normalRule.getAnd(), normalRule2.getAnd());
 		assertEquals(normalRule3.getAnd(), normalRule4.getAnd());
+		assertSame(and2, and3);
+		assertNotSame(and, and3);
 	}
 
 	@Test
