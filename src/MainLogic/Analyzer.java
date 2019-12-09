@@ -13,9 +13,9 @@ import Models.NormalRule;
 import Utils.FileUtils;
 
 /**
- * Analyzer represents the main functionality of this program. It's responsible
- * for analyzing a full excel sheet according with user implemented rules or
- * default ones.
+ * Analyzer represents the main functionality of this program and it's
+ * responsible for analyzing a full excel sheet according with user implemented
+ * rules or default ones.
  * 
  */
 public class Analyzer extends Thread {

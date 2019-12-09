@@ -19,7 +19,7 @@ import Utils.FileUtils;
 
 /**
  * ResultsPopup represents an exclusive type of popup that shows quality
- * indicators and the methods identified as defect
+ * indicators and the methods identified as defect.
  */
 
 public class ResultsPopup extends MainFrame {

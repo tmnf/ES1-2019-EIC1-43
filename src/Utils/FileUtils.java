@@ -83,8 +83,8 @@ public class FileUtils {
 	/**
 	 * Extracts a cell from a row based on the column name
 	 * 
-	 * @param row    row to extract cell
-	 * @param String name of cell's category
+	 * @param row  row to extract cell
+	 * @param text name of cell's category
 	 * @return a cell
 	 */
 	public static Cell getCellAtByText(Row row, String text) {

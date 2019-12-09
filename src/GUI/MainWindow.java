@@ -28,7 +28,7 @@ import Utils.FileUtils;
 
 /**
  * MainWindow represents main graphical interface of Iscte Code Analyzer
- * software
+ * software.
  */
 
 public class MainWindow extends MainFrame {

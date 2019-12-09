@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 
 /**
  * MainFrame represents every frame in graphical interface defining a default
- * icon
+ * icon.
  */
 
 public class MainFrame extends JFrame {

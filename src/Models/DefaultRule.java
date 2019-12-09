@@ -5,8 +5,8 @@ import java.io.Serializable;
 import Enums.Test;
 
 /**
- * DefaultRule represents the default type of rules. In which metrics and
- * operators are not added
+ * DefaultRule represents the default type of rules, in which metrics and
+ * operators are not added.
  */
 public class DefaultRule implements Serializable {
 

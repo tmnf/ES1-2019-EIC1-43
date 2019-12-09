@@ -20,8 +20,8 @@ import Models.DefaultRule;
 import Models.NormalRule;
 
 /**
- * Popup represents the graphical view of mosto of the popup windows of Iscte
- * Code Analyzer
+ * Popup represents the graphical view of most of the popup windows of Iscte
+ * Code Analyzer.
  */
 
 public class Popup extends MainFrame {

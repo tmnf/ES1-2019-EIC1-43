@@ -3,8 +3,8 @@ package Models;
 import Enums.Test;
 
 /**
- * NormalRule extends DefaultRule and represents another type of rules. Rules in
- * which the user sets his own metrics and operators
+ * NormalRule extends DefaultRule and represents another type of rules in which
+ * the user sets his own metrics and operators.
  */
 public class NormalRule extends DefaultRule {
 

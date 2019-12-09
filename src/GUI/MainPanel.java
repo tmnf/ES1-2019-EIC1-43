@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 /**
  * MainPanel represents all panels from this software's graphical interface
- * defining the default background
+ * defining the default background.
  */
 
 public class MainPanel extends JPanel {

@@ -1,7 +1,7 @@
 package Enums;
 
 /**
- * Metric represents all different types of metrics used to evaluate code
+ * Metric represents all different types of metrics used to evaluate code.
  * */
 
 public enum Metric {

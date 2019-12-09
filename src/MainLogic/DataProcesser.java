@@ -13,8 +13,8 @@ import Models.NormalRule;
 import Utils.FileUtils;
 
 /**
- * DataProcesser represents the main class of this program. Containing all
- * interactions between the Analyzer and User's graphical interface
+ * DataProcesser represents the main class of this program, containing all
+ * interactions between the Analyzer and User's graphical interface.
  */
 
 public class DataProcesser {
@@ -116,6 +116,8 @@ public class DataProcesser {
 	/**
 	 * Checks if a given rule name already exists in test list
 	 * 
+	 * @param name Rule name
+	 * 
 	 * @return true if there's a rule with the given name
 	 * @return false if there's no rule with the given name
 	 */
@@ -134,6 +136,8 @@ public class DataProcesser {
 
 	/**
 	 * Saves the current test list to a local file
+	 * 
+	 * @param path path to save file
 	 */
 	public void saveRules(String path) {
 		FileUtils.saveFile(path, tests);
@@ -142,6 +146,8 @@ public class DataProcesser {
 
 	/**
 	 * Loads a rule containing file to the current tests' list
+	 * 
+	 * @param path path to load file
 	 */
 	public void loadRules(String path) {
 		tests.removeAllElements();
