@@ -12,28 +12,57 @@ import Models.DefaultRule;
 import Models.NormalRule;
 import Utils.FileUtils;
 
+/**
+ * Analyzer represents the main functionality of this program. It's responsible
+ * for analyzing a full excel sheet according with user implemented rules or
+ * default ones.
+ * 
+ */
 public class Analyzer extends Thread {
 
+	/**
+	 * Excel sheet to analyze
+	 */
 	private Sheet sheet;
+
+	/**
+	 * Rule containing the metrics and operators used in file analysis
+	 */
 	private DefaultRule rule;
 
+	/**
+	 * Final program quality indicators
+	 */
 	private int dci, dii, adci, adii;
 
+	/**
+	 * Analyzer's Constructor. Creates a new Thread responsible of analyzing an
+	 * entire file based on a given rule
+	 * 
+	 * @param rule sets the metrics and operators used in the created analisis
+	 */
 	public Analyzer(DefaultRule rule) {
 		this.sheet = DataProcesser.getInstance().getCurrentSheet();
 		this.rule = rule;
 	}
 
+	/**
+	 * Overrides Thread method run. Calls analyzeFile and terminates thread
+	 * afterwards
+	 */
 	public void run() {
 		try {
-			analyseFile();
+			analyzeFile();
 			finalize();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void analyseFile() {
+	/**
+	 * Based on the given rule, decides which test algorithm should be used
+	 */
+	public void analyzeFile() {
 		switch (rule.getTest()) {
 		case IPLASMA:
 			compareLongMethod();
@@ -52,6 +81,9 @@ public class Analyzer extends Thread {
 		}
 	}
 
+	/**
+	 * Creates a new popup window with the generated results in the end
+	 */
 	private void showResults() {
 		String test = rule.toString();
 
@@ -63,16 +95,34 @@ public class Analyzer extends Thread {
 			new ResultsPopup(test, dci, dii, adci, adii, null);
 	}
 
-	// Returns is_long_method for all methods in file using user rules and metrics
+	/**
+	 * Generates a boolean list containing if each method passed the isLong test
+	 * being applied or not
+	 * 
+	 * @return list of boolean (isLong) results
+	 */
 	public ArrayList<Boolean> getIsLongList() {
 		return getResultList(Metric.LOC, Metric.CYCLO);
 	}
 
-	// Returns is_feature_envy for all methods in file using user rules and metrics
+	/**
+	 * Generates a boolean list containing if each method passed the isFeatureEnvy
+	 * test being applied or not
+	 * 
+	 * @return list of boolean (isFeatureEnvy) results
+	 */
 	public ArrayList<Boolean> getIsFeatureEnvyList() {
 		return getResultList(Metric.ATFD, Metric.LAA);
 	}
 
+	/**
+	 * General method used by getIsLongList() and getIsFeatureEnvyList(), generates
+	 * the wanted results list based on the given metrics
+	 * 
+	 * @param m1 first metric given to perform a verification (LOC or ATFD)
+	 * @param m2 first metric given to perform a verification (CYCLO or LAA)
+	 * @return list of boolean results
+	 */
 	private ArrayList<Boolean> getResultList(Metric m1, Metric m2) {
 		ArrayList<Boolean> res = new ArrayList<Boolean>();
 
@@ -102,6 +152,14 @@ public class Analyzer extends Thread {
 		return res;
 	}
 
+	/**
+	 * Gets column index of two given metrics
+	 * 
+	 * @param m1 first metric to be checked
+	 * @param m2 second metric to be checked
+	 * @return Integer array containing m1's column index [0] and m2's column index
+	 *         [1]
+	 */
 	private int[] getIndexByMethods(Metric m1, Metric m2) {
 		int[] metrics = new int[2];
 
@@ -111,8 +169,10 @@ public class Analyzer extends Thread {
 		return metrics;
 	}
 
-	// Compares is_long_method from user with is_long_method, iPlasma and PMD in
-	// every method from file
+	/**
+	 * Compares is_long_method from file with iPlasma and PMD or is_long_method from
+	 * user rule with file's is_long_method
+	 */
 	public void compareLongMethod() {
 		int longMethodIndex = FileUtils.getCellIndexByText(Test.LONG_METHOD.getRealName());
 
@@ -126,6 +186,10 @@ public class Analyzer extends Thread {
 		showResults();
 	}
 
+	/**
+	 * Auxiliary method of compareLongMethod, compares is_long_method from file with
+	 * IPLASMA or PMD
+	 */
 	private void compareLongWithNormalTest(int indexOfValueToCompare, int longMethodIndex) {
 		boolean valueToCompare, isLongValue;
 
@@ -140,6 +204,10 @@ public class Analyzer extends Thread {
 		}
 	}
 
+	/**
+	 * Auxiliary method of compareLongMethod, compares is_long_method from user rule
+	 * with is_long_method from file
+	 */
 	private void compareLongWithLong(int longIndex) {
 		boolean valueToCompare, isLongValue;
 
@@ -159,6 +227,9 @@ public class Analyzer extends Thread {
 		}
 	}
 
+	/**
+	 * Checks and sets quality indicators of the rule being analyzed
+	 */
 	private void defectsLongList(boolean valueToCheck, boolean isLong) {
 		if (valueToCheck && isLong)
 			dci++;
@@ -170,8 +241,9 @@ public class Analyzer extends Thread {
 			adii++;
 	}
 
-	// Compares is_feature_envy from user with is_feature_envy in every method from
-	// file
+	/**
+	 * Compares is_feature_envy from user inputed rule with file's is_feature_envy
+	 */
 	private void compareFeatureEnvy() {
 		ArrayList<Boolean> is_feature_list = getIsFeatureEnvyList();
 
