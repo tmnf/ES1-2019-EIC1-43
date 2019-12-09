@@ -24,7 +24,6 @@ import Models.NormalRule;
 class AnalyzerTest {
 
 	static Analyzer analyzer;
-	static Analyzer analyzer2;
 	static Enums.Test test = null;
 	static Metric m1;
 	static Metric m2;
