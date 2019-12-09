@@ -12,7 +12,6 @@ public class NormalRule extends DefaultRule {
 
 	public NormalRule(String ruleName, float metric1, float metric2, boolean and, Test test) {
 		super(test);
-
 		this.and = and;
 		this.metric1 = metric1;
 		this.metric2 = metric2;
