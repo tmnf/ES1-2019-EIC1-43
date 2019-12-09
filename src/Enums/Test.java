@@ -20,7 +20,7 @@ public enum Test {
 	/**
 	 * @return the real name of a test.
 	 */
-	
+
 	public String getRealName() {
 		return realName;
 	}

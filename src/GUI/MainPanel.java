@@ -40,7 +40,7 @@ public class MainPanel extends JPanel {
 
 	/**
 	 * Override method of JComponent's paintComponent()
-	 * */
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		g.drawImage(background, 0, 0, getWidth(), getHeight(), null);

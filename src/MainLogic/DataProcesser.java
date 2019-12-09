@@ -100,8 +100,6 @@ public class DataProcesser {
 	}
 
 	/**
-	 * Returns an instance to current file loaded
-	 * 
 	 * @return instance of sheet loaded
 	 */
 	public Sheet getCurrentSheet() {
@@ -109,9 +107,7 @@ public class DataProcesser {
 	}
 
 	/**
-	 * Adds a new rule to the list of available tests
-	 * 
-	 * @param rule indicates the rule being added to the list
+	 * @param rule indicates the rule to be added to the list
 	 */
 	public void addToRuleList(DefaultRule rule) {
 		tests.addElement(rule);
@@ -155,8 +151,6 @@ public class DataProcesser {
 	}
 
 	/**
-	 * Returns a reference to the current test list
-	 * 
 	 * @return the current test list
 	 */
 	public DefaultComboBoxModel<DefaultRule> getRulesList() {

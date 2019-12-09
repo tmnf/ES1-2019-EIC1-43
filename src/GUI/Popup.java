@@ -289,7 +289,6 @@ public class Popup extends MainFrame {
 	/**
 	 * Used by every popup. Sets the popup visible and shows it in the screen
 	 */
-
 	private void showPopup() {
 		add(mainPanel);
 		pack();
