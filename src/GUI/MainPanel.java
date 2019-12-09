@@ -9,12 +9,25 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+/**
+ * MainPanel represents all panels from this software's graphical interface
+ * defining the default background
+ */
+
 public class MainPanel extends JPanel {
 
 	private static final long serialVersionUID = -8160458471287768735L;
 
+	/**
+	 * Default background image
+	 */
 	private Image background;
 
+	/**
+	 * MainPanel's constructor to create a new JPanel, with a default background
+	 * 
+	 * @param layout sets what organization layout will be used in this panel
+	 */
 	public MainPanel(LayoutManager layout) {
 		super(layout);
 		try {
@@ -25,6 +38,9 @@ public class MainPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Override method of JComponent's paintComponent()
+	 * */
 	@Override
 	protected void paintComponent(Graphics g) {
 		g.drawImage(background, 0, 0, getWidth(), getHeight(), null);

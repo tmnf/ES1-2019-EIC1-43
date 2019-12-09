@@ -19,25 +19,57 @@ import MainLogic.DataProcesser;
 import Models.DefaultRule;
 import Models.NormalRule;
 
+/**
+ * Popup represents the graphical view of mosto of the popup windows of Iscte
+ * Code Analyzer
+ */
+
 public class Popup extends MainFrame {
 
 	private static final long serialVersionUID = 2419830468873315990L;
 
+	/**
+	 * Represents different types of popups available to create
+	 */
 	public static final int TEST_CHOOSER = 0, LONG_RULE_ADD = 1, FEATURE_RULE_ADD = 2, RESULTS = 3;
 
+	/**
+	 * Represents default width of a popup
+	 */
 	private static final int WIDTH = 600;
 
+	/**
+	 * Represents different fonts to use all over graphical interface
+	 */
 	public static final Font ARIAL_BOLD = new Font("Arial", Font.BOLD, 16),
 			ARIAL_PLAIN = new Font("Arial", Font.PLAIN, 16), ARIAL_PLAIN_SMALL = new Font("Arial", Font.PLAIN, 14);
 
+	/**
+	 * Reference to a MainWindow instance
+	 */
 	private MainWindow mw;
+
+	/**
+	 * Reference to a MainPanel instance used in the popup created
+	 */
 	private MainPanel mainPanel;
 
+	/**
+	 * Popup's Constructor
+	 * 
+	 * @param type defines which popup will be created
+	 * @param mw   passes a reference to main window
+	 */
 	public Popup(int type, MainWindow mw) {
 		this.mw = mw;
 		choosePopup(type);
 	}
 
+	/**
+	 * Filters which popup will be created
+	 * 
+	 * @param type defines which popup will be created
+	 */
 	private void choosePopup(int type) {
 		switch (type) {
 		case TEST_CHOOSER:
@@ -54,6 +86,14 @@ public class Popup extends MainFrame {
 		}
 	}
 
+	/**
+	 * Generates general components of rule adding popups
+	 * 
+	 * @param title title of rule being added
+	 * @param m1    first metric to be defined (LOC or ATFD)
+	 * @param m2    second metric to be defined (CYCLO or LAA)
+	 * @param test  type of rule being added
+	 */
 	private void getRuleAddCommons(String title, Metric m1, Metric m2, Test test) {
 		setTitle(title);
 		setResizable(false);
@@ -169,6 +209,15 @@ public class Popup extends MainFrame {
 		showPopup();
 	}
 
+	/**
+	 * Adds a new rule to DataProcesser's rule list
+	 * 
+	 * @param metric1  first metric (LOC or ATFD)
+	 * @param metric2  second metric (CYCLO or LAA)
+	 * @param ruleName unique name to identify different rules
+	 * @param and      defines if AND or OR was selected (OR = !AND)
+	 * @param test     sets type of rule being added
+	 */
 	private void addNewRule(String metric1, String metric2, String ruleName, boolean and, Test test) {
 		NormalRule createdRule = new NormalRule(ruleName, Float.parseFloat(metric1), Float.parseFloat(metric2), and,
 				test);
@@ -177,19 +226,31 @@ public class Popup extends MainFrame {
 		mw.openWarningPopup("Regra criada com sucesso!");
 	}
 
+	/**
+	 * Opens a popup to add a new IsLongMethod rule
+	 */
 	private void openLongRuleAdd() {
 		getRuleAddCommons("Adicionar Regra de is_long_method", Metric.LOC, Metric.CYCLO, Test.LONG_METHOD);
 	}
 
+	/**
+	 * Opens a popup to add a new IsFeatureEnvy rule
+	 */
 	private void openFeatureRuleAdd() {
 		getRuleAddCommons("Adicionar Regra de is_feature_envy", Metric.ATFD, Metric.LAA, Test.IS_FEATURE_ENVY);
 	}
 
+	/**
+	 * Sets listeners to AND and OR radio buttons
+	 */
 	private void radioListener(JRadioButton and, JRadioButton or) {
 		and.addActionListener((e) -> or.setSelected(false));
 		or.addActionListener((e) -> and.setSelected(false));
 	}
 
+	/**
+	 * Opens a popup to choose from the rule list, the rule that will be analyzed
+	 */
 	private void openPickATest() {
 		setTitle("Escolher um teste");
 		setResizable(false);
@@ -225,7 +286,9 @@ public class Popup extends MainFrame {
 		showPopup();
 	}
 
-	/* General */
+	/**
+	 * Used by every popup. Sets the popup visible and shows it in the screen
+	 */
 
 	private void showPopup() {
 		add(mainPanel);

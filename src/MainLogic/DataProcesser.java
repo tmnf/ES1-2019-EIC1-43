@@ -46,7 +46,7 @@ public class DataProcesser {
 	}
 
 	public void analyseFile(DefaultRule rule) {
-		new Analyser(rule).start();
+		new Analyzer(rule).start();
 	}
 
 	public void initWindow() {

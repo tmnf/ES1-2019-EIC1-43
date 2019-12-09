@@ -17,16 +17,41 @@ import javax.swing.border.EmptyBorder;
 import MainLogic.DataProcesser;
 import Utils.FileUtils;
 
+/**
+ * ResultsPopup represents an exclusive type of popup that shows quality
+ * indicators and the methods identified as defect
+ */
+
 public class ResultsPopup extends MainFrame {
 
 	private static final long serialVersionUID = 1722546932035724292L;
 
+	/**
+	 * Popup's default width and height
+	 */
 	private final int WIDTH = 500, HEIGHT = 105;
 
+	/**
+	 * Name of the rule used to get the results being shown
+	 */
 	private String rule;
 
+	/**
+	 * List of methods with defect detected
+	 */
 	private ArrayList<Integer> methods;
 
+	/**
+	 * ResultsPopup constructor. Creates a new results popup with all the results
+	 * processed by the Analyzer
+	 * 
+	 * @param rule    title of rule used to get the results shown
+	 * @param dci     quality indicator
+	 * @param dii     quality indicator
+	 * @param adci    quality indicator
+	 * @param adii    quality indicator
+	 * @param results complete list of methods with and without defects
+	 */
 	public ResultsPopup(String rule, int dci, int dii, int adci, int adii, ArrayList<Boolean> results) {
 		this.rule = rule;
 
@@ -36,6 +61,15 @@ public class ResultsPopup extends MainFrame {
 		initWindow(dci, dii, adci, adii);
 	}
 
+	/**
+	 * Builds a new window and all it's components based on results provided by the
+	 * Analyzer
+	 * 
+	 * @param dci  quality indicator
+	 * @param dii  quality indicator
+	 * @param adci quality indicator
+	 * @param adii quality indicator
+	 */
 	private void initWindow(int dci, int dii, int adci, int adii) {
 		setTitle("Resultados (" + rule + ")");
 		setResizable(false);
@@ -87,6 +121,10 @@ public class ResultsPopup extends MainFrame {
 		setVisible(true);
 	}
 
+	/**
+	 * Generates list of method ids with defect based on the results given by the
+	 * Analyzer
+	 */
 	private ArrayList<Integer> getMethods(ArrayList<Boolean> results) {
 		ArrayList<Integer> methodIds = new ArrayList<>();
 
@@ -101,6 +139,10 @@ public class ResultsPopup extends MainFrame {
 		return methodIds;
 	}
 
+	/**
+	 * Builds a new popup window with a list of all methods with defect, including
+	 * ids and names
+	 */
 	private void showDefects() {
 		MainFrame frame = new MainFrame();
 		frame.setTitle("Métodos Com Defeitos: " + methods.size() + " - (" + rule + ")");
@@ -140,6 +182,10 @@ public class ResultsPopup extends MainFrame {
 		frame.setVisible(true);
 	}
 
+	/**
+	 * ListRenderer represents a DefaultListCellRenderer used by the list of methods
+	 * with defect overriding some graphical aspects
+	 */
 	public class ListRenderer extends DefaultListCellRenderer {
 
 		private static final long serialVersionUID = 3232806649180145627L;

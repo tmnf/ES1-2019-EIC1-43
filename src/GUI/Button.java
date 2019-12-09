@@ -5,14 +5,26 @@ import java.awt.Graphics;
 
 import javax.swing.JButton;
 
+/**
+ * Button represents all the buttons used in this software, with rounded
+ * corners.
+ */
+
 public class Button extends JButton {
 
 	private static final long serialVersionUID = 1269050536627782589L;
 
 	private static final int RADIUS_DEFAULT = 40;
 
+	/**
+	 * Controls corners in each buttons
+	 * */
 	private int radius;
 
+	/**
+	 * Button constructor defining only text, and using default radius.
+	 * @param text text to show in the button
+	 * */
 	public Button(String text) {
 		super(text);
 		this.radius = RADIUS_DEFAULT;
@@ -20,6 +32,11 @@ public class Button extends JButton {
 		applyCommons();
 	}
 
+	/**
+	 * Button constructor defining text and custom corner radius
+	 * @param text text to show in the button
+	 * @param radius defines how rounded button corners will be
+	 * */
 	public Button(String text, int radius) {
 		super(text);
 		this.radius = radius;
@@ -27,12 +44,18 @@ public class Button extends JButton {
 		applyCommons();
 	}
 
+	/**
+	 * Common priorities used in both default and custom buttons
+	 * */
 	private void applyCommons() {
 		setFont(Popup.ARIAL_PLAIN_SMALL);
 		setContentAreaFilled(false);
 		setForeground(Color.WHITE);
 	}
 
+	/**
+	 * Override method of JComponent's paintComponent()
+	 * */
 	@Override
 	protected void paintComponent(Graphics g) {
 		if (getModel().isArmed()) {
@@ -47,6 +70,9 @@ public class Button extends JButton {
 		super.paintComponent(g);
 	}
 
+	/**
+	 * Override method of AbstractButton's paintBorder()
+	 * */
 	@Override
 	protected void paintBorder(Graphics g) {
 		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);

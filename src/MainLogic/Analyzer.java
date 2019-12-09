@@ -12,14 +12,14 @@ import Models.DefaultRule;
 import Models.NormalRule;
 import Utils.FileUtils;
 
-public class Analyser extends Thread {
+public class Analyzer extends Thread {
 
 	private Sheet sheet;
 	private DefaultRule rule;
 
 	private int dci, dii, adci, adii;
 
-	public Analyser(DefaultRule rule) {
+	public Analyzer(DefaultRule rule) {
 		this.sheet = DataProcesser.getInstance().getCurrentSheet();
 		this.rule = rule;
 	}
