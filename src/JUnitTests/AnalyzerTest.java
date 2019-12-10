@@ -39,11 +39,11 @@ class AnalyzerTest {
 	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		test = test.IPLASMA;
+		test = Enums.Test.IPLASMA;
 		rule = new DefaultRule(test);
-		m1 = m1.ATFD;
-		m2 = m2.CYCLO;
-		m3 = m3.LAA;
+		m1 = Metric.ATFD;
+		m2 = Metric.CYCLO;
+		m3 = Metric.LAA;
 		analyzer = new Analyzer(rule);
 	}
 

@@ -28,7 +28,7 @@ class DefaultRuleTest {
 		test1 = Enums.Test.IPLASMA;
 		test2 = Enums.Test.IPLASMA;
 		dr1 = new DefaultRule(test1);
-		test1.getRealName();
+		String n = test1.getRealName();
 	}
 
 	@AfterAll
@@ -57,8 +57,14 @@ class DefaultRuleTest {
 	}
 
 	@Test
-	void testToString() {
-		assertEquals(dr1.getTest().getRealName(),test1.getRealName());
+	void defaultRuleTestToString() {
+		assertEquals(dr1.getTest().getRealName(),dr1.toString());
+		
+	}
+	
+	@Test
+	void enumTestToString() {
+		assertEquals(dr1.getTest().getRealName(),test1.toString());
 		
 	}
 

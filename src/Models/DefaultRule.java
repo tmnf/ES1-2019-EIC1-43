@@ -36,6 +36,7 @@ public class DefaultRule implements Serializable {
 	/**
 	 * Override of Object's method toString
 	 */
+	@Override
 	public String toString() {
 		return test.getRealName();
 	}
