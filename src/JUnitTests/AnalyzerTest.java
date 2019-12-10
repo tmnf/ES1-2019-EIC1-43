@@ -44,7 +44,7 @@ class AnalyzerTest {
 		m1 = Metric.ATFD;
 		m2 = Metric.CYCLO;
 		m3 = Metric.LAA;
-		analyzer = new Analyzer(rule);
+		
 	}
 
 	/**
@@ -73,9 +73,10 @@ class AnalyzerTest {
 	 */
 	@Test
 	void testAnalyzer() {
-		fail("Not yet implemented");
+		analyzer = new Analyzer(rule);
+		assertNotNull(analyzer);
+	
 	}
-
 	/**
 	 * Test method for {@link MainLogic.Analyzer#analyseFile()}.
 	 */
