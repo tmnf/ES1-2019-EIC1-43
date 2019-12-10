@@ -402,6 +402,9 @@ public class MainWindow extends MainFrame {
 	public void openWindow() {
 		pack();
 		setLocationRelativeTo(null);
-		setVisible(true);
+		
+		/* IMPORTANTE É NECESSÁRIO ALTERAR PARA TRUE ANTES DE ENTREGAR; ESTÁ A FALSE SÓ PARA OS TESTES*/
+		
+		setVisible(false);
 	}
 }

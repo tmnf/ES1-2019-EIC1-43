@@ -13,26 +13,26 @@ import Models.NormalRule;
 
 class NormalRuleTest {
 
-	static Enums.Test test;
-	static Enums.Test test2;
-	static Enums.Test test3;
-	static Enums.Test test4;
-	static float m1;
-	static float m2;
-	static float m3;
-	static float m4;
-	static NormalRule normalRule;
-	static NormalRule normalRule2;
-	static NormalRule normalRule3;
-	static NormalRule normalRule4;
-	static boolean and;
-	static boolean and2;
-	static boolean and3;
-	static boolean and4;
-	static String ruleName1;
-	static String ruleName2;
-	static String ruleName3;
-	static String ruleName4;
+	private static Enums.Test test;
+	private static Enums.Test test2;
+	private static Enums.Test test3;
+	private static Enums.Test test4;
+	private static float m1;
+	private static float m2;
+	private static float m3;
+	private static float m4;
+	private static NormalRule normalRule;
+	private static NormalRule normalRule2;
+	private static NormalRule normalRule3;
+	private static NormalRule normalRule4;
+	private static boolean and;
+	private static boolean and2;
+	private static boolean and3;
+	private static boolean and4;
+	private static String ruleName1;
+	private static String ruleName2;
+	private static String ruleName3;
+	private static String ruleName4;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {

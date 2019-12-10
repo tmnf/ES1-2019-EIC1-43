@@ -65,9 +65,9 @@ public class FileUtils {
 
 					if (currentCell.getCellType() == CellType.STRING)
 						res += currentCell.getStringCellValue();
-					else if (currentCell.getCellType() == CellType.NUMERIC)
+					 if (currentCell.getCellType() == CellType.NUMERIC) 
 						res += currentCell.getNumericCellValue();
-					else if (currentCell.getCellType() == CellType.BOOLEAN)
+					 if (currentCell.getCellType() == CellType.BOOLEAN)
 						res += currentCell.getBooleanCellValue();
 
 					res += ":";
