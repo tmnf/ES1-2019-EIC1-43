@@ -101,7 +101,7 @@ public class Analyzer extends Thread {
 	 * 
 	 * @return list of boolean (isLong) results
 	 */
-	public ArrayList<Boolean> getIsLongList() {
+	private ArrayList<Boolean> getIsLongList() {
 		return getResultList(Metric.LOC, Metric.CYCLO);
 	}
 
@@ -111,7 +111,7 @@ public class Analyzer extends Thread {
 	 * 
 	 * @return list of boolean (isFeatureEnvy) results
 	 */
-	public ArrayList<Boolean> getIsFeatureEnvyList() {
+	private ArrayList<Boolean> getIsFeatureEnvyList() {
 		return getResultList(Metric.ATFD, Metric.LAA);
 	}
 
@@ -173,7 +173,7 @@ public class Analyzer extends Thread {
 	 * Compares is_long_method from file with iPlasma and PMD or is_long_method from
 	 * user rule with file's is_long_method
 	 */
-	public void compareLongMethod() {
+	private void compareLongMethod() {
 		int longMethodIndex = FileUtils.getCellIndexByText(Test.LONG_METHOD.getRealName());
 
 		if (rule.getTest() == Test.LONG_METHOD) {
