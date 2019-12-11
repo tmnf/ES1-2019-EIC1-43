@@ -16,12 +16,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import MainLogic.DataProcesser;
 import Utils.FileUtils;
 
-
-
-
-
-	
-
 public class DataProcessorTest {
 	private static Popup popup;
 	private static MainWindow gui;
@@ -37,7 +31,9 @@ public class DataProcessorTest {
 		dp.initWindow();
 		testSheet = FileUtils
 				.readFile(new File(System.getProperty("user.dir") + "/files/Long-Method.xlsx").getAbsolutePath());
-		//gui = new MainWindow();
+
+		dp.setCurrentSheet(testSheet, false);
+
 	}
 
 	@Test
@@ -85,7 +81,7 @@ public class DataProcessorTest {
 		assertNotNull(dp.getRulesList());
 		assertEquals(dp.getRulesList(), f);
 	}
-	
+
 	@Test
 	void testPopup() {
 		popup = new Popup(Popup.TEST_CHOOSER, gui);

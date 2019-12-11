@@ -95,9 +95,6 @@ public class AnalyzerTest {
 		analyzerEnvy.analyzeFile();
 	}
 
-	@Test
-	void testRun() {
-		analyzer.run();
-	}
+	
 
 }
