@@ -244,7 +244,7 @@ public class Analyzer extends Thread {
 	/**
 	 * Compares is_feature_envy from user inputed rule with file's is_feature_envy
 	 */
-	private void compareFeatureEnvy() {
+	public void compareFeatureEnvy() {
 		ArrayList<Boolean> is_feature_list = getIsFeatureEnvyList();
 
 		int i = 0;
