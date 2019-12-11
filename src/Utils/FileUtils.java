@@ -161,9 +161,8 @@ public class FileUtils {
 			ois.close();
 			return ruleList;
 		} catch (Exception e) {
-			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	/**
@@ -175,7 +174,8 @@ public class FileUtils {
 	public static void addRulesToListFromArray(ArrayList<DefaultRule> rules,
 			DefaultComboBoxModel<DefaultRule> ruleList) {
 		for (DefaultRule x : rules) {
-			ruleList.addElement(x);}
+			ruleList.addElement(x);
+		}
 	}
 
 	/**
