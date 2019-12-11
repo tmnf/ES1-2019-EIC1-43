@@ -31,7 +31,6 @@ public class DataProcessorTest {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		System.out.println("AQUI");
 		f = new DefaultComboBoxModel<DefaultRule>();
 		dataP = DataProcesser.getInstance();
 		dataP.initWindow();
@@ -47,15 +46,12 @@ public class DataProcessorTest {
 	@Test
 	@Order(1)
 	void testAnalizeFile() {
-		System.out.println("AQUI1");
-
 		dataP.analyseFile(new NormalRule("NormalRule1", 1f, 2f, true, Enums.Test.LONG_METHOD));
 	}
 
 	@Test
 	@Order(2)
-	void testAlreadyExists() {		System.out.println("AQUI2");
-
+	void testAlreadyExists() {	
 		NormalRule normalRule = new NormalRule("NormalRule1", 1f, 2f, true, Enums.Test.LONG_METHOD);
 		NormalRule normalRule2 = new NormalRule("NormalRule2", 2f, 1f, false, Enums.Test.IS_FEATURE_ENVY);
 		NormalRule copyNormalRule = new NormalRule("NormalRule1", 2f, 1f, false, Enums.Test.IS_FEATURE_ENVY);
@@ -71,8 +67,6 @@ public class DataProcessorTest {
 	@Test
 	@Order(3)
 	void testGetRulesList() {
-		System.out.println("AQUI3");
-
 		NormalRule normalRule = new NormalRule("GetRuleNormalRule1", 1f, 2f, true, Enums.Test.LONG_METHOD);
 		NormalRule normalRule2 = new NormalRule("GetRuleNormalRule2", 2f, 1f, false, Enums.Test.IS_FEATURE_ENVY);
 
@@ -88,8 +82,6 @@ public class DataProcessorTest {
 	@Test
 	@Order(4)
 	void testPopup() {
-		System.out.println("AQUI4");
-
 		popup = new Popup(Popup.TEST_CHOOSER, gui);
 		assertEquals(0, Popup.TEST_CHOOSER);
 		assertEquals("Escolher um teste", popup.getTitle());
@@ -98,8 +90,6 @@ public class DataProcessorTest {
 	@Test
 	@Order(5)
 	void testPopupLongRuleAdd() {
-		System.out.println("AQUI5");
-
 		popup = new Popup(Popup.LONG_RULE_ADD, gui);
 		assertEquals(1, Popup.LONG_RULE_ADD);
 	}
@@ -107,8 +97,6 @@ public class DataProcessorTest {
 	@Test
 	@Order(6)
 	void testPopupFeatureRuleAdd() {
-		System.out.println("AQUI6");
-
 		popup = new Popup(Popup.FEATURE_RULE_ADD, gui);
 		assertEquals(2, Popup.FEATURE_RULE_ADD);
 	}

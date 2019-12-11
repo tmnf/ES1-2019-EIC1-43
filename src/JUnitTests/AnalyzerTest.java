@@ -2,11 +2,15 @@ package JUnitTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 import java.io.File;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
 import MainLogic.Analyzer;
 import MainLogic.DataProcesser;
@@ -14,6 +18,7 @@ import Models.DefaultRule;
 import Models.NormalRule;
 import Utils.FileUtils;
 
+@TestMethodOrder(OrderAnnotation.class)
 public class AnalyzerTest {
 
 	static Analyzer analyzer;
@@ -49,6 +54,7 @@ public class AnalyzerTest {
 	}
 
 	@Test
+	@Order(1)
 	void testAnalyzer() {
 		analyzer = new Analyzer(rule);
 		assertNotNull(analyzer);
@@ -56,6 +62,7 @@ public class AnalyzerTest {
 	}
 
 	@Test
+	@Order(2)
 	void testAnalyzerFileIPlasma() {
 		Analyzer analyzerIPlasma = new Analyzer(new DefaultRule(Enums.Test.IPLASMA));
 		analyzerIPlasma.analyzeFile();
@@ -63,12 +70,14 @@ public class AnalyzerTest {
 	}
 
 	@Test
+	@Order(3)
 	void testAnalyzeFilePMD() {
 		Analyzer analyzerPMD = new Analyzer(new DefaultRule(Enums.Test.PMD));
 		analyzerPMD.analyzeFile();
 	}
 
 	@Test
+	@Order(4)
 	void testAnalyzeLong() {
 		Analyzer analyzerLong = new Analyzer(normalRuleLong);
 
@@ -80,6 +89,7 @@ public class AnalyzerTest {
 	}
 
 	@Test
+	@Order(5)
 	void testAnalyzeEnvy() {
 		Analyzer analyzerEnvy = new Analyzer(normalRuleEnvy);
 
