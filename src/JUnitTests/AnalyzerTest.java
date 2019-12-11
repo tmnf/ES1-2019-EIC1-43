@@ -36,7 +36,7 @@ public class AnalyzerTest {
 		testSheet = FileUtils
 				.readFile(new File(System.getProperty("user.dir") + "/files/Long-Method.xlsx").getAbsolutePath());
 		dp.initWindow();
-		dp.setCurrentSheet(testSheet, false);
+		dp.setCurrentSheet(testSheet, true);
 
 		test = Enums.Test.IPLASMA;
 		rule = new DefaultRule(test);
@@ -46,7 +46,6 @@ public class AnalyzerTest {
 
 		analyzer = new Analyzer(rule);
 		assertNotNull(analyzer);
-
 	}
 
 	@Test
