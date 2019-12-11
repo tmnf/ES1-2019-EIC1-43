@@ -175,7 +175,6 @@ public class FileUtils {
 	public static void addRulesToListFromArray(ArrayList<DefaultRule> rules,
 			DefaultComboBoxModel<DefaultRule> ruleList) {
 		for (DefaultRule x : rules) {
-			System.out.println(x);
 			ruleList.addElement(x);}
 	}
 
