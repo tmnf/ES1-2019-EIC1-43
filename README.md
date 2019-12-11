@@ -8,7 +8,7 @@ Elementos do grupo:
 
 - Filipe Dias, Número: 82945
 - Miguel Neto, Número: 68625
-- Milan Bhatt, Nuúmero:
+- Milan Bhatt, Número:
 - Nuno Martinho, Número: 82311
 - Tiago Farinha, Número: 82358
 - Tomas Santos, Número: 77651
