@@ -57,14 +57,6 @@ public class AnalyzerTest {
 	}
 
 	@Test
-	void testCompareLongMethod() {
-		Analyzer analyzerEnvy = new Analyzer(normalRuleEnvy);
-
-		analyzerEnvy.compareFeatureEnvy();
-
-	}
-
-	@Test
 	void testAnalyzerFileIPlasma() {
 		Analyzer analyzerIPlasma = new Analyzer(new DefaultRule(Enums.Test.IPLASMA));
 		analyzerIPlasma.analyzeFile();
@@ -94,7 +86,4 @@ public class AnalyzerTest {
 
 		analyzerEnvy.analyzeFile();
 	}
-
-	
-
 }

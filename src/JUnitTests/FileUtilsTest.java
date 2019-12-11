@@ -109,7 +109,6 @@ public class FileUtilsTest {
 				.getAbsolutePath();
 
 		FileUtils.addRulesToListFromArray(FileUtils.loadRules(pathToRuleFile), rulesList);
-
 		assertEquals(ruleListSize + FileUtils.loadRules(pathToRuleFile).size(), rulesList.getSize());
 	}
 
