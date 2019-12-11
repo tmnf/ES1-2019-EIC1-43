@@ -1,22 +1,16 @@
 package JUnitTests;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import Enums.Metric;
 import Models.NormalRule;
 
-class NormalRuleTest {
+public class NormalRuleTest {
 
 	private static Enums.Test test;
 	private static Enums.Test test2;
 	private static Enums.Test test3;
-	private static Enums.Test test4;
 	private static float m1;
 	private static float m2;
 	private static float m3;
@@ -28,18 +22,13 @@ class NormalRuleTest {
 	private static boolean and;
 	private static boolean and2;
 	private static boolean and3;
-	private static boolean and4;
-	private static String ruleName1;
-	private static String ruleName2;
-	private static String ruleName3;
-	private static String ruleName4;
+
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		test = Enums.Test.IPLASMA;
 		test2 = Enums.Test.PMD;
 		test3 = Enums.Test.LONG_METHOD;
-		test4 = Enums.Test.IS_FEATURE_ENVY;
 		m1 = (float) 1.0;
 		m2 = (float) 2.0;
 		m3 = (float) 2.0;
@@ -47,24 +36,11 @@ class NormalRuleTest {
 		and = true;
 		and2 = false;
 		and3 = false;
-		and4 = true;
 		normalRule = new NormalRule("rule1", m4, m1, true, test3);
 		normalRule2 = new NormalRule("rule2", m2, m1, false, test2);
 		normalRule3 = new NormalRule("rule3", m4, m1, true, test);
 		normalRule4 = new NormalRule("rule4", m2, m3, true, test);
 
-	}
-
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
-
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
 	}
 
 	@Test

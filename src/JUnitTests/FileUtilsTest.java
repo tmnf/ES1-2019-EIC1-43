@@ -1,31 +1,27 @@
 package JUnitTests;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.File;
-import java.io.IOException;
+import javax.swing.DefaultComboBoxModel;
 import org.junit.jupiter.api.Test;
-
 import MainLogic.DataProcesser;
-
-import org.apache.poi.EncryptedDocumentException;
+import Models.DefaultRule;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 
 import Utils.FileUtils;
 
-class FileUtilsTest {
+public class FileUtilsTest {
 	private static String filePath;
 	private static Sheet datatypeSheet;
 	private static Sheet testSheet;
 	private static String fNull = null;
 	private static DataProcesser dp;
+	private static DefaultComboBoxModel<DefaultRule> rulesList; 
+
 	
 
 	@BeforeAll
@@ -37,48 +33,16 @@ class FileUtilsTest {
 
 		Workbook workbook = WorkbookFactory.create(new File(filePath));
 		datatypeSheet = workbook.getSheetAt(0);
-//		
 		testSheet = FileUtils.readFile(filePath);
 		dp.setCurrentSheet(testSheet, false);
 
 	}
 
 	@Test
-	void testReadFile(){
-
-		assertNotNull(testSheet);
-	}
-/*
-	@Test
-	public void testExceptionReadFile() throws Exception {
-		assertNull(FileUtils.readFile(fNull));
-		
-	}
-	*/
-//	@Test
-//	public void testExceptionReadFile() throws Exception{
-//		assertThrows(Exception.class, () -> {
-//			assertNull(FileUtils.readFile(fNull));
-//			Workbook workbook = WorkbookFactory.create(new File(fNull));
-//		});
-//	}
-	
-
-	@Test
 	void testFileToString() {
 		assertNotNull(FileUtils.fileToString(datatypeSheet));
 	}
-	/*
-	@Test
-	void testExceptionFileToString() {
-		Sheet exceptionSheet = null;
-		assertNotNull(FileUtils.fileToString(exceptionSheet));
-	}
-*/
-	
-	
-	
-	
+
 	@Test
 	void testGetCellAtByText() {
 		String stringCellTest = "GrammerException(int,String)";
@@ -94,7 +58,6 @@ class FileUtilsTest {
 		Row exampleRow = datatypeSheet.getRow(8);
 		
 		assertNull(FileUtils.getCellAtByText(exampleRow, exampleWrongString));
-		//assertNotEquals(stringCellTest.toString(), FileUtils.getCellAtByText(exampleRow, "method").toString());
 		
 	}
 
@@ -111,22 +74,45 @@ class FileUtilsTest {
 		assertEquals(indexOfLoc, FileUtils.getCellIndexByText("NOTINTHEEXCEL"));
 	}
 
-//  É capaz de não ser necessário fazer
-//	@Test
-//	void testSaveFile() {
-//		fail("Not yet implemented");
-//	}
-//
+	@Test
 	
-//	@Test
-//	void testLoadRules() {
-//		FileUtils.loadRules("");
-//	}
-//	
-//
-//	@Test
-//	void testAddRulesToListFromArray() {
-//		fail("Not yet implemented");
-//	}
+	void testSaveFile() {
+		rulesList = dp.getRulesList();
+		String pathToRuleFile = new File(System.getProperty("user.dir") + "/files/RegraLongExample.rl").getAbsolutePath();
+
+		FileUtils.saveFile(pathToRuleFile, rulesList);
+	}
+	
+
+	@Test
+	void testLoadRules(){
+		rulesList = dp.getRulesList();
+		assertNotNull(testSheet);
+		String pathToRuleFileV2 = new File(System.getProperty("user.dir") + "/files/RegraLongExample.rl").getAbsolutePath();
+	
+		FileUtils.loadRules(pathToRuleFileV2);
+		FileUtils.saveFile(pathToRuleFileV2, rulesList);
+		
+		assertNotNull(FileUtils.loadRules(pathToRuleFileV2));
+	}
+
+	@Test
+	void testLoadFileReturnNull() {
+		rulesList = dp.getRulesList();
+		
+		assertNull(FileUtils.loadRules(fNull));
+	}
+	
+	@Test
+	void testAddRulesToListFromArray() {
+		rulesList = dp.getRulesList();
+		int ruleListSize = rulesList.getSize();
+		String pathToRuleFile = new File(System.getProperty("user.dir") + "/files/RegraLongExample.rl").getAbsolutePath();
+		
+		
+		FileUtils.addRulesToListFromArray(FileUtils.loadRules(pathToRuleFile), rulesList);
+		
+		assertEquals(ruleListSize + FileUtils.loadRules(pathToRuleFile).size(), rulesList.getSize());
+	}
 
 }

@@ -65,9 +65,9 @@ public class FileUtils {
 
 					if (currentCell.getCellType() == CellType.STRING)
 						res += currentCell.getStringCellValue();
-					 if (currentCell.getCellType() == CellType.NUMERIC) 
+					else if (currentCell.getCellType() == CellType.NUMERIC)
 						res += currentCell.getNumericCellValue();
-					 if (currentCell.getCellType() == CellType.BOOLEAN)
+					else if (currentCell.getCellType() == CellType.BOOLEAN)
 						res += currentCell.getBooleanCellValue();
 
 					res += ":";
@@ -174,8 +174,9 @@ public class FileUtils {
 	 */
 	public static void addRulesToListFromArray(ArrayList<DefaultRule> rules,
 			DefaultComboBoxModel<DefaultRule> ruleList) {
-		for (DefaultRule x : rules)
-			ruleList.addElement(x);
+		for (DefaultRule x : rules) {
+			System.out.println(x);
+			ruleList.addElement(x);}
 	}
 
 	/**

@@ -9,7 +9,7 @@ import Models.DefaultRule;
 
 
 
-class DefaultRuleTest {
+public class DefaultRuleTest {
 	
 	 static Enums.Test test1;
 	 static Enums.Test test2;
@@ -24,7 +24,6 @@ class DefaultRuleTest {
 		test1 = Enums.Test.IPLASMA;
 		test2 = Enums.Test.IPLASMA;
 		dr1 = new DefaultRule(test1);
-		String n = test1.getRealName();
 	}
 
 	@Test
