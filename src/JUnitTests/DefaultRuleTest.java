@@ -7,17 +7,14 @@ import org.junit.jupiter.api.Test;
 
 import Models.DefaultRule;
 
-
-
 public class DefaultRuleTest {
-	
-	 static Enums.Test test1;
-	 static Enums.Test test2;
-	 
-	 static DefaultRule dr1;
 
-	 static String metricName;
-	 
+	static Enums.Test test1;
+	static Enums.Test test2;
+
+	static DefaultRule dr1;
+
+	static String metricName;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -28,26 +25,26 @@ public class DefaultRuleTest {
 
 	@Test
 	void testDefaultRule() {
-		assertEquals(test1,test2);
-	
+		assertEquals(test1, test2);
+
 	}
 
 	@Test
 	void testGetTest() {
-		assertEquals(test1,dr1.getTest());
-		
+		assertEquals(test1, dr1.getTest());
+
 	}
 
 	@Test
 	void defaultRuleTestToString() {
-		assertEquals(dr1.getTest().getRealName(),dr1.toString());
-		
+		assertEquals(dr1.getTest().getRealName(), dr1.toString());
+
 	}
-	
+
 	@Test
 	void enumTestToString() {
-		assertEquals(dr1.getTest().getRealName(),test1.toString());
-		
+		assertEquals(dr1.getTest().getRealName(), test1.toString());
+
 	}
 
 }

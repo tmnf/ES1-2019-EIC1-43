@@ -20,9 +20,7 @@ public class FileUtilsTest {
 	private static Sheet testSheet;
 	private static String fNull = null;
 	private static DataProcesser dp;
-	private static DefaultComboBoxModel<DefaultRule> rulesList; 
-
-	
+	private static DefaultComboBoxModel<DefaultRule> rulesList;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -47,27 +45,26 @@ public class FileUtilsTest {
 	void testGetCellAtByText() {
 		String stringCellTest = "GrammerException(int,String)";
 		Row exampleRow = datatypeSheet.getRow(8);
-		
+
 		assertEquals(stringCellTest.toString(), FileUtils.getCellAtByText(exampleRow, "method").toString());
-		
+
 	}
-	
+
 	@Test
 	void testFailedGetCellAtByText() {
 		String exampleWrongString = "ExampleLine(int,String)";
 		Row exampleRow = datatypeSheet.getRow(8);
-		
+
 		assertNull(FileUtils.getCellAtByText(exampleRow, exampleWrongString));
-		
+
 	}
 
-	
 	@Test
 	void testGetCellIndexByText() {
 		int indexOfLoc = 4;
 		assertEquals(indexOfLoc, FileUtils.getCellIndexByText("LOC"));
 	}
-	
+
 	@Test
 	void testFailedGetCellIndexByText() {
 		int indexOfLoc = -1;
@@ -75,43 +72,44 @@ public class FileUtilsTest {
 	}
 
 	@Test
-	
+
 	void testSaveFile() {
 		rulesList = dp.getRulesList();
-		String pathToRuleFile = new File(System.getProperty("user.dir") + "/files/RegraLongExample.rl").getAbsolutePath();
+		String pathToRuleFile = new File(System.getProperty("user.dir") + "/files/RegraLongExample.rl")
+				.getAbsolutePath();
 
 		FileUtils.saveFile(pathToRuleFile, rulesList);
 	}
-	
 
 	@Test
-	void testLoadRules(){
+	void testLoadRules() {
 		rulesList = dp.getRulesList();
 		assertNotNull(testSheet);
-		String pathToRuleFileV2 = new File(System.getProperty("user.dir") + "/files/RegraLongExample.rl").getAbsolutePath();
-	
+		String pathToRuleFileV2 = new File(System.getProperty("user.dir") + "/files/RegraLongExample.rl")
+				.getAbsolutePath();
+
 		FileUtils.loadRules(pathToRuleFileV2);
 		FileUtils.saveFile(pathToRuleFileV2, rulesList);
-		
+
 		assertNotNull(FileUtils.loadRules(pathToRuleFileV2));
 	}
 
 	@Test
 	void testLoadFileReturnNull() {
 		rulesList = dp.getRulesList();
-		
+
 		assertNull(FileUtils.loadRules(fNull));
 	}
-	
+
 	@Test
 	void testAddRulesToListFromArray() {
 		rulesList = dp.getRulesList();
 		int ruleListSize = rulesList.getSize();
-		String pathToRuleFile = new File(System.getProperty("user.dir") + "/files/RegraLongExample.rl").getAbsolutePath();
-		
-		
+		String pathToRuleFile = new File(System.getProperty("user.dir") + "/files/RegraLongExample.rl")
+				.getAbsolutePath();
+
 		FileUtils.addRulesToListFromArray(FileUtils.loadRules(pathToRuleFile), rulesList);
-		
+
 		assertEquals(ruleListSize + FileUtils.loadRules(pathToRuleFile).size(), rulesList.getSize());
 	}
 

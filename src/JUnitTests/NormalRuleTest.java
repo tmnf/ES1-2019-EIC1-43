@@ -23,7 +23,6 @@ public class NormalRuleTest {
 	private static boolean and2;
 	private static boolean and3;
 
-
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		test = Enums.Test.IPLASMA;
