@@ -1,12 +1,10 @@
-/**
- * 
- */
 package JUnitTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
 
-
+import org.apache.poi.ss.usermodel.Sheet;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,16 +14,18 @@ import org.junit.jupiter.api.Test;
 
 
 import MainLogic.Analyzer;
-
+import MainLogic.DataProcesser;
 import Models.DefaultRule;
 import Models.NormalRule;
-
+import Utils.FileUtils;
 
 /**
  * @author Filipe
  *
  */
 class AnalyzerTest {
+	
+	
 
 	static Analyzer analyzer;
 	static Enums.Test test = null;
@@ -35,12 +35,20 @@ class AnalyzerTest {
 	static NormalRule normalRuleLong;
 	static NormalRule normalRuleEnvy;
 	static int dci, dii, adci, adii;
+	private static DataProcesser dp;
+	private static Sheet testSheet;
 	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
+		dp = DataProcesser.getInstance();
+		testSheet = FileUtils.readFile(new File(System.getProperty("user.dir") + "/files/Long-Method.xlsx").getAbsolutePath());
+		dp.initWindow();
+		dp.setCurrentSheet(testSheet, false);
+		
+		
 		test = Enums.Test.IPLASMA;
 		rule = new DefaultRule(test);
 	

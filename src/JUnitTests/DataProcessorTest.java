@@ -32,6 +32,7 @@ class DataProcessorTest {
 	static void setUpBeforeClass() throws Exception {
 		f = new DefaultComboBoxModel<DefaultRule>();
 		dp = DataProcesser.getInstance();
+		dp.initWindow();
 		testSheet = FileUtils
 				.readFile(new File(System.getProperty("user.dir") + "/files/Long-Method.xlsx").getAbsolutePath());
 
