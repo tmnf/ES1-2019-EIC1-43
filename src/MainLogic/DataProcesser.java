@@ -150,8 +150,14 @@ public class DataProcesser {
 	 * @param path path to load file
 	 */
 	public void loadRules(String path) {
-		tests.removeAllElements();
 		ArrayList<DefaultRule> rulesLoaded = FileUtils.loadRules(path);
+
+		if (rulesLoaded == null) {
+			gui.openErrorPopup("Ficheira de regras inválido...");
+			return;
+		}
+
+		tests.removeAllElements();
 		FileUtils.addRulesToListFromArray(rulesLoaded, tests);
 		gui.openWarningPopup("Regras Carregadas Com Sucesso");
 	}
