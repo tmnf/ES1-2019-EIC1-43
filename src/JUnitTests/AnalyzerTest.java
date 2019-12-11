@@ -91,32 +91,9 @@ class AnalyzerTest {
 	
 	}
 
-	/**
-	 * Test method for {@link MainLogic.Analyzer#getIsLongList()}.
-	 */
-	@Test
-	void testGetIsLongList() {
-		Analyzer analyzerTest = new Analyzer(normalRuleLong);
-		assertTrue(analyzerTest.getIsLongList().get(0));
-		NormalRule normalRuleLongFalse = new NormalRule("NormalRuleLong", 70f, 70f, true, Enums.Test.LONG_METHOD);
-		Analyzer analyzerTestFalse = new Analyzer(normalRuleLongFalse);
-		
-		assertFalse(analyzerTestFalse.getIsLongList().get(0));
-		
-	}
+	
 
-	/**
-	 * Test method for {@link MainLogic.Analyzer#getIsFeatureEnvyList()}.
-	 */
-	@Test
-	void testGetIsFeatureEnvyList() {
-		Analyzer analyzerTest = new Analyzer(normalRuleEnvy);
-		assertFalse(analyzerTest.getIsFeatureEnvyList().get(0));
-		
-		NormalRule normalRuleEnvyFalse = new NormalRule("NormalRuleEnvy", 70f, 70f, false, Enums.Test.IS_FEATURE_ENVY );
-		Analyzer analyzerTestFalse = new Analyzer(normalRuleEnvyFalse);
-		assertTrue(analyzerTestFalse.getIsFeatureEnvyList().get(0));
-	}
+	
 
 	/**
 	 * Test method for {@link MainLogic.Analyzer#compareLongMethod()}.
@@ -146,6 +123,11 @@ class AnalyzerTest {
 	void testAnalyzeLong() {
 		Analyzer analyzerLong = new Analyzer(normalRuleLong);
 		
+		analyzerLong.analyzeFile();
+		
+		
+		NormalRule normalRuleLongFalse = new NormalRule("NormalRuleLong", 70f, 70f, true, Enums.Test.LONG_METHOD);
+		analyzerLong = new Analyzer(normalRuleLongFalse);
 		analyzerLong.analyzeFile();
 	}
 	
