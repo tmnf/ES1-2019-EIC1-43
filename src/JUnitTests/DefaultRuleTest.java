@@ -26,7 +26,6 @@ public class DefaultRuleTest {
 	@Test
 	void testDefaultRule() {
 		assertEquals(test1, test2);
-
 	}
 
 	@Test

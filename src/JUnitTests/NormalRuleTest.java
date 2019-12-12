@@ -8,38 +8,27 @@ import Models.NormalRule;
 
 public class NormalRuleTest {
 
-	private static Enums.Test test;
-	private static Enums.Test test2;
-	private static Enums.Test test3;
-	private static float m1;
-	private static float m2;
-	private static float m3;
-	private static float m4;
-	private static NormalRule normalRule;
-	private static NormalRule normalRule2;
-	private static NormalRule normalRule3;
-	private static NormalRule normalRule4;
-	private static boolean and;
-	private static boolean and2;
-	private static boolean and3;
+	private static float m1, m2, m3, m4;
+
+	private static NormalRule normalRule, normalRule2, normalRule3, normalRule4;
+
+	private static boolean and, and2, and3;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		test = Enums.Test.IPLASMA;
-		test2 = Enums.Test.PMD;
-		test3 = Enums.Test.LONG_METHOD;
-		m1 = (float) 1.0;
-		m2 = (float) 2.0;
-		m3 = (float) 2.0;
-		m4 = (float) 5.0;
+		m1 = 1.0f;
+		m2 = 2.0f;
+		m3 = 2.0f;
+		m4 = 5.0f;
+
 		and = true;
 		and2 = false;
 		and3 = false;
-		normalRule = new NormalRule("rule1", m4, m1, true, test3);
-		normalRule2 = new NormalRule("rule2", m2, m1, false, test2);
-		normalRule3 = new NormalRule("rule3", m4, m1, true, test);
-		normalRule4 = new NormalRule("rule4", m2, m3, true, test);
 
+		normalRule = new NormalRule("rule1", m4, m1, true, Enums.Test.LONG_METHOD);
+		normalRule2 = new NormalRule("rule2", m2, m1, false, Enums.Test.PMD);
+		normalRule3 = new NormalRule("rule3", m4, m1, true, Enums.Test.IPLASMA);
+		normalRule4 = new NormalRule("rule4", m2, m3, true, Enums.Test.IPLASMA);
 	}
 
 	@Test
@@ -70,12 +59,10 @@ public class NormalRuleTest {
 		assertEquals(normalRule.getMetric2(), normalRule3.getMetric2());
 		assertNotEquals(normalRule2.getMetric2(), normalRule4.getMetric2());
 		assertNotEquals(normalRule4.getMetric2(), normalRule3.getMetric2());
-
 	}
 
 	@Test
 	void testToString() {
 		assertNotEquals(normalRule.toString(), normalRule2.toString());
 	}
-
 }

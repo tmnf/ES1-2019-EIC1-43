@@ -56,7 +56,7 @@ public class MainWindow extends MainFrame {
 	private MainPanel mainPanel;
 
 	/**
-	 * Auxiliar panels
+	 * Auxiliary panels
 	 */
 	private JPanel rightPanel, leftPanel, bottomPanel, bottAuxPanel;
 
@@ -76,12 +76,12 @@ public class MainWindow extends MainFrame {
 	private DefaultTableModel tableModel;
 
 	/**
-	 * Scroll bars that allow file navigation
+	 * Scroll panel that allow file navigation
 	 */
 	private JScrollPane fileScroll;
 
 	/**
-	 * Opened file name
+	 * Opened file's name
 	 */
 	private JTextField fileName;
 
@@ -148,8 +148,8 @@ public class MainWindow extends MainFrame {
 	}
 
 	/**
-	 * Generates popupmenu that can be accessed by right clicking the frame. Holds
-	 * load and save options
+	 * Generates PopupMenu that can be accessed by right clicking on the frame.
+	 * Holds load and save options
 	 */
 	private void generatePopupMenu() {
 		JPopupMenu menu = new JPopupMenu("Tools");
@@ -180,7 +180,7 @@ public class MainWindow extends MainFrame {
 		save.setFont(Popup.ARIAL_PLAIN_SMALL);
 		load.setFont(Popup.ARIAL_PLAIN_SMALL);
 
-		this.addMouseListener(new MouseAdapter() {
+		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (SwingUtilities.isRightMouseButton(e))
@@ -372,11 +372,11 @@ public class MainWindow extends MainFrame {
 	 * @param error custom message to warn the user
 	 */
 	public void openErrorPopup(String error) {
-		JOptionPane.showMessageDialog(this, error, "Aviso!", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, error, "Erro!", JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
-	 * Opens a new warning
+	 * Opens a new warning popup
 	 * 
 	 * @param error custom message to warn the user
 	 */
@@ -391,6 +391,7 @@ public class MainWindow extends MainFrame {
 	 */
 	private int openOptionPopup(String warning) {
 		String[] options = { "Novas Regras", "Manter Regras", "Cancelar" };
+
 		return JOptionPane.showOptionDialog(this, warning, "Atenção!", JOptionPane.DEFAULT_OPTION,
 				JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 	}
@@ -401,7 +402,7 @@ public class MainWindow extends MainFrame {
 	 */
 	public void openWindow() {
 		pack();
-		setLocationRelativeTo(null);		
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 }

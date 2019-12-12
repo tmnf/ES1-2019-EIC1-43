@@ -21,26 +21,29 @@ import Utils.FileUtils;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class DataProcessorTest {
+
 	private static Popup popup;
+
 	private static MainWindow gui;
 
 	private static DataProcesser dataP;
 
 	private static Sheet testSheet;
+
 	private static DefaultComboBoxModel<DefaultRule> f;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		f = new DefaultComboBoxModel<DefaultRule>();
+
 		dataP = DataProcesser.getInstance();
 		dataP.initWindow();
 
-		testSheet = FileUtils
-				.readFile(new File(System.getProperty("user.dir") + "/files/Long-Method.xlsx").getAbsolutePath());
+		testSheet = FileUtils.readFile(new File("./files/Long-Method.xlsx").getAbsolutePath());
 
 		dataP.setCurrentSheet(testSheet, false);
-		assertEquals(testSheet, dataP.getCurrentSheet());
 
+		assertEquals(testSheet, dataP.getCurrentSheet());
 	}
 
 	@Test
@@ -51,14 +54,12 @@ public class DataProcessorTest {
 
 	@Test
 	@Order(2)
-	void testAlreadyExists() {	
+	void testAlreadyExists() {
 		NormalRule normalRule = new NormalRule("NormalRule1", 1f, 2f, true, Enums.Test.LONG_METHOD);
 		NormalRule normalRule2 = new NormalRule("NormalRule2", 2f, 1f, false, Enums.Test.IS_FEATURE_ENVY);
 		NormalRule copyNormalRule = new NormalRule("NormalRule1", 2f, 1f, false, Enums.Test.IS_FEATURE_ENVY);
 
 		dataP.addToRuleList(normalRule);
-
-		System.out.println();
 
 		assertFalse(dataP.alreadyExists(normalRule2.getRuleName()));
 		assertTrue(dataP.alreadyExists(copyNormalRule.getRuleName()));

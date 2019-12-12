@@ -179,6 +179,8 @@ public class FileUtils {
 	}
 
 	/**
+	 * Gets all rules from a DefaultComboBox to an ArrayList
+	 * 
 	 * @param ruleList DefaultComboBoxModel containing a list of rules
 	 * @return an ArrayList of rules passed from the ruleList
 	 */

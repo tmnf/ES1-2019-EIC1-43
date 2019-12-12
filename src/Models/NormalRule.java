@@ -47,7 +47,7 @@ public class NormalRule extends DefaultRule {
 	}
 
 	/**
-	 * @return and operator (if false means or)
+	 * @return and operator (if false means "or")
 	 */
 	public boolean getAnd() {
 		return and;

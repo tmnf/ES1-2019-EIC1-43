@@ -23,7 +23,6 @@ import Models.NormalRule;
  * Popup represents the graphical view of most of the popup windows of Iscte
  * Code Analyzer.
  */
-
 public class Popup extends MainFrame {
 
 	private static final long serialVersionUID = 2419830468873315990L;
@@ -249,7 +248,7 @@ public class Popup extends MainFrame {
 	}
 
 	/**
-	 * Opens a popup to choose from the rule list, the rule that will be analyzed
+	 * Opens a popup to choose, from the rule list, the rule that will be analyzed
 	 */
 	private void openPickATest() {
 		setTitle("Escolher um teste");

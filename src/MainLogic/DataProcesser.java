@@ -21,12 +21,12 @@ public class DataProcesser {
 
 	/**
 	 * Saves an instance to DataProcesser. DataProcesser can only be created or used
-	 * by accessing this method's getter
+	 * by accessing this atribute's getter
 	 */
 	private static DataProcesser INSTANCE;
 
 	/**
-	 * Saves an instance to user's graphical interface
+	 * Saves an instance of user's graphical interface
 	 */
 	private MainWindow gui;
 
@@ -36,7 +36,7 @@ public class DataProcesser {
 	private Sheet currentSheet;
 
 	/**
-	 * List of default tests available as well as user added rules
+	 * List of default tests available, as well as user added rules
 	 */
 	private DefaultComboBoxModel<DefaultRule> tests;
 
@@ -50,7 +50,7 @@ public class DataProcesser {
 	}
 
 	/**
-	 * Returns an instance of DataProcesser if one was created already, if not it
+	 * Returns an instance of DataProcesser if one was created already, if not, it
 	 * creates a new one
 	 * 
 	 * @return instance of DataProcesser
@@ -107,6 +107,8 @@ public class DataProcesser {
 	}
 
 	/**
+	 * Adds a new rule to test list
+	 * 
 	 * @param rule indicates the rule to be added to the list
 	 */
 	public void addToRuleList(DefaultRule rule) {
@@ -118,8 +120,7 @@ public class DataProcesser {
 	 * 
 	 * @param name Rule name
 	 * 
-	 * @return true if there's a rule with the given name
-	 * @return false if there's no rule with the given name
+	 * @return if there's a rule with the given name
 	 */
 	public boolean alreadyExists(String name) {
 		int i = 0;
@@ -145,7 +146,7 @@ public class DataProcesser {
 	}
 
 	/**
-	 * Loads a rule containing file to the current tests' list
+	 * Loads a rule containing file, to the current tests' list
 	 * 
 	 * @param path path to load file
 	 */
@@ -153,7 +154,7 @@ public class DataProcesser {
 		ArrayList<DefaultRule> rulesLoaded = FileUtils.loadRules(path);
 
 		if (rulesLoaded == null) {
-			gui.openErrorPopup("Ficheira de regras inválido...");
+			gui.openErrorPopup("Ficheiro de regras inválido...");
 			return;
 		}
 

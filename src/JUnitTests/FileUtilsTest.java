@@ -15,25 +15,30 @@ import org.junit.jupiter.api.BeforeAll;
 import Utils.FileUtils;
 
 public class FileUtilsTest {
+
 	private static String filePath;
-	private static Sheet datatypeSheet;
-	private static Sheet testSheet;
+
+	private static Sheet datatypeSheet, testSheet;
+
 	private static String fNull = null;
+
 	private static DataProcesser dp;
+
 	private static DefaultComboBoxModel<DefaultRule> rulesList;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		dp = DataProcesser.getInstance();
 		dp.initWindow();
+
 		File f = new File(System.getProperty("user.dir") + "/files/Long-Method.xlsx");
 		filePath = f.getAbsolutePath();
 
 		Workbook workbook = WorkbookFactory.create(new File(filePath));
 		datatypeSheet = workbook.getSheetAt(0);
+
 		testSheet = FileUtils.readFile(filePath);
 		dp.setCurrentSheet(testSheet, false);
-
 	}
 
 	@Test
@@ -47,7 +52,6 @@ public class FileUtilsTest {
 		Row exampleRow = datatypeSheet.getRow(8);
 
 		assertEquals(stringCellTest.toString(), FileUtils.getCellAtByText(exampleRow, "method").toString());
-
 	}
 
 	@Test
@@ -56,7 +60,6 @@ public class FileUtilsTest {
 		Row exampleRow = datatypeSheet.getRow(8);
 
 		assertNull(FileUtils.getCellAtByText(exampleRow, exampleWrongString));
-
 	}
 
 	@Test
@@ -72,7 +75,6 @@ public class FileUtilsTest {
 	}
 
 	@Test
-
 	void testSaveFile() {
 		rulesList = dp.getRulesList();
 		String pathToRuleFile = new File(System.getProperty("user.dir") + "/files/RegraLongExample.rl")
@@ -104,11 +106,14 @@ public class FileUtilsTest {
 	@Test
 	void testAddRulesToListFromArray() {
 		rulesList = dp.getRulesList();
+
 		int ruleListSize = rulesList.getSize();
+
 		String pathToRuleFile = new File(System.getProperty("user.dir") + "/files/RegraLongExample.rl")
 				.getAbsolutePath();
 
 		FileUtils.addRulesToListFromArray(FileUtils.loadRules(pathToRuleFile), rulesList);
+
 		assertEquals(ruleListSize + FileUtils.loadRules(pathToRuleFile).size(), rulesList.getSize());
 	}
 

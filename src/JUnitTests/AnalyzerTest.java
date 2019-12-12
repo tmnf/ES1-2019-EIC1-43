@@ -2,7 +2,6 @@ package JUnitTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 import java.io.File;
 
 import org.apache.poi.ss.usermodel.Sheet;
@@ -21,15 +20,14 @@ import Utils.FileUtils;
 @TestMethodOrder(OrderAnnotation.class)
 public class AnalyzerTest {
 
-	static Analyzer analyzer;
-	static Enums.Test test = null;
+	private static Analyzer analyzer;
 
-	static DefaultRule rule;
-	static DefaultRule rule2;
-	static NormalRule normalRuleLong;
-	static NormalRule normalRuleEnvy;
-	static int dci, dii, adci, adii;
+	private static DefaultRule rule;
+
+	private static NormalRule normalRuleLong, normalRuleEnvy;
+
 	private static DataProcesser dp;
+
 	private static Sheet testSheet;
 
 	/**
@@ -38,13 +36,13 @@ public class AnalyzerTest {
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		dp = DataProcesser.getInstance();
-		testSheet = FileUtils
-				.readFile(new File(System.getProperty("user.dir") + "/files/Long-Method.xlsx").getAbsolutePath());
+
+		testSheet = FileUtils.readFile(new File("./files/Long-Method.xlsx").getAbsolutePath());
+
 		dp.initWindow();
 		dp.setCurrentSheet(testSheet, true);
 
-		test = Enums.Test.IPLASMA;
-		rule = new DefaultRule(test);
+		rule = new DefaultRule(Enums.Test.IPLASMA);
 
 		normalRuleLong = new NormalRule("NormalRuleLong", 2f, 1f, false, Enums.Test.LONG_METHOD);
 		normalRuleEnvy = new NormalRule("NormalRuleEnvy", 2f, 1f, false, Enums.Test.IS_FEATURE_ENVY);
@@ -58,22 +56,20 @@ public class AnalyzerTest {
 	void testAnalyzer() {
 		analyzer = new Analyzer(rule);
 		assertNotNull(analyzer);
-
 	}
 
 	@Test
 	@Order(2)
 	void testAnalyzerFileIPlasma() {
 		Analyzer analyzerIPlasma = new Analyzer(new DefaultRule(Enums.Test.IPLASMA));
-		analyzerIPlasma.analyzeFile();
-
+		analyzerIPlasma.start();
 	}
 
 	@Test
 	@Order(3)
 	void testAnalyzeFilePMD() {
 		Analyzer analyzerPMD = new Analyzer(new DefaultRule(Enums.Test.PMD));
-		analyzerPMD.analyzeFile();
+		analyzerPMD.start();
 	}
 
 	@Test
@@ -81,11 +77,11 @@ public class AnalyzerTest {
 	void testAnalyzeLong() {
 		Analyzer analyzerLong = new Analyzer(normalRuleLong);
 
-		analyzerLong.analyzeFile();
+		analyzerLong.start();
 
 		NormalRule normalRuleLongFalse = new NormalRule("NormalRuleLong", 70f, 70f, true, Enums.Test.LONG_METHOD);
 		analyzerLong = new Analyzer(normalRuleLongFalse);
-		analyzerLong.analyzeFile();
+		analyzerLong.start();
 	}
 
 	@Test
@@ -93,6 +89,6 @@ public class AnalyzerTest {
 	void testAnalyzeEnvy() {
 		Analyzer analyzerEnvy = new Analyzer(normalRuleEnvy);
 
-		analyzerEnvy.analyzeFile();
+		analyzerEnvy.start();
 	}
 }

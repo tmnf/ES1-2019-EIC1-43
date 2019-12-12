@@ -39,7 +39,7 @@ public class Analyzer extends Thread {
 	 * Analyzer's Constructor. Creates a new Thread responsible of analyzing an
 	 * entire file based on a given rule
 	 * 
-	 * @param rule sets the metrics and operators used in the created analisis
+	 * @param rule sets the metrics and operators used in the created analysis
 	 */
 	public Analyzer(DefaultRule rule) {
 		this.sheet = DataProcesser.getInstance().getCurrentSheet();
@@ -62,7 +62,7 @@ public class Analyzer extends Thread {
 	/**
 	 * Based on the given rule, decides which test algorithm should be used
 	 */
-	public void analyzeFile() {
+	private void analyzeFile() {
 		switch (rule.getTest()) {
 		case IPLASMA:
 			compareLongMethod();
@@ -96,8 +96,8 @@ public class Analyzer extends Thread {
 	}
 
 	/**
-	 * Generates a boolean list containing if each method passed the isLong test
-	 * being applied or not
+	 * Generates a boolean list containing if each method passed the isLong test.
+	 * being applied, or not
 	 * 
 	 * @return list of boolean (isLong) results
 	 */
@@ -157,8 +157,8 @@ public class Analyzer extends Thread {
 	 * 
 	 * @param m1 first metric to be checked
 	 * @param m2 second metric to be checked
-	 * @return Integer array containing m1's column index [0] and m2's column index
-	 *         [1]
+	 * @return Integer array containing m1's column index [0] and m2's column
+	 *         index[1]
 	 */
 	private int[] getIndexByMethods(Metric m1, Metric m2) {
 		int[] metrics = new int[2];
@@ -170,8 +170,8 @@ public class Analyzer extends Thread {
 	}
 
 	/**
-	 * Compares is_long_method from file with iPlasma and PMD or is_long_method from
-	 * user rule with file's is_long_method
+	 * Compares is_long_method, from file, with iPlasma and PMD or is_long_method
+	 * from user rule with file's is_long_method
 	 */
 	private void compareLongMethod() {
 		int longMethodIndex = FileUtils.getCellIndexByText(Test.LONG_METHOD.getRealName());
@@ -200,7 +200,7 @@ public class Analyzer extends Thread {
 			isLongValue = row.getCell(longMethodIndex).getBooleanCellValue();
 			valueToCompare = row.getCell(indexOfValueToCompare).getBooleanCellValue();
 
-			defectsLongList(valueToCompare, isLongValue);
+			generateQuality(valueToCompare, isLongValue);
 		}
 	}
 
@@ -223,21 +223,25 @@ public class Analyzer extends Thread {
 
 			i++;
 
-			defectsLongList(valueToCompare, isLongValue);
+			generateQuality(valueToCompare, isLongValue);
 		}
 	}
 
 	/**
 	 * Checks and sets quality indicators of the rule being analyzed
+	 * 
+	 * @param valueToCheck boolean value from the list of results the analyzer is
+	 *                     analyzing
+	 * @param givenValue   given boolean value from excel file
 	 */
-	private void defectsLongList(boolean valueToCheck, boolean isLong) {
-		if (valueToCheck && isLong)
+	private void generateQuality(boolean valueToCheck, boolean givenValue) {
+		if (valueToCheck && givenValue)
 			dci++;
-		else if (valueToCheck && !isLong)
+		else if (valueToCheck && !givenValue)
 			dii++;
-		else if (!valueToCheck && !isLong)
+		else if (!valueToCheck && !givenValue)
 			adci++;
-		else if (!valueToCheck && isLong)
+		else if (!valueToCheck && givenValue)
 			adii++;
 	}
 
@@ -254,7 +258,7 @@ public class Analyzer extends Thread {
 			if (row.getRowNum() == 0)
 				continue;
 
-			defectsLongList(row.getCell(featureEnvyIndex).getBooleanCellValue(), is_feature_list.get(i));
+			generateQuality(row.getCell(featureEnvyIndex).getBooleanCellValue(), is_feature_list.get(i));
 			i++;
 		}
 

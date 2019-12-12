@@ -9,7 +9,6 @@ import javax.swing.JButton;
  * Button represents all the buttons used in this software, with rounded
  * corners.
  */
-
 public class Button extends JButton {
 
 	private static final long serialVersionUID = 1269050536627782589L;
