@@ -8,27 +8,14 @@ import Models.NormalRule;
 
 public class NormalRuleTest {
 
-	private static float m1, m2, m3, m4;
-
 	private static NormalRule normalRule, normalRule2, normalRule3, normalRule4;
-
-	private static boolean and, and2, and3;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		m1 = 1.0f;
-		m2 = 2.0f;
-		m3 = 2.0f;
-		m4 = 5.0f;
-
-		and = true;
-		and2 = false;
-		and3 = false;
-
-		normalRule = new NormalRule("rule1", m4, m1, true, Enums.Test.LONG_METHOD);
-		normalRule2 = new NormalRule("rule2", m2, m1, false, Enums.Test.PMD);
-		normalRule3 = new NormalRule("rule3", m4, m1, true, Enums.Test.IPLASMA);
-		normalRule4 = new NormalRule("rule4", m2, m3, true, Enums.Test.IPLASMA);
+		normalRule = new NormalRule("rule1", 5.0f, 1.0f, true, Enums.Test.LONG_METHOD);
+		normalRule2 = new NormalRule("rule2", 2.0f, 1.0f, false, Enums.Test.PMD);
+		normalRule3 = new NormalRule("rule3", 5.0f, 1.0f, true, Enums.Test.IPLASMA);
+		normalRule4 = new NormalRule("rule4", 2.0f, 2.0f, true, Enums.Test.IPLASMA);
 	}
 
 	@Test
@@ -43,8 +30,6 @@ public class NormalRuleTest {
 	void testGetAnd() {
 		assertNotEquals(normalRule.getAnd(), normalRule2.getAnd());
 		assertEquals(normalRule3.getAnd(), normalRule4.getAnd());
-		assertSame(and2, and3);
-		assertNotSame(and, and3);
 	}
 
 	@Test

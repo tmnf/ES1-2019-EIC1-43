@@ -31,19 +31,16 @@ public class DefaultRuleTest {
 	@Test
 	void testGetTest() {
 		assertEquals(test1, dr1.getTest());
-
 	}
 
 	@Test
 	void defaultRuleTestToString() {
 		assertEquals(dr1.getTest().getRealName(), dr1.toString());
-
 	}
 
 	@Test
 	void enumTestToString() {
 		assertEquals(dr1.getTest().getRealName(), test1.toString());
-
 	}
 
 }
