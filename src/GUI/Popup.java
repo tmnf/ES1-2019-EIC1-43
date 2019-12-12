@@ -23,9 +23,7 @@ import Models.NormalRule;
  * Popup represents the graphical view of most of the popup windows of Iscte
  * Code Analyzer.
  */
-public class Popup extends MainFrame {
-
-	private static final long serialVersionUID = 2419830468873315990L;
+public class Popup {
 
 	/**
 	 * Represents different types of popups available to create
@@ -75,10 +73,10 @@ public class Popup extends MainFrame {
 			openPickATest();
 			break;
 		case LONG_RULE_ADD:
-			openLongRuleAdd();
+			openLongRuleAdd(null);
 			break;
 		case FEATURE_RULE_ADD:
-			openFeatureRuleAdd();
+			openFeatureRuleAdd(null);
 			break;
 		default:
 			break;
@@ -92,11 +90,14 @@ public class Popup extends MainFrame {
 	 * @param m1    first metric to be defined (LOC or ATFD)
 	 * @param m2    second metric to be defined (CYCLO or LAA)
 	 * @param test  type of rule being added
+	 * @param rule  indicated rule if popup window is edit type
 	 */
-	private void getRuleAddCommons(String title, Metric m1, Metric m2, Test test) {
-		setTitle(title);
-		setResizable(false);
-		setDefaultCloseOperation(MainFrame.DISPOSE_ON_CLOSE);
+	private void getRuleAddCommons(String title, Metric m1, Metric m2, Test test, NormalRule rule) {
+		MainFrame frame = new MainFrame();
+
+		frame.setTitle(title);
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(MainFrame.DISPOSE_ON_CLOSE);
 
 		mainPanel = new MainPanel(new BorderLayout());
 
@@ -198,14 +199,38 @@ public class Popup extends MainFrame {
 			}
 
 			try {
-				addNewRule(metric1.getText(), metric2.getText(), name.getText(), and.isSelected(), test);
-				dispose();
+				if (rule != null) {
+					rule.setRuleName(name.getText());
+					rule.setMetric1(Float.parseFloat(metric1.getText()));
+					rule.setMetric2(Float.parseFloat(metric2.getText()));
+					rule.setAnd(and.isSelected());
+
+					mw.openWarningPopup("Regra editada com sucesso!");
+				} else
+					addNewRule(metric1.getText(), metric2.getText(), name.getText(), and.isSelected(), test);
+				frame.dispose();
 			} catch (NumberFormatException e1) {
 				mw.openErrorPopup("Verfique que inseriu um número nos campos das métricas");
 			}
 		});
 
-		showPopup();
+		if (rule != null) {
+			frame.setTitle(rule.getRuleName() + " - Edit");
+			name.setText(rule.getRuleName());
+			metric1.setText(rule.getMetric1() + "");
+			metric2.setText(rule.getMetric2() + "");
+			add.setText("Editar");
+
+			if (rule.getAnd()) {
+				and.setSelected(true);
+				or.setSelected(false);
+			} else {
+				and.setSelected(false);
+				or.setSelected(true);
+			}
+		}
+
+		showPopup(frame);
 	}
 
 	/**
@@ -227,20 +252,27 @@ public class Popup extends MainFrame {
 
 	/**
 	 * Opens a popup to add a new IsLongMethod rule
+	 * 
+	 * @param rule rule to be edited
 	 */
-	private void openLongRuleAdd() {
-		getRuleAddCommons("Adicionar Regra de is_long_method", Metric.LOC, Metric.CYCLO, Test.LONG_METHOD);
+	private void openLongRuleAdd(NormalRule rule) {
+		getRuleAddCommons("Adicionar Regra de is_long_method", Metric.LOC, Metric.CYCLO, Test.LONG_METHOD, rule);
 	}
 
 	/**
 	 * Opens a popup to add a new IsFeatureEnvy rule
+	 * 
+	 * @param rule rule to be edited
 	 */
-	private void openFeatureRuleAdd() {
-		getRuleAddCommons("Adicionar Regra de is_feature_envy", Metric.ATFD, Metric.LAA, Test.IS_FEATURE_ENVY);
+	private void openFeatureRuleAdd(NormalRule rule) {
+		getRuleAddCommons("Adicionar Regra de is_feature_envy", Metric.ATFD, Metric.LAA, Test.IS_FEATURE_ENVY, rule);
 	}
 
 	/**
 	 * Sets listeners to AND and OR radio buttons
+	 * 
+	 * @param and first radio button to add listener
+	 * @param or  second radio button to add listener
 	 */
 	private void radioListener(JRadioButton and, JRadioButton or) {
 		and.addActionListener((e) -> or.setSelected(false));
@@ -251,13 +283,16 @@ public class Popup extends MainFrame {
 	 * Opens a popup to choose, from the rule list, the rule that will be analyzed
 	 */
 	private void openPickATest() {
-		setTitle("Escolher um teste");
-		setResizable(false);
-		setDefaultCloseOperation(MainFrame.DISPOSE_ON_CLOSE);
+		MainFrame frame = new MainFrame();
+		frame.setTitle("Escolher um teste");
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(MainFrame.DISPOSE_ON_CLOSE);
 
 		mainPanel = new MainPanel(new BorderLayout());
 
 		JPanel bottomPanel = new JPanel(new BorderLayout());
+		JPanel bottomAuxPanel = new JPanel(new GridLayout(1, 2, 5, 0));
+		bottomAuxPanel.setOpaque(false);
 
 		DefaultComboBoxModel<DefaultRule> tests = DataProcesser.getInstance().getRulesList();
 
@@ -267,10 +302,21 @@ public class Popup extends MainFrame {
 		Button analise = new Button("Avaliar");
 		analise.addActionListener((e) -> {
 			DataProcesser.getInstance().analyseFile((DefaultRule) tests.getSelectedItem());
-			dispose();
+			frame.dispose();
 		});
 
-		bottomPanel.add(analise, BorderLayout.EAST);
+		Button edit = new Button("Editar");
+		edit.addActionListener((e) -> {
+			if (tests.getSelectedItem() instanceof NormalRule)
+				openLongRuleAdd((NormalRule) tests.getSelectedItem());
+			else
+				mw.openWarningPopup("Testes padrão não podem ser editados...");
+		});
+
+		bottomAuxPanel.add(edit);
+		bottomAuxPanel.add(analise);
+
+		bottomPanel.add(bottomAuxPanel, BorderLayout.EAST);
 
 		analise.setPreferredSize(new Dimension(100, 40));
 
@@ -282,16 +328,18 @@ public class Popup extends MainFrame {
 		mainPanel.add(testList, BorderLayout.CENTER);
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-		showPopup();
+		showPopup(frame);
 	}
 
 	/**
 	 * Used by every popup. Sets the popup visible and shows it in the screen
+	 * 
+	 * @param frame frame to set visible
 	 */
-	private void showPopup() {
-		add(mainPanel);
-		pack();
-		setLocationRelativeTo(null);
-		setVisible(true);
+	private void showPopup(MainFrame frame) {
+		frame.add(mainPanel);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 	}
 }

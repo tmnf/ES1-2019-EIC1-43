@@ -22,8 +22,6 @@ import Utils.FileUtils;
 @TestMethodOrder(OrderAnnotation.class)
 public class DataProcessorTest {
 
-	private static Popup popup;
-
 	private static MainWindow gui;
 
 	private static DataProcesser dataP;
@@ -83,22 +81,16 @@ public class DataProcessorTest {
 	@Test
 	@Order(4)
 	void testPopup() {
-		popup = new Popup(Popup.TEST_CHOOSER, gui);
-		assertEquals(0, Popup.TEST_CHOOSER);
-		assertEquals("Escolher um teste", popup.getTitle());
+		new Popup(Popup.TEST_CHOOSER, gui);
+		new Popup(Popup.LONG_RULE_ADD, gui);
+		new Popup(Popup.FEATURE_RULE_ADD, gui);
 	}
 
 	@Test
 	@Order(5)
-	void testPopupLongRuleAdd() {
-		popup = new Popup(Popup.LONG_RULE_ADD, gui);
+	void testPopupConstants() {
+		assertEquals(0, Popup.TEST_CHOOSER);
 		assertEquals(1, Popup.LONG_RULE_ADD);
-	}
-
-	@Test
-	@Order(6)
-	void testPopupFeatureRuleAdd() {
-		popup = new Popup(Popup.FEATURE_RULE_ADD, gui);
 		assertEquals(2, Popup.FEATURE_RULE_ADD);
 	}
 }

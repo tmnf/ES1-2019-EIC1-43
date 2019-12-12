@@ -74,6 +74,22 @@ public class NormalRule extends DefaultRule {
 		return metric2;
 	}
 
+	public void setAnd(boolean and) {
+		this.and = and;
+	}
+
+	public void setRuleName(String ruleName) {
+		this.ruleName = ruleName;
+	}
+
+	public void setMetric1(float metric1) {
+		this.metric1 = metric1;
+	}
+
+	public void setMetric2(float metric2) {
+		this.metric2 = metric2;
+	}
+
 	/**
 	 * Override Object's toString() method
 	 */
