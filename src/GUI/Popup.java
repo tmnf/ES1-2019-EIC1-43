@@ -188,9 +188,11 @@ public class Popup {
 		add.addActionListener((e) -> {
 			String error = "";
 
-			if (DataProcesser.getInstance().alreadyExists(name.getText()))
-				error = "Já existe uma regra com esse nome!";
-			else if (name.getText().trim().isEmpty())
+			if (rule == null)
+				if (DataProcesser.getInstance().alreadyExists(name.getText()))
+					error = "Já existe uma regra com esse nome!";
+
+			if (name.getText().trim().isEmpty())
 				error = "Deve inserir um nome para a regra criada";
 
 			if (!error.isEmpty()) {
