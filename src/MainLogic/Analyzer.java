@@ -189,6 +189,9 @@ public class Analyzer extends Thread {
 	/**
 	 * Auxiliary method of compareLongMethod, compares is_long_method from file with
 	 * IPLASMA or PMD
+	 * 
+	 * @param indexOfValueToCompare index of method in excel file to compare
+	 * @param longMethodIndex       index of long method in excel file
 	 */
 	private void compareLongWithNormalTest(int indexOfValueToCompare, int longMethodIndex) {
 		boolean valueToCompare, isLongValue;
@@ -207,6 +210,8 @@ public class Analyzer extends Thread {
 	/**
 	 * Auxiliary method of compareLongMethod, compares is_long_method from user rule
 	 * with is_long_method from file
+	 * 
+	 * @param longIndex index of long method in excel file
 	 */
 	private void compareLongWithLong(int longIndex) {
 		boolean valueToCompare, isLongValue;

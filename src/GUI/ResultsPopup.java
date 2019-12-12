@@ -124,6 +124,9 @@ public class ResultsPopup extends MainFrame {
 	/**
 	 * Generates list of method ids with defect based on the results given by the
 	 * Analyzer
+	 * 
+	 * @param results boolean list of defect results
+	 * @return ids from methods with defect
 	 */
 	private ArrayList<Integer> getMethods(ArrayList<Boolean> results) {
 		ArrayList<Integer> methodIds = new ArrayList<>();

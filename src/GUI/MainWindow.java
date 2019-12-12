@@ -388,6 +388,7 @@ public class MainWindow extends MainFrame {
 	 * Opens a new option popup
 	 * 
 	 * @param warning custom message to ask the user
+	 * @return option number selected by user
 	 */
 	private int openOptionPopup(String warning) {
 		String[] options = { "Novas Regras", "Manter Regras", "Cancelar" };

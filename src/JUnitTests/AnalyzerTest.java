@@ -30,9 +30,6 @@ public class AnalyzerTest {
 
 	private static Sheet testSheet;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		dp = DataProcesser.getInstance();
